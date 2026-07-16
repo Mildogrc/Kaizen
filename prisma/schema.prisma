@@ -1,0 +1,627 @@
+// Hyperlearning — database schema
+// Single-user, local-first. Content is schema-driven: ContentSchema defines the
+// shape of LearningItem.data JSON, validated with Zod at import time.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+enum CourseCategory {
+  LANGUAGE
+  MATH
+  CERTIFICATION
+  BOOK
+  SKILL
+  CUSTOM
+}
+
+/// Which main tab a course is surfaced under.
+enum CourseTab {
+  JAPANESE
+  CHINESE
+  MATH
+  SKILLS
+  BOOKS
+  CUSTOM
+}
+
+enum CourseStatus {
+  ACTIVE
+  PLANNED
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum GoalStatus {
+  ACTIVE
+  PLANNED
+  COMPLETED
+  ABANDONED
+}
+
+enum FieldType {
+  TEXT
+  LONG_TEXT
+  NUMBER
+  BOOLEAN
+  ENUM
+  LIST
+  OBJECT
+  AUDIO
+  IMAGE
+  MARKDOWN
+  CODE
+  LATEX
+  JSON
+  DATE
+  URL
+}
+
+enum PracticeType {
+  FLASHCARD
+  CLOZE
+  RECOGNITION
+  PRODUCTION
+  MULTIPLE_CHOICE
+  FREE_RECALL
+  FILL_BLANK
+  TYPING_DRILL
+  MATCHING
+  ORDERING
+  PROOF_RECONSTRUCTION
+  PROBLEM_SOLVING
+  MISTAKE_REVIEW
+}
+
+enum ReviewRating {
+  AGAIN
+  HARD
+  GOOD
+  EASY
+}
+
+enum CardMaturity {
+  NEW
+  LEARNING
+  YOUNG
+  MATURE
+}
+
+enum NodeStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum NodeLevel {
+  FOUNDATION
+  CORE
+  ADVANCED
+  TARGET
+}
+
+enum EdgeKind {
+  PREREQUISITE
+  /// dotted "this is useful for / applied in" edge
+  APPLICATION
+}
+
+enum BookStatus {
+  WANT_TO_READ
+  READING
+  FINISHED
+  PAUSED
+  ABANDONED
+}
+
+enum BookNoteKind {
+  NOTE
+  QUOTE
+  SUMMARY
+  IDEA
+  CHARACTER
+  ARGUMENT
+  DEFINITION
+  FORMULA
+  PASSAGE
+  REFLECTION
+}
+
+enum ImportStatus {
+  PENDING
+  VALIDATED
+  PARTIAL
+  COMPLETED
+  FAILED
+}
+
+// ---------------------------------------------------------------------------
+// User & courses
+// ---------------------------------------------------------------------------
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  settings  Json     @default("{}")
+  createdAt DateTime @default(now())
+}
+
+model Course {
+  id          String         @id @default(cuid())
+  slug        String         @unique
+  name        String
+  description String?
+  category    CourseCategory
+  tab         CourseTab
+  status      CourseStatus   @default(ACTIVE)
+  color       String? // accent color used in the UI
+  metadata    Json           @default("{}")
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  goals         CourseGoal[]
+  plans         CoursePlan[]
+  milestones    CourseMilestone[]
+  schemas       ContentSchema[]
+  learningItems LearningItem[]
+  practiceItems PracticeItem[]
+  flashcards    Flashcard[]
+  exams         Exam[]
+  roadmaps      Roadmap[]
+  mistakes      Mistake[]
+  importBatches ImportBatch[]
+  books         Book[]
+}
+
+model CourseGoal {
+  id           String     @id @default(cuid())
+  courseId     String
+  course       Course     @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  title        String
+  description  String?
+  /// e.g. "vocab_count", "exam_prep", "roadmap_target", "custom"
+  goalType     String     @default("custom")
+  targetValue  Int?
+  currentValue Int        @default(0)
+  unit         String? // "words", "kanji", "nodes", ...
+  targetDate   DateTime?
+  examLevelId  String?
+  examLevel    ExamLevel? @relation(fields: [examLevelId], references: [id], onDelete: SetNull)
+  status       GoalStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  plans CoursePlan[]
+
+  @@index([courseId, status])
+}
+
+model CoursePlan {
+  id          String      @id @default(cuid())
+  courseId    String
+  course      Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  goalId      String?
+  goal        CourseGoal? @relation(fields: [goalId], references: [id], onDelete: SetNull)
+  name        String
+  description String?
+  status      GoalStatus  @default(ACTIVE)
+  /// structured plan payload (phases, weekly load, queues)
+  plan        Json        @default("{}")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  milestones CourseMilestone[]
+}
+
+model CourseMilestone {
+  id          String      @id @default(cuid())
+  courseId    String
+  course      Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  planId      String?
+  plan        CoursePlan? @relation(fields: [planId], references: [id], onDelete: SetNull)
+  title       String
+  description String?
+  order       Int         @default(0)
+  metric      String? // e.g. "words", "kanji"
+  targetValue Int?
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime    @default(now())
+
+  @@index([courseId, order])
+}
+
+// ---------------------------------------------------------------------------
+// Schema system (the extensibility core)
+// ---------------------------------------------------------------------------
+
+model ContentSchema {
+  id          String         @id @default(cuid())
+  courseId    String?
+  course      Course?        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug        String         @unique
+  name        String
+  /// item type this schema describes, e.g. "JapaneseVocabularyItem"
+  itemType    String
+  category    CourseCategory @default(CUSTOM)
+  description String?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  versions      ContentSchemaVersion[]
+  learningItems LearningItem[]
+}
+
+model ContentSchemaVersion {
+  id       String        @id @default(cuid())
+  schemaId String
+  schema   ContentSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  version  Int           @default(1)
+  /// Non-field rules: flashcardRules, practiceRules, srsRules,
+  /// importInstructions, exportInstructions, llmPrompt, completionCriteria
+  config   Json          @default("{}")
+  isActive Boolean       @default(true)
+  createdAt DateTime     @default(now())
+
+  fields        ContentSchemaField[]
+  learningItems LearningItem[]
+  importBatches ImportBatch[]
+
+  @@unique([schemaId, version])
+}
+
+model ContentSchemaField {
+  id              String               @id @default(cuid())
+  versionId       String
+  schemaVersion   ContentSchemaVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  name            String // machine name, e.g. "reading"
+  label           String // display label
+  description     String?
+  fieldType       FieldType
+  required        Boolean              @default(false)
+  order           Int                  @default(0)
+  /// { minLength, maxLength, min, max, pattern, itemType, ... }
+  validationRules Json                 @default("{}")
+  enumOptions     Json? // string[] when fieldType = ENUM
+  exampleValue    Json?
+  defaultValue    Json?
+  importInstructions String?
+  llmInstructions    String?
+
+  @@unique([versionId, name])
+  @@index([versionId, order])
+}
+
+// ---------------------------------------------------------------------------
+// Content, practice, review
+// ---------------------------------------------------------------------------
+
+model LearningItem {
+  id              String                @id @default(cuid())
+  courseId        String
+  course          Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  schemaId        String?
+  contentSchema   ContentSchema?        @relation(fields: [schemaId], references: [id], onDelete: SetNull)
+  schemaVersionId String?
+  schemaVersion   ContentSchemaVersion? @relation(fields: [schemaVersionId], references: [id], onDelete: SetNull)
+  itemType        String // denormalized, e.g. "JapaneseVocabularyItem"
+  /// schema-validated structured content
+  data            Json
+  roadmapNodeId   String?
+  roadmapNode     RoadmapNode?          @relation(fields: [roadmapNodeId], references: [id], onDelete: SetNull)
+  sourceId        String?
+  source          Source?               @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  importBatchId   String?
+  importBatch     ImportBatch?          @relation(fields: [importBatchId], references: [id], onDelete: SetNull)
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+
+  practiceItems PracticeItem[]
+  flashcards    Flashcard[]
+  tags          Tag[]
+
+  @@index([courseId, itemType])
+}
+
+model PracticeItem {
+  id             String        @id @default(cuid())
+  courseId       String
+  course         Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  learningItemId String?
+  learningItem   LearningItem? @relation(fields: [learningItemId], references: [id], onDelete: Cascade)
+  roadmapNodeId  String?
+  roadmapNode    RoadmapNode?  @relation(fields: [roadmapNodeId], references: [id], onDelete: SetNull)
+  type           PracticeType
+  prompt         String
+  answer         String
+  metadata       Json          @default("{}")
+  createdAt      DateTime      @default(now())
+
+  review   ReviewRecord?
+  attempts Attempt[]
+  mistakes Mistake[]
+
+  @@index([courseId, type])
+}
+
+model Flashcard {
+  id             String        @id @default(cuid())
+  courseId       String
+  course         Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  learningItemId String?
+  learningItem   LearningItem? @relation(fields: [learningItemId], references: [id], onDelete: Cascade)
+  bookNoteId     String?
+  bookNote       BookNote?     @relation(fields: [bookNoteId], references: [id], onDelete: SetNull)
+  front          String
+  back           String
+  notes          String?
+  metadata       Json          @default("{}")
+  createdAt      DateTime      @default(now())
+
+  review   ReviewRecord?
+  attempts Attempt[]
+  tags     Tag[]
+
+  @@index([courseId])
+}
+
+/// SM-2-style spaced repetition state for a flashcard OR practice item.
+model ReviewRecord {
+  id             String        @id @default(cuid())
+  flashcardId    String?       @unique
+  flashcard      Flashcard?    @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+  practiceItemId String?       @unique
+  practiceItem   PracticeItem? @relation(fields: [practiceItemId], references: [id], onDelete: Cascade)
+  ease           Float         @default(2.5)
+  intervalDays   Float         @default(0)
+  dueAt          DateTime      @default(now())
+  repetitions    Int           @default(0)
+  lapseCount     Int           @default(0)
+  lastRating     ReviewRating?
+  lastReviewedAt DateTime?
+  maturity       CardMaturity  @default(NEW)
+  isLeech        Boolean       @default(false)
+  isSuspended    Boolean       @default(false)
+
+  @@index([dueAt, isSuspended])
+}
+
+model Attempt {
+  id             String        @id @default(cuid())
+  flashcardId    String?
+  flashcard      Flashcard?    @relation(fields: [flashcardId], references: [id], onDelete: Cascade)
+  practiceItemId String?
+  practiceItem   PracticeItem? @relation(fields: [practiceItemId], references: [id], onDelete: Cascade)
+  sessionId      String?
+  session        StudySession? @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  rating         ReviewRating?
+  correct        Boolean?
+  answerGiven    String?
+  timeMs         Int?
+  createdAt      DateTime      @default(now())
+
+  @@index([createdAt])
+}
+
+model Mistake {
+  id             String        @id @default(cuid())
+  courseId       String
+  course         Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  practiceItemId String?
+  practiceItem   PracticeItem? @relation(fields: [practiceItemId], references: [id], onDelete: SetNull)
+  description    String
+  category       String? // "vocab", "grammar", "sign-error", ...
+  count          Int           @default(1)
+  resolved       Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([courseId, resolved])
+}
+
+model StudySession {
+  id          String    @id @default(cuid())
+  date        DateTime  @default(now())
+  mode        String    @default("balanced")
+  durationMin Int?
+  stats       Json      @default("{}")
+  attempts    Attempt[]
+
+  @@index([date])
+}
+
+model Tag {
+  id            String         @id @default(cuid())
+  name          String         @unique
+  learningItems LearningItem[]
+  flashcards    Flashcard[]
+  books         Book[]
+}
+
+model Source {
+  id            String         @id @default(cuid())
+  name          String
+  type          String // "book", "website", "media", "course", ...
+  url           String?
+  metadata      Json           @default("{}")
+  learningItems LearningItem[]
+}
+
+model ImportBatch {
+  id              String                @id @default(cuid())
+  courseId        String
+  course          Course                @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  schemaVersionId String?
+  schemaVersion   ContentSchemaVersion? @relation(fields: [schemaVersionId], references: [id], onDelete: SetNull)
+  sourceName      String? // filename or "pasted JSON" / "LLM generation"
+  format          String                @default("json") // "json" | "csv"
+  status          ImportStatus          @default(PENDING)
+  totalCount      Int                   @default(0)
+  validCount      Int                   @default(0)
+  errorCount      Int                   @default(0)
+  errors          Json                  @default("[]")
+  createdAt       DateTime              @default(now())
+
+  learningItems LearningItem[]
+}
+
+// ---------------------------------------------------------------------------
+// Roadmaps (Math primarily; also usable for language test paths)
+// ---------------------------------------------------------------------------
+
+model Roadmap {
+  id          String   @id @default(cuid())
+  courseId    String
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug        String   @unique
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+
+  nodes RoadmapNode[]
+  edges RoadmapEdge[]
+}
+
+model RoadmapNode {
+  id          String     @id @default(cuid())
+  roadmapId   String
+  roadmap     Roadmap    @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  slug        String
+  title       String
+  description String?
+  /// grouping, e.g. "Algebra", "Analysis", "Topology & Geometry"
+  branch      String?
+  level       NodeLevel  @default(CORE)
+  isTarget    Boolean    @default(false)
+  status      NodeStatus @default(NOT_STARTED)
+  order       Int        @default(0)
+  /// textbooks, theorem/definition counts, notes
+  metadata    Json       @default("{}")
+
+  outgoingEdges RoadmapEdge[]  @relation("EdgeFrom")
+  incomingEdges RoadmapEdge[]  @relation("EdgeTo")
+  learningItems LearningItem[]
+  practiceItems PracticeItem[]
+
+  @@unique([roadmapId, slug])
+  @@index([roadmapId, branch])
+}
+
+model RoadmapEdge {
+  id         String      @id @default(cuid())
+  roadmapId  String
+  roadmap    Roadmap     @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  fromNodeId String
+  fromNode   RoadmapNode @relation("EdgeFrom", fields: [fromNodeId], references: [id], onDelete: Cascade)
+  toNodeId   String
+  toNode     RoadmapNode @relation("EdgeTo", fields: [toNodeId], references: [id], onDelete: Cascade)
+  kind       EdgeKind    @default(PREREQUISITE)
+
+  @@unique([fromNodeId, toNodeId, kind])
+}
+
+// ---------------------------------------------------------------------------
+// Books
+// ---------------------------------------------------------------------------
+
+model Book {
+  id              String     @id @default(cuid())
+  title           String
+  author          String?
+  category        String?
+  status          BookStatus @default(WANT_TO_READ)
+  startDate       DateTime?
+  finishDate      DateTime?
+  rating          Int? // 1..5
+  pageCount       Int?
+  sourceLanguage  String?
+  relatedCourseId String?
+  relatedCourse   Course?    @relation(fields: [relatedCourseId], references: [id], onDelete: SetNull)
+  metadata        Json       @default("{}")
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  notes BookNote[]
+  tags  Tag[]
+
+  @@index([status])
+}
+
+/// One model covers notes, quotes, summaries, ideas, characters, arguments,
+/// definitions, formulas, passages, reflections — discriminated by `kind`.
+model BookNote {
+  id        String       @id @default(cuid())
+  bookId    String
+  book      Book         @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  kind      BookNoteKind @default(NOTE)
+  content   String
+  /// chapter / page / location reference
+  location  String?
+  /// marked "remember this" → eligible for flashcard generation
+  remember  Boolean      @default(false)
+  metadata  Json         @default("{}")
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+
+  flashcards Flashcard[]
+
+  @@index([bookId, kind])
+  @@index([remember])
+}
+
+// ---------------------------------------------------------------------------
+// Exams
+// ---------------------------------------------------------------------------
+
+model Exam {
+  id          String  @id @default(cuid())
+  courseId    String
+  course      Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  slug        String  @unique
+  name        String
+  description String?
+
+  levels ExamLevel[]
+}
+
+model ExamLevel {
+  id          String  @id @default(cuid())
+  examId      String
+  exam        Exam    @relation(fields: [examId], references: [id], onDelete: Cascade)
+  name        String // "N5", "HSK 4", "Pre-2"
+  /// ascending difficulty within the exam
+  rank        Int
+  description String?
+  /// { targetVocab, targetKanji, targetChars, ... } editable placeholders
+  targets     Json    @default("{}")
+
+  objectives ExamObjective[]
+  goals      CourseGoal[]
+
+  @@unique([examId, rank])
+}
+
+model ExamObjective {
+  id          String    @id @default(cuid())
+  examLevelId String
+  examLevel   ExamLevel @relation(fields: [examLevelId], references: [id], onDelete: Cascade)
+  title       String
+  /// "vocabulary" | "grammar" | "kanji" | "reading" | "listening" | ...
+  category    String
+  targetCount Int?
+  description String?
+  completed   Boolean   @default(false)
+
+  @@index([examLevelId])
+}

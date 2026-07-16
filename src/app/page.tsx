@@ -1,0 +1,150 @@
+import Link from 'next/link';
+import { prisma } from '@/lib/db';
+import { pathProgress } from '@/lib/roadmap';
+import { Badge, Card, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus } from '@/components/ui';
+
+export const dynamic = 'force-dynamic';
+
+async function getStreak() {
+  const sessions = await prisma.studySession.findMany({ orderBy: { date: 'desc' }, take: 60 });
+  const days = new Set(sessions.map((s) => s.date.toISOString().slice(0, 10)));
+  let streak = 0;
+  const d = new Date();
+  // Today counts if studied; otherwise start from yesterday.
+  if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
+  while (days.has(d.toISOString().slice(0, 10))) {
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
+
+export default async function Dashboard() {
+  const [goals, dueReviews, courses, books, mistakes, streak, roadmap] = await Promise.all([
+    prisma.courseGoal.findMany({ where: { status: 'ACTIVE' }, include: { course: true }, orderBy: { createdAt: 'asc' } }),
+    prisma.reviewRecord.count({ where: { dueAt: { lte: new Date() }, isSuspended: false } }),
+    prisma.course.findMany({ include: { _count: { select: { learningItems: true, flashcards: true } } } }),
+    prisma.book.findMany({ orderBy: { updatedAt: 'desc' } }),
+    prisma.mistake.count({ where: { resolved: false } }),
+    getStreak(),
+    prisma.roadmap.findUnique({ where: { slug: 'math-roadmap' }, include: { nodes: true, edges: true } }),
+  ]);
+
+  const byTab = (tab: string) => courses.filter((c) => c.tab === tab);
+  const itemCount = (tab: string) => byTab(tab).reduce((sum, c) => sum + c._count.learningItems, 0);
+
+  const reading = books.filter((b) => b.status === 'READING');
+  const finished = books.filter((b) => b.status === 'FINISHED');
+
+  const mathTargets = roadmap
+    ? roadmap.nodes
+        .filter((n) => n.isTarget)
+        .map((n) => ({ node: n, progress: pathProgress(n.id, roadmap.nodes, roadmap.edges) }))
+    : [];
+
+  const nextAction =
+    dueReviews > 0
+      ? { label: `Clear ${dueReviews} due reviews`, href: '/review' }
+      : itemCount('JAPANESE') === 0
+        ? { label: 'Import your first Japanese vocabulary batch', href: '/import' }
+        : { label: 'Start today’s study queue', href: '/daily' };
+
+  return (
+    <>
+      <PageHeader title="Dashboard" subtitle="Where everything stands right now" />
+
+      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
+        <StatCard label="Due reviews" value={dueReviews} hint="across all courses" />
+        <StatCard label="Streak" value={`${streak}d`} hint="consecutive study days" />
+        <StatCard label="Active goals" value={goals.length} />
+        <StatCard label="Open mistakes" value={mistakes} hint="unresolved" />
+        <StatCard label="Books reading" value={reading.length} hint={`${finished.length} finished`} />
+      </div>
+
+      <Section title="Next recommended action">
+        <Link href={nextAction.href}>
+          <Card className="flex items-center justify-between border-accent/30 hover:border-accent/60 transition-colors">
+            <span className="text-[14px] font-medium">{nextAction.label}</span>
+            <span className="text-accent">→</span>
+          </Card>
+        </Link>
+      </Section>
+
+      <Section title="Active goals">
+        <div className="grid gap-2 md:grid-cols-2">
+          {goals.map((g) => (
+            <Card key={g.id} className="p-3">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-[13px] font-medium">{g.title}</span>
+                <Badge tone="blue">{g.course.name}</Badge>
+              </div>
+              {g.targetValue != null && (
+                <div className="mt-2">
+                  <ProgressBar pct={(g.currentValue / g.targetValue) * 100} color={g.course.color ?? undefined} />
+                  <div className="mt-1 text-[11px] text-muted tabular-nums">
+                    {g.currentValue} / {g.targetValue} {g.unit}
+                  </div>
+                </div>
+              )}
+              {g.description && <p className="mt-1.5 text-[12px] text-muted">{g.description}</p>}
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Math target paths">
+        <div className="grid gap-2 md:grid-cols-2">
+          {mathTargets.map(({ node, progress }) => (
+            <Link key={node.id} href={`/math?target=${node.slug}`}>
+              <Card className="p-3 hover:border-accent/40 transition-colors">
+                <div className="flex items-center justify-between">
+                  <span className="text-[13px] font-medium">{node.title}</span>
+                  <span className="text-[11px] text-muted tabular-nums">
+                    {progress.done}/{progress.total} courses
+                  </span>
+                </div>
+                <div className="mt-2">
+                  <ProgressBar pct={progress.pct} color="#2563eb" />
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      <Section title="Content by area">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+          {[
+            ['Japanese', '/japanese', 'JAPANESE'],
+            ['Chinese', '/chinese', 'CHINESE'],
+            ['Math', '/math', 'MATH'],
+            ['Skills', '/skills', 'SKILLS'],
+            ['Books', '/books', 'BOOKS'],
+          ].map(([label, href, tab]) => (
+            <Link key={tab} href={href}>
+              <StatCard label={label} value={tab === 'BOOKS' ? books.length : itemCount(tab)} hint={tab === 'BOOKS' ? 'books tracked' : 'learning items'} />
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      {reading.length > 0 && (
+        <Section title="Currently reading">
+          <div className="grid gap-2 md:grid-cols-2">
+            {reading.map((b) => (
+              <Link key={b.id} href={`/books/${b.id}`}>
+                <Card className="flex items-center justify-between p-3 hover:border-accent/40 transition-colors">
+                  <div>
+                    <div className="text-[13px] font-medium">{b.title}</div>
+                    <div className="text-[11px] text-muted">{b.author}</div>
+                  </div>
+                  <Badge tone={statusTone(b.status)}>{fmtStatus(b.status)}</Badge>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </Section>
+      )}
+    </>
+  );
+}
