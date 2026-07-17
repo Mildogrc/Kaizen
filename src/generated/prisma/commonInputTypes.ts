@@ -582,6 +582,50 @@ export type EnumBookNoteKindWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumBookNoteKindFilter<$PrismaModel>
 }
 
+export type BigIntFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntFilter<$PrismaModel> | bigint | number
+}
+
+export type EnumAnkiCardStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.AnkiCardState | Prisma.EnumAnkiCardStateFieldRefInput<$PrismaModel>
+  in?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel> | $Enums.AnkiCardState
+}
+
+export type BigIntWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _max?: Prisma.NestedBigIntFilter<$PrismaModel>
+}
+
+export type EnumAnkiCardStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AnkiCardState | Prisma.EnumAnkiCardStateFieldRefInput<$PrismaModel>
+  in?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAnkiCardStateWithAggregatesFilter<$PrismaModel> | $Enums.AnkiCardState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -1096,6 +1140,50 @@ export type NestedEnumBookNoteKindWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumBookNoteKindFilter<$PrismaModel>
   _max?: Prisma.NestedEnumBookNoteKindFilter<$PrismaModel>
+}
+
+export type NestedBigIntFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntFilter<$PrismaModel> | bigint | number
+}
+
+export type NestedEnumAnkiCardStateFilter<$PrismaModel = never> = {
+  equals?: $Enums.AnkiCardState | Prisma.EnumAnkiCardStateFieldRefInput<$PrismaModel>
+  in?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel> | $Enums.AnkiCardState
+}
+
+export type NestedBigIntWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  in?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  notIn?: bigint[] | number[] | Prisma.ListBigIntFieldRefInput<$PrismaModel>
+  lt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  lte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gt?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  gte?: bigint | number | Prisma.BigIntFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedBigIntWithAggregatesFilter<$PrismaModel> | bigint | number
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatFilter<$PrismaModel>
+  _sum?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _min?: Prisma.NestedBigIntFilter<$PrismaModel>
+  _max?: Prisma.NestedBigIntFilter<$PrismaModel>
+}
+
+export type NestedEnumAnkiCardStateWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.AnkiCardState | Prisma.EnumAnkiCardStateFieldRefInput<$PrismaModel>
+  in?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  notIn?: $Enums.AnkiCardState[] | Prisma.ListEnumAnkiCardStateFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumAnkiCardStateWithAggregatesFilter<$PrismaModel> | $Enums.AnkiCardState
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumAnkiCardStateFilter<$PrismaModel>
 }
 
 

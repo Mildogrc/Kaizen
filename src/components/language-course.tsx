@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { ankiDueTodayCount, ankiRowsForMappings } from '@/lib/anki-data';
+import { retention, streaks } from '@/lib/anki-analytics';
 import { Badge, Card, EmptyState, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus, btnCls } from '@/components/ui';
+import { GenerateButton } from '@/components/generate-button';
 
 // Shared page body for the Japanese and Chinese tabs: goal → exam tracks →
 // milestones → content databases → import/generate entry points.
@@ -26,6 +29,25 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
     },
   });
 
+  // Compact read-only Anki strip when this course has mapped decks.
+  const ankiMappings = await prisma.ankiDeckMapping.findMany({ where: { courseId: course.id } });
+  const wordLang = course.tab === 'JAPANESE' ? 'ja' : course.tab === 'CHINESE' ? 'zh' : null;
+  const wordStat = wordLang
+    ? await prisma.knownWordStat.findFirst({ where: { language: wordLang }, orderBy: { date: 'desc' } })
+    : null;
+  let anki: { dueToday: number; streak: number; matureRetention: number | null; maturePct: number; deckNames: string } | null = null;
+  if (ankiMappings.length > 0) {
+    const { snapshots, logs } = await ankiRowsForMappings(ankiMappings.map((m) => m.id));
+    const mature = snapshots.filter((s) => s.state === 'MATURE').length;
+    anki = {
+      dueToday: await ankiDueTodayCount(course.id),
+      streak: streaks(logs).current,
+      matureRetention: retention(logs).mature,
+      maturePct: snapshots.length > 0 ? Math.round((mature / snapshots.length) * 100) : 0,
+      deckNames: ankiMappings.map((m) => m.deckName).join(' · '),
+    };
+  }
+
   const activeGoals = course.goals.filter((g) => g.status === 'ACTIVE');
   const plannedGoals = course.goals.filter((g) => g.status === 'PLANNED');
 
@@ -36,6 +58,7 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         subtitle={course.description ?? undefined}
         actions={
           <>
+            <GenerateButton courseId={course.id} />
             <Link href={`/import?course=${course.slug}`} className={btnCls}>⇥ Import content</Link>
             <Link href="/schemas" className={btnCls}>⬡ Schemas</Link>
           </>
@@ -48,6 +71,28 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         <StatCard label="Due reviews" value={dueReviews} />
         <StatCard label="Open mistakes" value={course._count.mistakes} />
       </div>
+
+      {anki && (
+        <div className="mb-6 rounded-lg border border-line bg-surface px-4 py-2.5">
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[12px]">
+            <span className="font-semibold text-muted">★ Anki</span>
+            <span>due today <span className="font-semibold tabular-nums text-accent">{anki.dueToday}</span></span>
+            <span>streak <span className="font-semibold tabular-nums">{anki.streak}d</span></span>
+            <span>mature retention <span className="font-semibold tabular-nums">{anki.matureRetention === null ? '—' : `${Math.round(anki.matureRetention * 100)}%`}</span></span>
+            <span>mature <span className="font-semibold tabular-nums">{anki.maturePct}%</span></span>
+            {wordStat && (
+              <Link href="/words" className="hover:underline">
+                known words{' '}
+                <span className="font-semibold tabular-nums text-cyan-300">
+                  {wordStat.lower === wordStat.upper ? wordStat.lower : `${wordStat.lower}–${wordStat.upper}`}
+                </span>
+              </Link>
+            )}
+            <Link href="/analytics" className="ml-auto text-accent hover:underline">full analytics →</Link>
+          </div>
+          <div className="mt-0.5 text-[11px] text-muted">{anki.deckNames}</div>
+        </div>
+      )}
 
       <Section title="Current goal">
         {activeGoals.length === 0 ? (

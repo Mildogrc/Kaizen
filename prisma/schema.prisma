@@ -182,6 +182,7 @@ model Course {
   mistakes      Mistake[]
   importBatches ImportBatch[]
   books         Book[]
+  ankiMappings  AnkiDeckMapping[]
 }
 
 model CourseGoal {
@@ -261,6 +262,7 @@ model ContentSchema {
 
   versions      ContentSchemaVersion[]
   learningItems LearningItem[]
+  ankiMappings  AnkiDeckMapping[]
 }
 
 model ContentSchemaVersion {
@@ -578,6 +580,128 @@ model BookNote {
 
   @@index([bookId, kind])
   @@index([remember])
+}
+
+// ---------------------------------------------------------------------------
+// Anki integration — Anki is the review engine for mapped decks; the app
+// snapshots deck/card/review data via AnkiConnect and runs analytics on it.
+// ---------------------------------------------------------------------------
+
+enum AnkiCardState {
+  NEW
+  LEARNING
+  YOUNG
+  MATURE
+  SUSPENDED
+  BURIED
+}
+
+model AnkiDeckMapping {
+  id           String         @id @default(cuid())
+  deckName     String         @unique
+  courseId     String
+  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  /// optional subsection anchor, e.g. japanese-grammar
+  schemaId     String?
+  contentSchema ContentSchema? @relation(fields: [schemaId], references: [id], onDelete: SetNull)
+  /// mature cards from this deck feed the known-word count
+  countsKnownWords Boolean    @default(true)
+  lastSyncedAt DateTime?
+  createdAt    DateTime       @default(now())
+
+  cards      AnkiCardSnapshot[]
+  reviewLogs AnkiReviewLog[]
+
+  @@index([courseId])
+}
+
+model AnkiCardSnapshot {
+  id           String          @id @default(cuid())
+  mappingId    String
+  mapping      AnkiDeckMapping @relation(fields: [mappingId], references: [id], onDelete: Cascade)
+  ankiCardId   BigInt          @unique
+  front        String
+  back         String
+  state        AnkiCardState
+  intervalDays Int             @default(0)
+  ease         Float           @default(2.5)
+  dueAt        DateTime?
+  reps         Int             @default(0)
+  lapses       Int             @default(0)
+  isLeech      Boolean         @default(false)
+  syncedAt     DateTime        @updatedAt
+
+  @@index([mappingId, state])
+  @@index([mappingId, dueAt])
+}
+
+model AnkiReviewLog {
+  id                String          @id @default(cuid())
+  /// Anki revlog id: epoch milliseconds of the review, unique per card
+  ankiReviewId      BigInt
+  mappingId         String
+  mapping           AnkiDeckMapping @relation(fields: [mappingId], references: [id], onDelete: Cascade)
+  ankiCardId        BigInt
+  reviewedAt        DateTime
+  /// 1=again 2=hard 3=good 4=easy
+  rating            Int
+  intervalAfterDays Int             @default(0)
+  intervalBeforeDays Int            @default(0)
+  timeMs            Int             @default(0)
+
+  @@unique([ankiReviewId, ankiCardId])
+  @@index([mappingId, reviewedAt])
+}
+
+model AnkiSyncRun {
+  id           String    @id @default(cuid())
+  startedAt    DateTime  @default(now())
+  finishedAt   DateTime?
+  status       String    @default("running") // running | ok | error
+  decksSynced  Int       @default(0)
+  cardsSynced  Int       @default(0)
+  reviewsAdded Int       @default(0)
+  error        String?
+
+  @@index([startedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Known words — union of Migaku exports, Anki mature cards, and manual adds.
+// Japanese entries carry two canonical keys so union cardinality can be
+// reported as a lower/upper bound; Chinese keys are exact (simplified form).
+// ---------------------------------------------------------------------------
+
+model KnownWord {
+  id           String   @id @default(cuid())
+  language     String // 'ja' | 'zh'
+  surface      String // as imported
+  lemma        String // dictionary form (ja) / simplified form (zh)
+  reading      String? // katakana reading of the lemma (ja)
+  /// merge only when certain: ja = lemma|reading, zh = simplified form
+  strictKey    String
+  /// merge aggressively: ja = lemma, zh = simplified form
+  looseKey     String
+  source       String // 'migaku' | 'anki' | 'manual'
+  sourceDetail String? // deck name or import label
+  createdAt    DateTime @default(now())
+
+  @@unique([language, source, strictKey])
+  @@index([language, looseKey])
+}
+
+model KnownWordStat {
+  id          String   @id @default(cuid())
+  date        DateTime // start of day
+  language    String
+  lower       Int
+  upper       Int
+  migakuCount Int      @default(0)
+  ankiCount   Int      @default(0)
+  manualCount Int      @default(0)
+
+  @@unique([date, language])
+  @@index([language, date])
 }
 
 // ---------------------------------------------------------------------------
