@@ -18,31 +18,41 @@ export default async function ReviewPage() {
   ]);
 
   // Overdue reviews and learning cards first (oldest due first), then a
-  // capped batch of new cards.
+  // capped batch of new cards. Serves flashcards and practice items alike.
+  const include = {
+    flashcard: { include: { course: { select: { name: true, color: true } } } },
+    practiceItem: { include: { course: { select: { name: true, color: true } } } },
+  } as const;
   const dueRecords = await prisma.reviewRecord.findMany({
-    where: { dueAt: { lte: now }, isSuspended: false, maturity: { not: 'NEW' }, flashcardId: { not: null } },
-    include: { flashcard: { include: { course: { select: { name: true, color: true } } } } },
+    where: { dueAt: { lte: now }, isSuspended: false, maturity: { not: 'NEW' } },
+    include,
     orderBy: { dueAt: 'asc' },
     take: REVIEWS_PER_SESSION,
   });
   const newRecords = await prisma.reviewRecord.findMany({
-    where: { maturity: 'NEW', isSuspended: false, flashcardId: { not: null } },
-    include: { flashcard: { include: { course: { select: { name: true, color: true } } } } },
+    where: { maturity: 'NEW', isSuspended: false },
+    include,
     orderBy: { dueAt: 'asc' },
     take: NEW_PER_SESSION,
   });
 
   const cards: SessionCard[] = [...dueRecords, ...newRecords]
-    .filter((r) => r.flashcard)
-    .map((r) => ({
-      recordId: r.id,
-      front: r.flashcard!.front,
-      back: r.flashcard!.back,
-      metadata: r.flashcard!.metadata as Record<string, unknown>,
-      maturity: r.maturity,
-      courseName: r.flashcard!.course.name,
-      courseColor: r.flashcard!.course.color,
-    }));
+    .filter((r) => r.flashcard || r.practiceItem)
+    .map((r) => {
+      const source = r.flashcard ?? r.practiceItem!;
+      const isPractice = !r.flashcard;
+      return {
+        recordId: r.id,
+        kind: isPractice ? ('practice' as const) : ('flashcard' as const),
+        practiceType: r.practiceItem?.type ?? null,
+        front: r.flashcard ? r.flashcard.front : r.practiceItem!.prompt,
+        back: r.flashcard ? r.flashcard.back : r.practiceItem!.answer,
+        metadata: (r.flashcard?.metadata ?? {}) as Record<string, unknown>,
+        maturity: r.maturity,
+        courseName: source.course.name,
+        courseColor: source.course.color,
+      };
+    });
 
   return (
     <>

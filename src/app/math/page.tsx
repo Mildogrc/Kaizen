@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { Badge, Card, EmptyState, PageHeader, Section, StatCard, btnCls } from '@/components/ui';
+import { GenerateButton } from '@/components/generate-button';
 import { MathRoadmap } from './roadmap-view';
 
 export const dynamic = 'force-dynamic';
@@ -29,7 +30,12 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
       <PageHeader
         title="Mathematics"
         subtitle={course.description ?? undefined}
-        actions={<Link href="/import?course=math" className={btnCls}>⇥ Import content</Link>}
+        actions={
+          <>
+            <GenerateButton courseId={course.id} />
+            <Link href="/import?course=math" className={btnCls}>⇥ Import content</Link>
+          </>
+        }
       />
 
       <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
