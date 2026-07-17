@@ -177,3 +177,15 @@ export const ImportStatus = {
 } as const
 
 export type ImportStatus = (typeof ImportStatus)[keyof typeof ImportStatus]
+
+
+export const AnkiCardState = {
+  NEW: 'NEW',
+  LEARNING: 'LEARNING',
+  YOUNG: 'YOUNG',
+  MATURE: 'MATURE',
+  SUSPENDED: 'SUSPENDED',
+  BURIED: 'BURIED'
+} as const
+
+export type AnkiCardState = (typeof AnkiCardState)[keyof typeof AnkiCardState]

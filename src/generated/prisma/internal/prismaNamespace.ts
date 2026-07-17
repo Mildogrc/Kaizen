@@ -407,6 +407,12 @@ export const ModelName = {
   RoadmapEdge: 'RoadmapEdge',
   Book: 'Book',
   BookNote: 'BookNote',
+  AnkiDeckMapping: 'AnkiDeckMapping',
+  AnkiCardSnapshot: 'AnkiCardSnapshot',
+  AnkiReviewLog: 'AnkiReviewLog',
+  AnkiSyncRun: 'AnkiSyncRun',
+  KnownWord: 'KnownWord',
+  KnownWordStat: 'KnownWordStat',
   Exam: 'Exam',
   ExamLevel: 'ExamLevel',
   ExamObjective: 'ExamObjective'
@@ -425,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "course" | "courseGoal" | "coursePlan" | "courseMilestone" | "contentSchema" | "contentSchemaVersion" | "contentSchemaField" | "learningItem" | "practiceItem" | "flashcard" | "reviewRecord" | "attempt" | "mistake" | "studySession" | "tag" | "source" | "importBatch" | "roadmap" | "roadmapNode" | "roadmapEdge" | "book" | "bookNote" | "exam" | "examLevel" | "examObjective"
+    modelProps: "user" | "course" | "courseGoal" | "coursePlan" | "courseMilestone" | "contentSchema" | "contentSchemaVersion" | "contentSchemaField" | "learningItem" | "practiceItem" | "flashcard" | "reviewRecord" | "attempt" | "mistake" | "studySession" | "tag" | "source" | "importBatch" | "roadmap" | "roadmapNode" | "roadmapEdge" | "book" | "bookNote" | "ankiDeckMapping" | "ankiCardSnapshot" | "ankiReviewLog" | "ankiSyncRun" | "knownWord" | "knownWordStat" | "exam" | "examLevel" | "examObjective"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2131,6 +2137,450 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AnkiDeckMapping: {
+      payload: Prisma.$AnkiDeckMappingPayload<ExtArgs>
+      fields: Prisma.AnkiDeckMappingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiDeckMappingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiDeckMappingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiDeckMappingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiDeckMappingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiDeckMappingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiDeckMappingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiDeckMappingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiDeckMappingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiDeckMappingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        update: {
+          args: Prisma.AnkiDeckMappingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiDeckMappingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiDeckMappingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiDeckMappingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiDeckMappingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiDeckMappingPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiDeckMappingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiDeckMapping>
+        }
+        groupBy: {
+          args: Prisma.AnkiDeckMappingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiDeckMappingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiDeckMappingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiDeckMappingCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiCardSnapshot: {
+      payload: Prisma.$AnkiCardSnapshotPayload<ExtArgs>
+      fields: Prisma.AnkiCardSnapshotFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiCardSnapshotFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiCardSnapshotFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiCardSnapshotFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiCardSnapshotFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiCardSnapshotFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiCardSnapshotCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiCardSnapshotCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiCardSnapshotCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiCardSnapshotDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        update: {
+          args: Prisma.AnkiCardSnapshotUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiCardSnapshotDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiCardSnapshotUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiCardSnapshotUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiCardSnapshotUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiCardSnapshotPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiCardSnapshotAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiCardSnapshot>
+        }
+        groupBy: {
+          args: Prisma.AnkiCardSnapshotGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiCardSnapshotGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiCardSnapshotCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiCardSnapshotCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiReviewLog: {
+      payload: Prisma.$AnkiReviewLogPayload<ExtArgs>
+      fields: Prisma.AnkiReviewLogFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiReviewLogFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiReviewLogFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiReviewLogFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiReviewLogFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiReviewLogFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiReviewLogCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiReviewLogCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiReviewLogCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiReviewLogDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        update: {
+          args: Prisma.AnkiReviewLogUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiReviewLogDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiReviewLogUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiReviewLogUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiReviewLogUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiReviewLogPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiReviewLogAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiReviewLog>
+        }
+        groupBy: {
+          args: Prisma.AnkiReviewLogGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiReviewLogGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiReviewLogCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiReviewLogCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiSyncRun: {
+      payload: Prisma.$AnkiSyncRunPayload<ExtArgs>
+      fields: Prisma.AnkiSyncRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiSyncRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiSyncRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiSyncRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiSyncRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiSyncRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiSyncRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiSyncRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiSyncRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiSyncRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        update: {
+          args: Prisma.AnkiSyncRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiSyncRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiSyncRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiSyncRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiSyncRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiSyncRunPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiSyncRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiSyncRun>
+        }
+        groupBy: {
+          args: Prisma.AnkiSyncRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiSyncRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiSyncRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiSyncRunCountAggregateOutputType> | number
+        }
+      }
+    }
+    KnownWord: {
+      payload: Prisma.$KnownWordPayload<ExtArgs>
+      fields: Prisma.KnownWordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KnownWordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KnownWordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        findFirst: {
+          args: Prisma.KnownWordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KnownWordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        findMany: {
+          args: Prisma.KnownWordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>[]
+        }
+        create: {
+          args: Prisma.KnownWordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        createMany: {
+          args: Prisma.KnownWordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.KnownWordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>[]
+        }
+        delete: {
+          args: Prisma.KnownWordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        update: {
+          args: Prisma.KnownWordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        deleteMany: {
+          args: Prisma.KnownWordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KnownWordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.KnownWordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>[]
+        }
+        upsert: {
+          args: Prisma.KnownWordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordPayload>
+        }
+        aggregate: {
+          args: Prisma.KnownWordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKnownWord>
+        }
+        groupBy: {
+          args: Prisma.KnownWordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KnownWordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KnownWordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KnownWordCountAggregateOutputType> | number
+        }
+      }
+    }
+    KnownWordStat: {
+      payload: Prisma.$KnownWordStatPayload<ExtArgs>
+      fields: Prisma.KnownWordStatFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KnownWordStatFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KnownWordStatFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        findFirst: {
+          args: Prisma.KnownWordStatFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KnownWordStatFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        findMany: {
+          args: Prisma.KnownWordStatFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>[]
+        }
+        create: {
+          args: Prisma.KnownWordStatCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        createMany: {
+          args: Prisma.KnownWordStatCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.KnownWordStatCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>[]
+        }
+        delete: {
+          args: Prisma.KnownWordStatDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        update: {
+          args: Prisma.KnownWordStatUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        deleteMany: {
+          args: Prisma.KnownWordStatDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KnownWordStatUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.KnownWordStatUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>[]
+        }
+        upsert: {
+          args: Prisma.KnownWordStatUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KnownWordStatPayload>
+        }
+        aggregate: {
+          args: Prisma.KnownWordStatAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKnownWordStat>
+        }
+        groupBy: {
+          args: Prisma.KnownWordStatGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KnownWordStatGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KnownWordStatCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KnownWordStatCountAggregateOutputType> | number
+        }
+      }
+    }
     Exam: {
       payload: Prisma.$ExamPayload<ExtArgs>
       fields: Prisma.ExamFieldRefs
@@ -2736,6 +3186,97 @@ export const BookNoteScalarFieldEnum = {
 export type BookNoteScalarFieldEnum = (typeof BookNoteScalarFieldEnum)[keyof typeof BookNoteScalarFieldEnum]
 
 
+export const AnkiDeckMappingScalarFieldEnum = {
+  id: 'id',
+  deckName: 'deckName',
+  courseId: 'courseId',
+  schemaId: 'schemaId',
+  countsKnownWords: 'countsKnownWords',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AnkiDeckMappingScalarFieldEnum = (typeof AnkiDeckMappingScalarFieldEnum)[keyof typeof AnkiDeckMappingScalarFieldEnum]
+
+
+export const AnkiCardSnapshotScalarFieldEnum = {
+  id: 'id',
+  mappingId: 'mappingId',
+  ankiCardId: 'ankiCardId',
+  front: 'front',
+  back: 'back',
+  state: 'state',
+  intervalDays: 'intervalDays',
+  ease: 'ease',
+  dueAt: 'dueAt',
+  reps: 'reps',
+  lapses: 'lapses',
+  isLeech: 'isLeech',
+  syncedAt: 'syncedAt'
+} as const
+
+export type AnkiCardSnapshotScalarFieldEnum = (typeof AnkiCardSnapshotScalarFieldEnum)[keyof typeof AnkiCardSnapshotScalarFieldEnum]
+
+
+export const AnkiReviewLogScalarFieldEnum = {
+  id: 'id',
+  ankiReviewId: 'ankiReviewId',
+  mappingId: 'mappingId',
+  ankiCardId: 'ankiCardId',
+  reviewedAt: 'reviewedAt',
+  rating: 'rating',
+  intervalAfterDays: 'intervalAfterDays',
+  intervalBeforeDays: 'intervalBeforeDays',
+  timeMs: 'timeMs'
+} as const
+
+export type AnkiReviewLogScalarFieldEnum = (typeof AnkiReviewLogScalarFieldEnum)[keyof typeof AnkiReviewLogScalarFieldEnum]
+
+
+export const AnkiSyncRunScalarFieldEnum = {
+  id: 'id',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  status: 'status',
+  decksSynced: 'decksSynced',
+  cardsSynced: 'cardsSynced',
+  reviewsAdded: 'reviewsAdded',
+  error: 'error'
+} as const
+
+export type AnkiSyncRunScalarFieldEnum = (typeof AnkiSyncRunScalarFieldEnum)[keyof typeof AnkiSyncRunScalarFieldEnum]
+
+
+export const KnownWordScalarFieldEnum = {
+  id: 'id',
+  language: 'language',
+  surface: 'surface',
+  lemma: 'lemma',
+  reading: 'reading',
+  strictKey: 'strictKey',
+  looseKey: 'looseKey',
+  source: 'source',
+  sourceDetail: 'sourceDetail',
+  createdAt: 'createdAt'
+} as const
+
+export type KnownWordScalarFieldEnum = (typeof KnownWordScalarFieldEnum)[keyof typeof KnownWordScalarFieldEnum]
+
+
+export const KnownWordStatScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  language: 'language',
+  lower: 'lower',
+  upper: 'upper',
+  migakuCount: 'migakuCount',
+  ankiCount: 'ankiCount',
+  manualCount: 'manualCount'
+} as const
+
+export type KnownWordStatScalarFieldEnum = (typeof KnownWordStatScalarFieldEnum)[keyof typeof KnownWordStatScalarFieldEnum]
+
+
 export const ExamScalarFieldEnum = {
   id: 'id',
   courseId: 'courseId',
@@ -3098,6 +3639,34 @@ export type EnumBookNoteKindFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumBookNoteKindFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookNoteKind[]'>
     
 
+
+/**
+ * Reference to a field of type 'BigInt'
+ */
+export type BigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt'>
+    
+
+
+/**
+ * Reference to a field of type 'BigInt[]'
+ */
+export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+/**
+ * Reference to a field of type 'AnkiCardState'
+ */
+export type EnumAnkiCardStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnkiCardState'>
+    
+
+
+/**
+ * Reference to a field of type 'AnkiCardState[]'
+ */
+export type ListEnumAnkiCardStateFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnkiCardState[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3231,6 +3800,12 @@ export type GlobalOmitConfig = {
   roadmapEdge?: Prisma.RoadmapEdgeOmit
   book?: Prisma.BookOmit
   bookNote?: Prisma.BookNoteOmit
+  ankiDeckMapping?: Prisma.AnkiDeckMappingOmit
+  ankiCardSnapshot?: Prisma.AnkiCardSnapshotOmit
+  ankiReviewLog?: Prisma.AnkiReviewLogOmit
+  ankiSyncRun?: Prisma.AnkiSyncRunOmit
+  knownWord?: Prisma.KnownWordOmit
+  knownWordStat?: Prisma.KnownWordStatOmit
   exam?: Prisma.ExamOmit
   examLevel?: Prisma.ExamLevelOmit
   examObjective?: Prisma.ExamObjectiveOmit

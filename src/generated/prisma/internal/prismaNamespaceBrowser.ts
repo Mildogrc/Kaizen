@@ -74,6 +74,12 @@ export const ModelName = {
   RoadmapEdge: 'RoadmapEdge',
   Book: 'Book',
   BookNote: 'BookNote',
+  AnkiDeckMapping: 'AnkiDeckMapping',
+  AnkiCardSnapshot: 'AnkiCardSnapshot',
+  AnkiReviewLog: 'AnkiReviewLog',
+  AnkiSyncRun: 'AnkiSyncRun',
+  KnownWord: 'KnownWord',
+  KnownWordStat: 'KnownWordStat',
   Exam: 'Exam',
   ExamLevel: 'ExamLevel',
   ExamObjective: 'ExamObjective'
@@ -437,6 +443,97 @@ export const BookNoteScalarFieldEnum = {
 } as const
 
 export type BookNoteScalarFieldEnum = (typeof BookNoteScalarFieldEnum)[keyof typeof BookNoteScalarFieldEnum]
+
+
+export const AnkiDeckMappingScalarFieldEnum = {
+  id: 'id',
+  deckName: 'deckName',
+  courseId: 'courseId',
+  schemaId: 'schemaId',
+  countsKnownWords: 'countsKnownWords',
+  lastSyncedAt: 'lastSyncedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AnkiDeckMappingScalarFieldEnum = (typeof AnkiDeckMappingScalarFieldEnum)[keyof typeof AnkiDeckMappingScalarFieldEnum]
+
+
+export const AnkiCardSnapshotScalarFieldEnum = {
+  id: 'id',
+  mappingId: 'mappingId',
+  ankiCardId: 'ankiCardId',
+  front: 'front',
+  back: 'back',
+  state: 'state',
+  intervalDays: 'intervalDays',
+  ease: 'ease',
+  dueAt: 'dueAt',
+  reps: 'reps',
+  lapses: 'lapses',
+  isLeech: 'isLeech',
+  syncedAt: 'syncedAt'
+} as const
+
+export type AnkiCardSnapshotScalarFieldEnum = (typeof AnkiCardSnapshotScalarFieldEnum)[keyof typeof AnkiCardSnapshotScalarFieldEnum]
+
+
+export const AnkiReviewLogScalarFieldEnum = {
+  id: 'id',
+  ankiReviewId: 'ankiReviewId',
+  mappingId: 'mappingId',
+  ankiCardId: 'ankiCardId',
+  reviewedAt: 'reviewedAt',
+  rating: 'rating',
+  intervalAfterDays: 'intervalAfterDays',
+  intervalBeforeDays: 'intervalBeforeDays',
+  timeMs: 'timeMs'
+} as const
+
+export type AnkiReviewLogScalarFieldEnum = (typeof AnkiReviewLogScalarFieldEnum)[keyof typeof AnkiReviewLogScalarFieldEnum]
+
+
+export const AnkiSyncRunScalarFieldEnum = {
+  id: 'id',
+  startedAt: 'startedAt',
+  finishedAt: 'finishedAt',
+  status: 'status',
+  decksSynced: 'decksSynced',
+  cardsSynced: 'cardsSynced',
+  reviewsAdded: 'reviewsAdded',
+  error: 'error'
+} as const
+
+export type AnkiSyncRunScalarFieldEnum = (typeof AnkiSyncRunScalarFieldEnum)[keyof typeof AnkiSyncRunScalarFieldEnum]
+
+
+export const KnownWordScalarFieldEnum = {
+  id: 'id',
+  language: 'language',
+  surface: 'surface',
+  lemma: 'lemma',
+  reading: 'reading',
+  strictKey: 'strictKey',
+  looseKey: 'looseKey',
+  source: 'source',
+  sourceDetail: 'sourceDetail',
+  createdAt: 'createdAt'
+} as const
+
+export type KnownWordScalarFieldEnum = (typeof KnownWordScalarFieldEnum)[keyof typeof KnownWordScalarFieldEnum]
+
+
+export const KnownWordStatScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  language: 'language',
+  lower: 'lower',
+  upper: 'upper',
+  migakuCount: 'migakuCount',
+  ankiCount: 'ankiCount',
+  manualCount: 'manualCount'
+} as const
+
+export type KnownWordStatScalarFieldEnum = (typeof KnownWordStatScalarFieldEnum)[keyof typeof KnownWordStatScalarFieldEnum]
 
 
 export const ExamScalarFieldEnum = {

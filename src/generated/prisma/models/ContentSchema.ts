@@ -217,6 +217,7 @@ export type ContentSchemaWhereInput = {
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   versions?: Prisma.ContentSchemaVersionListRelationFilter
   learningItems?: Prisma.LearningItemListRelationFilter
+  ankiMappings?: Prisma.AnkiDeckMappingListRelationFilter
 }
 
 export type ContentSchemaOrderByWithRelationInput = {
@@ -232,6 +233,7 @@ export type ContentSchemaOrderByWithRelationInput = {
   course?: Prisma.CourseOrderByWithRelationInput
   versions?: Prisma.ContentSchemaVersionOrderByRelationAggregateInput
   learningItems?: Prisma.LearningItemOrderByRelationAggregateInput
+  ankiMappings?: Prisma.AnkiDeckMappingOrderByRelationAggregateInput
 }
 
 export type ContentSchemaWhereUniqueInput = Prisma.AtLeast<{
@@ -250,6 +252,7 @@ export type ContentSchemaWhereUniqueInput = Prisma.AtLeast<{
   course?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   versions?: Prisma.ContentSchemaVersionListRelationFilter
   learningItems?: Prisma.LearningItemListRelationFilter
+  ankiMappings?: Prisma.AnkiDeckMappingListRelationFilter
 }, "id" | "slug">
 
 export type ContentSchemaOrderByWithAggregationInput = {
@@ -294,6 +297,7 @@ export type ContentSchemaCreateInput = {
   course?: Prisma.CourseCreateNestedOneWithoutSchemasInput
   versions?: Prisma.ContentSchemaVersionCreateNestedManyWithoutSchemaInput
   learningItems?: Prisma.LearningItemCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaUncheckedCreateInput = {
@@ -308,6 +312,7 @@ export type ContentSchemaUncheckedCreateInput = {
   updatedAt?: Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedCreateNestedManyWithoutSchemaInput
   learningItems?: Prisma.LearningItemUncheckedCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaUpdateInput = {
@@ -322,6 +327,7 @@ export type ContentSchemaUpdateInput = {
   course?: Prisma.CourseUpdateOneWithoutSchemasNestedInput
   versions?: Prisma.ContentSchemaVersionUpdateManyWithoutSchemaNestedInput
   learningItems?: Prisma.LearningItemUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaUncheckedUpdateInput = {
@@ -336,6 +342,7 @@ export type ContentSchemaUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedUpdateManyWithoutSchemaNestedInput
   learningItems?: Prisma.LearningItemUncheckedUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaCreateManyInput = {
@@ -501,6 +508,22 @@ export type ContentSchemaUpdateOneWithoutLearningItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContentSchemaUpdateToOneWithWhereWithoutLearningItemsInput, Prisma.ContentSchemaUpdateWithoutLearningItemsInput>, Prisma.ContentSchemaUncheckedUpdateWithoutLearningItemsInput>
 }
 
+export type ContentSchemaCreateNestedOneWithoutAnkiMappingsInput = {
+  create?: Prisma.XOR<Prisma.ContentSchemaCreateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedCreateWithoutAnkiMappingsInput>
+  connectOrCreate?: Prisma.ContentSchemaCreateOrConnectWithoutAnkiMappingsInput
+  connect?: Prisma.ContentSchemaWhereUniqueInput
+}
+
+export type ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContentSchemaCreateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedCreateWithoutAnkiMappingsInput>
+  connectOrCreate?: Prisma.ContentSchemaCreateOrConnectWithoutAnkiMappingsInput
+  upsert?: Prisma.ContentSchemaUpsertWithoutAnkiMappingsInput
+  disconnect?: Prisma.ContentSchemaWhereInput | boolean
+  delete?: Prisma.ContentSchemaWhereInput | boolean
+  connect?: Prisma.ContentSchemaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContentSchemaUpdateToOneWithWhereWithoutAnkiMappingsInput, Prisma.ContentSchemaUpdateWithoutAnkiMappingsInput>, Prisma.ContentSchemaUncheckedUpdateWithoutAnkiMappingsInput>
+}
+
 export type ContentSchemaCreateWithoutCourseInput = {
   id?: string
   slug: string
@@ -512,6 +535,7 @@ export type ContentSchemaCreateWithoutCourseInput = {
   updatedAt?: Date | string
   versions?: Prisma.ContentSchemaVersionCreateNestedManyWithoutSchemaInput
   learningItems?: Prisma.LearningItemCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaUncheckedCreateWithoutCourseInput = {
@@ -525,6 +549,7 @@ export type ContentSchemaUncheckedCreateWithoutCourseInput = {
   updatedAt?: Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedCreateNestedManyWithoutSchemaInput
   learningItems?: Prisma.LearningItemUncheckedCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaCreateOrConnectWithoutCourseInput = {
@@ -579,6 +604,7 @@ export type ContentSchemaCreateWithoutVersionsInput = {
   updatedAt?: Date | string
   course?: Prisma.CourseCreateNestedOneWithoutSchemasInput
   learningItems?: Prisma.LearningItemCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaUncheckedCreateWithoutVersionsInput = {
@@ -592,6 +618,7 @@ export type ContentSchemaUncheckedCreateWithoutVersionsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   learningItems?: Prisma.LearningItemUncheckedCreateNestedManyWithoutContentSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaCreateOrConnectWithoutVersionsInput = {
@@ -621,6 +648,7 @@ export type ContentSchemaUpdateWithoutVersionsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneWithoutSchemasNestedInput
   learningItems?: Prisma.LearningItemUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaUncheckedUpdateWithoutVersionsInput = {
@@ -634,6 +662,7 @@ export type ContentSchemaUncheckedUpdateWithoutVersionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   learningItems?: Prisma.LearningItemUncheckedUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaCreateWithoutLearningItemsInput = {
@@ -647,6 +676,7 @@ export type ContentSchemaCreateWithoutLearningItemsInput = {
   updatedAt?: Date | string
   course?: Prisma.CourseCreateNestedOneWithoutSchemasInput
   versions?: Prisma.ContentSchemaVersionCreateNestedManyWithoutSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaUncheckedCreateWithoutLearningItemsInput = {
@@ -660,6 +690,7 @@ export type ContentSchemaUncheckedCreateWithoutLearningItemsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedCreateNestedManyWithoutSchemaInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutContentSchemaInput
 }
 
 export type ContentSchemaCreateOrConnectWithoutLearningItemsInput = {
@@ -689,6 +720,7 @@ export type ContentSchemaUpdateWithoutLearningItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneWithoutSchemasNestedInput
   versions?: Prisma.ContentSchemaVersionUpdateManyWithoutSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaUncheckedUpdateWithoutLearningItemsInput = {
@@ -702,6 +734,79 @@ export type ContentSchemaUncheckedUpdateWithoutLearningItemsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedUpdateManyWithoutSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaNestedInput
+}
+
+export type ContentSchemaCreateWithoutAnkiMappingsInput = {
+  id?: string
+  slug: string
+  name: string
+  itemType: string
+  category?: $Enums.CourseCategory
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  course?: Prisma.CourseCreateNestedOneWithoutSchemasInput
+  versions?: Prisma.ContentSchemaVersionCreateNestedManyWithoutSchemaInput
+  learningItems?: Prisma.LearningItemCreateNestedManyWithoutContentSchemaInput
+}
+
+export type ContentSchemaUncheckedCreateWithoutAnkiMappingsInput = {
+  id?: string
+  courseId?: string | null
+  slug: string
+  name: string
+  itemType: string
+  category?: $Enums.CourseCategory
+  description?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  versions?: Prisma.ContentSchemaVersionUncheckedCreateNestedManyWithoutSchemaInput
+  learningItems?: Prisma.LearningItemUncheckedCreateNestedManyWithoutContentSchemaInput
+}
+
+export type ContentSchemaCreateOrConnectWithoutAnkiMappingsInput = {
+  where: Prisma.ContentSchemaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContentSchemaCreateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedCreateWithoutAnkiMappingsInput>
+}
+
+export type ContentSchemaUpsertWithoutAnkiMappingsInput = {
+  update: Prisma.XOR<Prisma.ContentSchemaUpdateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedUpdateWithoutAnkiMappingsInput>
+  create: Prisma.XOR<Prisma.ContentSchemaCreateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedCreateWithoutAnkiMappingsInput>
+  where?: Prisma.ContentSchemaWhereInput
+}
+
+export type ContentSchemaUpdateToOneWithWhereWithoutAnkiMappingsInput = {
+  where?: Prisma.ContentSchemaWhereInput
+  data: Prisma.XOR<Prisma.ContentSchemaUpdateWithoutAnkiMappingsInput, Prisma.ContentSchemaUncheckedUpdateWithoutAnkiMappingsInput>
+}
+
+export type ContentSchemaUpdateWithoutAnkiMappingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  itemType?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  course?: Prisma.CourseUpdateOneWithoutSchemasNestedInput
+  versions?: Prisma.ContentSchemaVersionUpdateManyWithoutSchemaNestedInput
+  learningItems?: Prisma.LearningItemUpdateManyWithoutContentSchemaNestedInput
+}
+
+export type ContentSchemaUncheckedUpdateWithoutAnkiMappingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  itemType?: Prisma.StringFieldUpdateOperationsInput | string
+  category?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  versions?: Prisma.ContentSchemaVersionUncheckedUpdateManyWithoutSchemaNestedInput
+  learningItems?: Prisma.LearningItemUncheckedUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaCreateManyCourseInput = {
@@ -726,6 +831,7 @@ export type ContentSchemaUpdateWithoutCourseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   versions?: Prisma.ContentSchemaVersionUpdateManyWithoutSchemaNestedInput
   learningItems?: Prisma.LearningItemUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaUncheckedUpdateWithoutCourseInput = {
@@ -739,6 +845,7 @@ export type ContentSchemaUncheckedUpdateWithoutCourseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   versions?: Prisma.ContentSchemaVersionUncheckedUpdateManyWithoutSchemaNestedInput
   learningItems?: Prisma.LearningItemUncheckedUpdateManyWithoutContentSchemaNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaNestedInput
 }
 
 export type ContentSchemaUncheckedUpdateManyWithoutCourseInput = {
@@ -760,11 +867,13 @@ export type ContentSchemaUncheckedUpdateManyWithoutCourseInput = {
 export type ContentSchemaCountOutputType = {
   versions: number
   learningItems: number
+  ankiMappings: number
 }
 
 export type ContentSchemaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   versions?: boolean | ContentSchemaCountOutputTypeCountVersionsArgs
   learningItems?: boolean | ContentSchemaCountOutputTypeCountLearningItemsArgs
+  ankiMappings?: boolean | ContentSchemaCountOutputTypeCountAnkiMappingsArgs
 }
 
 /**
@@ -791,6 +900,13 @@ export type ContentSchemaCountOutputTypeCountLearningItemsArgs<ExtArgs extends r
   where?: Prisma.LearningItemWhereInput
 }
 
+/**
+ * ContentSchemaCountOutputType without action
+ */
+export type ContentSchemaCountOutputTypeCountAnkiMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnkiDeckMappingWhereInput
+}
+
 
 export type ContentSchemaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -805,6 +921,7 @@ export type ContentSchemaSelect<ExtArgs extends runtime.Types.Extensions.Interna
   course?: boolean | Prisma.ContentSchema$courseArgs<ExtArgs>
   versions?: boolean | Prisma.ContentSchema$versionsArgs<ExtArgs>
   learningItems?: boolean | Prisma.ContentSchema$learningItemsArgs<ExtArgs>
+  ankiMappings?: boolean | Prisma.ContentSchema$ankiMappingsArgs<ExtArgs>
   _count?: boolean | Prisma.ContentSchemaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contentSchema"]>
 
@@ -851,6 +968,7 @@ export type ContentSchemaInclude<ExtArgs extends runtime.Types.Extensions.Intern
   course?: boolean | Prisma.ContentSchema$courseArgs<ExtArgs>
   versions?: boolean | Prisma.ContentSchema$versionsArgs<ExtArgs>
   learningItems?: boolean | Prisma.ContentSchema$learningItemsArgs<ExtArgs>
+  ankiMappings?: boolean | Prisma.ContentSchema$ankiMappingsArgs<ExtArgs>
   _count?: boolean | Prisma.ContentSchemaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContentSchemaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -866,6 +984,7 @@ export type $ContentSchemaPayload<ExtArgs extends runtime.Types.Extensions.Inter
     course: Prisma.$CoursePayload<ExtArgs> | null
     versions: Prisma.$ContentSchemaVersionPayload<ExtArgs>[]
     learningItems: Prisma.$LearningItemPayload<ExtArgs>[]
+    ankiMappings: Prisma.$AnkiDeckMappingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1277,6 +1396,7 @@ export interface Prisma__ContentSchemaClient<T, Null = never, ExtArgs extends ru
   course<T extends Prisma.ContentSchema$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentSchema$courseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   versions<T extends Prisma.ContentSchema$versionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentSchema$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentSchemaVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   learningItems<T extends Prisma.ContentSchema$learningItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentSchema$learningItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LearningItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ankiMappings<T extends Prisma.ContentSchema$ankiMappingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContentSchema$ankiMappingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiDeckMappingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1780,6 +1900,30 @@ export type ContentSchema$learningItemsArgs<ExtArgs extends runtime.Types.Extens
   take?: number
   skip?: number
   distinct?: Prisma.LearningItemScalarFieldEnum | Prisma.LearningItemScalarFieldEnum[]
+}
+
+/**
+ * ContentSchema.ankiMappings
+ */
+export type ContentSchema$ankiMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiDeckMapping
+   */
+  select?: Prisma.AnkiDeckMappingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiDeckMapping
+   */
+  omit?: Prisma.AnkiDeckMappingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiDeckMappingInclude<ExtArgs> | null
+  where?: Prisma.AnkiDeckMappingWhereInput
+  orderBy?: Prisma.AnkiDeckMappingOrderByWithRelationInput | Prisma.AnkiDeckMappingOrderByWithRelationInput[]
+  cursor?: Prisma.AnkiDeckMappingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnkiDeckMappingScalarFieldEnum | Prisma.AnkiDeckMappingScalarFieldEnum[]
 }
 
 /**

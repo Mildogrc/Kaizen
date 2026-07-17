@@ -134,6 +134,36 @@ export type Book = Prisma.BookModel
  */
 export type BookNote = Prisma.BookNoteModel
 /**
+ * Model AnkiDeckMapping
+ * 
+ */
+export type AnkiDeckMapping = Prisma.AnkiDeckMappingModel
+/**
+ * Model AnkiCardSnapshot
+ * 
+ */
+export type AnkiCardSnapshot = Prisma.AnkiCardSnapshotModel
+/**
+ * Model AnkiReviewLog
+ * 
+ */
+export type AnkiReviewLog = Prisma.AnkiReviewLogModel
+/**
+ * Model AnkiSyncRun
+ * 
+ */
+export type AnkiSyncRun = Prisma.AnkiSyncRunModel
+/**
+ * Model KnownWord
+ * 
+ */
+export type KnownWord = Prisma.KnownWordModel
+/**
+ * Model KnownWordStat
+ * 
+ */
+export type KnownWordStat = Prisma.KnownWordStatModel
+/**
  * Model Exam
  * 
  */

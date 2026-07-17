@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { Badge, Card, PageHeader, Section, StatCard, btnCls } from '@/components/ui';
+import { GenerateButton } from '@/components/generate-button';
 
 export const dynamic = 'force-dynamic';
 
@@ -60,6 +61,7 @@ export default async function SkillsPage() {
                   </Link>
                 ))}
                 <Link href={`/import?course=${course.slug}`} className={btnCls}>⇥ Import</Link>
+                <GenerateButton courseId={course.id} />
               </div>
               {course.goals.length > 0 && (
                 <div className="mt-3 border-t border-line pt-2 text-[12px] text-muted">

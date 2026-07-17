@@ -1,18 +1,35 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { ankiDueTodayCount } from '@/lib/anki-data';
 import { pathProgress } from '@/lib/roadmap';
 import { Badge, Card, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus } from '@/components/ui';
 
 export const dynamic = 'force-dynamic';
 
+// A study day = any in-app rating, any Anki review, or a logged session.
 async function getStreak() {
-  const sessions = await prisma.studySession.findMany({ orderBy: { date: 'desc' }, take: 60 });
-  const days = new Set(sessions.map((s) => s.date.toISOString().slice(0, 10)));
+  const cutoff = new Date(Date.now() - 400 * 86_400_000);
+  const [sessions, attempts, ankiReviews] = await Promise.all([
+    prisma.studySession.findMany({ where: { date: { gte: cutoff } }, select: { date: true } }),
+    prisma.attempt.findMany({ where: { createdAt: { gte: cutoff } }, select: { createdAt: true } }),
+    prisma.ankiReviewLog.findMany({ where: { reviewedAt: { gte: cutoff } }, select: { reviewedAt: true } }),
+  ]);
+  const dayKey = (d: Date) => {
+    const local = new Date(d);
+    local.setHours(0, 0, 0, 0);
+    return local.toISOString().slice(0, 10);
+  };
+  const days = new Set([
+    ...sessions.map((s) => dayKey(s.date)),
+    ...attempts.map((a) => dayKey(a.createdAt)),
+    ...ankiReviews.map((r) => dayKey(r.reviewedAt)),
+  ]);
   let streak = 0;
   const d = new Date();
+  d.setHours(0, 0, 0, 0);
   // Today counts if studied; otherwise start from yesterday.
-  if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
-  while (days.has(d.toISOString().slice(0, 10))) {
+  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (days.has(dayKey(d))) {
     streak++;
     d.setDate(d.getDate() - 1);
   }
@@ -20,9 +37,10 @@ async function getStreak() {
 }
 
 export default async function Dashboard() {
-  const [goals, dueReviews, courses, books, mistakes, streak, roadmap] = await Promise.all([
+  const [goals, dueReviews, ankiDue, courses, books, mistakes, streak, roadmap] = await Promise.all([
     prisma.courseGoal.findMany({ where: { status: 'ACTIVE' }, include: { course: true }, orderBy: { createdAt: 'asc' } }),
     prisma.reviewRecord.count({ where: { dueAt: { lte: new Date() }, isSuspended: false } }),
+    ankiDueTodayCount(),
     prisma.course.findMany({ include: { _count: { select: { learningItems: true, flashcards: true } } } }),
     prisma.book.findMany({ orderBy: { updatedAt: 'desc' } }),
     prisma.mistake.count({ where: { resolved: false } }),
@@ -43,18 +61,20 @@ export default async function Dashboard() {
     : [];
 
   const nextAction =
-    dueReviews > 0
-      ? { label: `Clear ${dueReviews} due reviews`, href: '/review' }
-      : itemCount('JAPANESE') === 0
-        ? { label: 'Import your first Japanese vocabulary batch', href: '/import' }
-        : { label: 'Start today’s study queue', href: '/daily' };
+    ankiDue > 0
+      ? { label: `Review ${ankiDue} due cards in Anki, then check Analytics`, href: '/analytics' }
+      : dueReviews > 0
+        ? { label: `Clear ${dueReviews} due in-app reviews`, href: '/review' }
+        : itemCount('JAPANESE') === 0
+          ? { label: 'Import your first Japanese vocabulary batch', href: '/import' }
+          : { label: 'Start today’s study queue', href: '/daily' };
 
   return (
     <>
       <PageHeader title="Dashboard" subtitle="Where everything stands right now" />
 
       <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <StatCard label="Due reviews" value={dueReviews} hint="across all courses" />
+        <StatCard label="Due reviews" value={dueReviews + ankiDue} hint={`${ankiDue} in Anki · ${dueReviews} in-app`} />
         <StatCard label="Streak" value={`${streak}d`} hint="consecutive study days" />
         <StatCard label="Active goals" value={goals.length} />
         <StatCard label="Open mistakes" value={mistakes} hint="unresolved" />

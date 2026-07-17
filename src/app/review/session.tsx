@@ -13,6 +13,8 @@ import { Badge, Card, EmptyState, btnCls } from '@/components/ui';
 
 export interface SessionCard {
   recordId: string;
+  kind: 'flashcard' | 'practice';
+  practiceType: string | null;
   front: string;
   back: string;
   metadata: Record<string, unknown>;
@@ -136,6 +138,9 @@ export function ReviewSession({ cards }: { cards: SessionCard[] }) {
           {queue.length} left in session · {done} done
         </span>
         <span className="flex items-center gap-2">
+          {current.kind === 'practice' && (
+            <Badge tone="purple">{(current.practiceType ?? 'practice').toLowerCase().replace(/_/g, ' ')}</Badge>
+          )}
           <Badge tone={current.maturity === 'NEW' ? 'neutral' : current.maturity === 'LEARNING' ? 'amber' : 'blue'}>
             {current.maturity.toLowerCase()}
           </Badge>
