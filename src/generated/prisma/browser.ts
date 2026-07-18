@@ -134,6 +134,86 @@ export type Book = Prisma.BookModel
  */
 export type BookNote = Prisma.BookNoteModel
 /**
+ * Model BookReadingSession
+ * 
+ */
+export type BookReadingSession = Prisma.BookReadingSessionModel
+/**
+ * Model GrammarProgress
+ * 
+ */
+export type GrammarProgress = Prisma.GrammarProgressModel
+/**
+ * Model GrammarLesson
+ * 
+ */
+export type GrammarLesson = Prisma.GrammarLessonModel
+/**
+ * Model CodeforcesProfile
+ * 
+ */
+export type CodeforcesProfile = Prisma.CodeforcesProfileModel
+/**
+ * Model CodeforcesSubmission
+ * 
+ */
+export type CodeforcesSubmission = Prisma.CodeforcesSubmissionModel
+/**
+ * Model CodeforcesRatingChange
+ * 
+ */
+export type CodeforcesRatingChange = Prisma.CodeforcesRatingChangeModel
+/**
+ * Model SpeedReadingPassage
+ * 
+ */
+export type SpeedReadingPassage = Prisma.SpeedReadingPassageModel
+/**
+ * Model SpeedReadingSession
+ * 
+ */
+export type SpeedReadingSession = Prisma.SpeedReadingSessionModel
+/**
+ * Model MandarinBlueprintLevel
+ * 
+ */
+export type MandarinBlueprintLevel = Prisma.MandarinBlueprintLevelModel
+/**
+ * Model MandarinDictionaryEntry
+ * 
+ */
+export type MandarinDictionaryEntry = Prisma.MandarinDictionaryEntryModel
+/**
+ * Model AnkiDeckMapping
+ * 
+ */
+export type AnkiDeckMapping = Prisma.AnkiDeckMappingModel
+/**
+ * Model AnkiCardSnapshot
+ * 
+ */
+export type AnkiCardSnapshot = Prisma.AnkiCardSnapshotModel
+/**
+ * Model AnkiReviewLog
+ * 
+ */
+export type AnkiReviewLog = Prisma.AnkiReviewLogModel
+/**
+ * Model AnkiSyncRun
+ * 
+ */
+export type AnkiSyncRun = Prisma.AnkiSyncRunModel
+/**
+ * Model KnownWord
+ * 
+ */
+export type KnownWord = Prisma.KnownWordModel
+/**
+ * Model KnownWordStat
+ * 
+ */
+export type KnownWordStat = Prisma.KnownWordStatModel
+/**
  * Model Exam
  * 
  */

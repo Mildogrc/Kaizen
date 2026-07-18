@@ -1,61 +1,55 @@
+import Link from 'next/link';
+import { Card, PageHeader } from '@/components/ui';
+import { ankiDueTodayCount } from '@/lib/anki-data';
 import { prisma } from '@/lib/db';
-import { Badge, Card, EmptyState, PageHeader, Section, StatCard } from '@/components/ui';
+import { buildDailyQueue } from '@/lib/daily';
+import { newGrammarDueToday } from '@/lib/grammar-coach';
+import { meditationConfiguration } from '@/lib/app-settings';
+import { parseNatoSessionStats, weekendSkills } from '@/lib/nato';
+import { MeditationCheck } from './meditation-check';
 
 export const dynamic = 'force-dynamic';
 
-const MODES = [
-  'Balanced', 'Japanese-focused', 'Chinese-focused', 'Math-focused', 'Books-focused',
-  'Random-skills-focused', 'Review-heavy', 'New-content-heavy', 'Exam-cram', 'Mistake-cleanup',
-];
-
 export default async function DailyPage() {
-  const [dueReviews, newItems, openMistakes, rememberNotes] = await Promise.all([
-    prisma.reviewRecord.count({ where: { dueAt: { lte: new Date() }, isSuspended: false } }),
-    prisma.learningItem.count({ where: { flashcards: { none: {} } } }),
-    prisma.mistake.count({ where: { resolved: false } }),
-    prisma.bookNote.count({ where: { remember: true, flashcards: { none: {} } } }),
+  const now = new Date();
+  const start = new Date(now);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 1);
+  const [ankiDue, grammarProgress, readingBook, meditation, readToday, lastNatoSession, user] = await Promise.all([
+    ankiDueTodayCount(),
+    prisma.grammarProgress.findMany({ select: { learningItemId: true, status: true, curriculumOrder: true, dueAt: true, introducedAt: true, isLeech: true } }),
+    prisma.book.findFirst({ where: { status: 'READING' }, orderBy: { updatedAt: 'desc' }, select: { id: true, title: true } }),
+    prisma.studySession.findFirst({ where: { mode: 'meditation', date: { gte: start, lt: end } }, select: { id: true } }),
+    prisma.bookReadingSession.findFirst({ where: { readAt: { gte: start, lt: end } }, select: { id: true } }),
+    prisma.studySession.findFirst({ where: { mode: 'nato' }, orderBy: { date: 'desc' }, select: { date: true, stats: true } }),
+    prisma.user.findFirst({ select: { settings: true } }),
   ]);
+  const meditationDefaults = meditationConfiguration(user?.settings);
+  const grammarReviews = grammarProgress.filter((item) => item.status !== 'NEW' && item.dueAt <= now).length;
+  const grammarNew = newGrammarDueToday(grammarProgress, now);
+  const lastNatoStats = lastNatoSession ? parseNatoSessionStats(lastNatoSession.stats) : null;
+  const nextNatoDueAt = lastNatoSession && lastNatoStats
+    ? new Date(lastNatoSession.date.getTime() + lastNatoStats.nextIntervalDays * 86_400_000)
+    : null;
+  const queue = buildDailyQueue({
+    ankiDue,
+    grammarReviews,
+    grammarNew,
+    readingBook,
+    readToday: Boolean(readToday),
+    weekendSkills: weekendSkills(now, nextNatoDueAt),
+  });
 
-  return (
-    <>
-      <PageHeader title="Daily Study" subtitle="One queue combining reviews, new items, weak topics, and goals" />
-
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Due reviews" value={dueReviews} />
-        <StatCard label="Items without cards" value={newItems} hint="candidates for new study" />
-        <StatCard label="Open mistakes" value={openMistakes} />
-        <StatCard label="Book notes to convert" value={rememberNotes} hint='marked "remember"' />
-      </div>
-
-      <Section title="Study mode">
-        <div className="flex flex-wrap gap-1.5">
-          {MODES.map((m, i) => (
-            <span key={m} className={`rounded-md border px-2.5 py-1 text-[12px] ${i === 0 ? 'border-accent bg-accent/15 text-accent' : 'border-line bg-surface-2 text-muted'}`}>
-              {m}
-            </span>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Today's queue">
-        <EmptyState>
-          Queue generation ships in <Badge tone="amber">Phase 2</Badge> together with the spaced-repetition
-          scheduler. The queue will combine due reviews, new items by mode weighting, weak topics, and
-          exam-prep priorities.
-        </EmptyState>
-      </Section>
-
-      <Section title="How the queue will be built">
-        <Card className="text-[12px] text-muted leading-relaxed">
-          <ol className="ml-4 list-decimal space-y-1">
-            <li>All due reviews (capped by daily review limit), ordered by overdue-ness.</li>
-            <li>New flashcards from learning items, weighted by the selected mode.</li>
-            <li>Mistake-review items for unresolved mistakes in weak areas.</li>
-            <li>Exam-objective practice when a goal has a target date approaching.</li>
-            <li>Book "remember" notes surfaced for flashcard conversion.</li>
-          </ol>
-        </Card>
-      </Section>
-    </>
-  );
+  return <>
+    <PageHeader title="Daily" subtitle="Meditate, review, and read" />
+    <div className="space-y-2">
+      <MeditationCheck initialComplete={Boolean(meditation)} targetMinutes={meditationDefaults.sessionMinutes} />
+      {queue.map((block, index) => <Link key={block.key} href={block.href} className="block"><Card className={`flex items-center gap-4 p-3 transition-colors hover:border-accent/50 ${block.complete ? 'border-green-800/50' : ''}`}>
+        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold ${block.complete ? 'bg-green-950 text-green-300' : 'bg-surface-2 text-muted'}`}>{index + 2}</span>
+        <span className="min-w-0 flex-1"><span className="block text-[13px] font-medium">{block.title}</span><span className="block truncate text-[11px] text-muted">{block.detail}</span></span>
+        <span className={`shrink-0 text-lg font-semibold tabular-nums ${block.complete ? 'text-green-300' : ''}`}>{block.complete ? '✓' : block.count}</span>
+      </Card></Link>)}
+    </div>
+  </>;
 }

@@ -177,3 +177,51 @@ export const ImportStatus = {
 } as const
 
 export type ImportStatus = (typeof ImportStatus)[keyof typeof ImportStatus]
+
+
+export const GrammarStudyStatus = {
+  NEW: 'NEW',
+  LEARNING: 'LEARNING',
+  REVIEW: 'REVIEW',
+  MASTERED: 'MASTERED'
+} as const
+
+export type GrammarStudyStatus = (typeof GrammarStudyStatus)[keyof typeof GrammarStudyStatus]
+
+
+export const GrammarLessonStatus = {
+  GENERATED: 'GENERATED',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type GrammarLessonStatus = (typeof GrammarLessonStatus)[keyof typeof GrammarLessonStatus]
+
+
+export const ReadingMode = {
+  RSVP: 'RSVP',
+  PACED: 'PACED',
+  CHUNKING: 'CHUNKING',
+  BENCHMARK: 'BENCHMARK'
+} as const
+
+export type ReadingMode = (typeof ReadingMode)[keyof typeof ReadingMode]
+
+
+export const MandarinEntryKind = {
+  CHARACTER: 'CHARACTER',
+  WORD: 'WORD'
+} as const
+
+export type MandarinEntryKind = (typeof MandarinEntryKind)[keyof typeof MandarinEntryKind]
+
+
+export const AnkiCardState = {
+  NEW: 'NEW',
+  LEARNING: 'LEARNING',
+  YOUNG: 'YOUNG',
+  MATURE: 'MATURE',
+  SUSPENDED: 'SUSPENDED',
+  BURIED: 'BURIED'
+} as const
+
+export type AnkiCardState = (typeof AnkiCardState)[keyof typeof AnkiCardState]

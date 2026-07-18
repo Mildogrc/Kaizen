@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { configuredMathTargetSlug } from '@/lib/math-goals';
 import { Badge, Card, EmptyState, PageHeader, Section, StatCard, btnCls } from '@/components/ui';
+import { GenerateButton } from '@/components/generate-button';
 import { MathRoadmap } from './roadmap-view';
 
 export const dynamic = 'force-dynamic';
@@ -23,13 +25,21 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
 
   const done = roadmap.nodes.filter((n) => n.status === 'COMPLETED').length;
   const inProgress = roadmap.nodes.filter((n) => n.status === 'IN_PROGRESS').length;
+  const mathTargets = roadmap.nodes.filter((node) => node.isTarget);
+  const currentTargetSlug = configuredMathTargetSlug(course.metadata, mathTargets, course.goals[0]?.title);
+  const currentTarget = mathTargets.find((node) => node.slug === currentTargetSlug) ?? null;
 
   return (
     <>
       <PageHeader
         title="Mathematics"
         subtitle={course.description ?? undefined}
-        actions={<Link href="/import?course=math" className={btnCls}>⇥ Import content</Link>}
+        actions={
+          <>
+            <GenerateButton courseId={course.id} />
+            <Link href="/import?course=math" className={btnCls}>⇥ Import content</Link>
+          </>
+        }
       />
 
       <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -39,16 +49,12 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
         <StatCard label="Open mistakes" value={course._count.mistakes} />
       </div>
 
-      {course.goals.length > 0 && (
+      {currentTarget && (
         <Section title="Current goal">
-          <div className="flex flex-wrap gap-2">
-            {course.goals.map((g) => (
-              <Card key={g.id} className="flex items-center gap-2 p-2.5">
-                <Badge tone="blue">goal</Badge>
-                <span className="text-[13px]">{g.title}</span>
-              </Card>
-            ))}
-          </div>
+          <Card className="flex items-center justify-between gap-3 p-2.5">
+            <div className="flex items-center gap-2"><Badge tone="blue">goal</Badge><span className="text-[13px]">Path to {currentTarget.title}</span></div>
+            <Link href="/configurations?section=math" className="text-[12px] text-accent hover:underline">Change goal →</Link>
+          </Card>
         </Section>
       )}
 
@@ -59,12 +65,13 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
             branch: n.branch, level: n.level, isTarget: n.isTarget, description: n.description,
           }))}
           edges={roadmap.edges.map((e) => ({ fromNodeId: e.fromNodeId, toNodeId: e.toNodeId, kind: e.kind }))}
-          initialTarget={target ?? null}
+          initialTarget={target ?? currentTargetSlug}
         />
       </Section>
 
-      <Section title="Content databases">
-        <div className="grid gap-2 md:grid-cols-2">
+      <details className="mb-6 rounded-lg border border-line bg-surface">
+        <summary className="cursor-pointer px-4 py-3 text-[13px] font-medium">Content databases <span className="text-muted">({course.schemas.length})</span></summary>
+        <div className="grid gap-2 border-t border-line p-4 md:grid-cols-2">
           {course.schemas.map((s) => (
             <Link key={s.id} href={`/schemas/${s.slug}`}>
               <Card className="flex items-center justify-between p-3 hover:border-accent/40 transition-colors">
@@ -77,7 +84,7 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
             </Link>
           ))}
         </div>
-      </Section>
+      </details>
     </>
   );
 }

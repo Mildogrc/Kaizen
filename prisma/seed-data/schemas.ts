@@ -350,26 +350,6 @@ export const SEED_SCHEMAS: SchemaDef[] = [
     },
   },
   {
-    slug: 'nato-alphabet',
-    name: 'NATO Alphabet Item',
-    itemType: 'NATOAlphabetItem',
-    category: 'SKILL',
-    courseSlug: 'nato-alphabet',
-    description: 'One letter of the NATO phonetic alphabet.',
-    fields: [
-      { name: 'letter', label: 'Letter', fieldType: 'TEXT', required: true, validationRules: { minLength: 1, maxLength: 1, pattern: '^[A-Z]$' }, exampleValue: 'A' },
-      { name: 'word', label: 'Code Word', fieldType: 'TEXT', required: true, exampleValue: 'Alfa' },
-      { name: 'pronunciation', label: 'Pronunciation', fieldType: 'TEXT', exampleValue: 'AL-fah' },
-      { name: 'mnemonic', label: 'Mnemonic', fieldType: 'TEXT' },
-    ],
-    config: {
-      flashcardRules: [
-        { name: 'letterToWord', front: '{{letter}} → ?', back: '{{word}}' },
-        { name: 'wordToLetter', front: '{{word}} → ?', back: '{{letter}}' },
-      ],
-    },
-  },
-  {
     slug: 'geoguessr-clue',
     name: 'GeoGuessr Clue',
     itemType: 'GeoGuessrClue',

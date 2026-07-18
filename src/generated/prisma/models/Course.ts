@@ -238,6 +238,7 @@ export type CourseWhereInput = {
   mistakes?: Prisma.MistakeListRelationFilter
   importBatches?: Prisma.ImportBatchListRelationFilter
   books?: Prisma.BookListRelationFilter
+  ankiMappings?: Prisma.AnkiDeckMappingListRelationFilter
 }
 
 export type CourseOrderByWithRelationInput = {
@@ -264,6 +265,7 @@ export type CourseOrderByWithRelationInput = {
   mistakes?: Prisma.MistakeOrderByRelationAggregateInput
   importBatches?: Prisma.ImportBatchOrderByRelationAggregateInput
   books?: Prisma.BookOrderByRelationAggregateInput
+  ankiMappings?: Prisma.AnkiDeckMappingOrderByRelationAggregateInput
 }
 
 export type CourseWhereUniqueInput = Prisma.AtLeast<{
@@ -293,6 +295,7 @@ export type CourseWhereUniqueInput = Prisma.AtLeast<{
   mistakes?: Prisma.MistakeListRelationFilter
   importBatches?: Prisma.ImportBatchListRelationFilter
   books?: Prisma.BookListRelationFilter
+  ankiMappings?: Prisma.AnkiDeckMappingListRelationFilter
 }, "id" | "slug">
 
 export type CourseOrderByWithAggregationInput = {
@@ -353,6 +356,7 @@ export type CourseCreateInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateInput = {
@@ -379,6 +383,7 @@ export type CourseUncheckedCreateInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUpdateInput = {
@@ -405,6 +410,7 @@ export type CourseUpdateInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateInput = {
@@ -431,6 +437,7 @@ export type CourseUncheckedUpdateInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateManyInput = {
@@ -699,6 +706,20 @@ export type CourseUpdateOneWithoutBooksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutBooksInput, Prisma.CourseUpdateWithoutBooksInput>, Prisma.CourseUncheckedUpdateWithoutBooksInput>
 }
 
+export type CourseCreateNestedOneWithoutAnkiMappingsInput = {
+  create?: Prisma.XOR<Prisma.CourseCreateWithoutAnkiMappingsInput, Prisma.CourseUncheckedCreateWithoutAnkiMappingsInput>
+  connectOrCreate?: Prisma.CourseCreateOrConnectWithoutAnkiMappingsInput
+  connect?: Prisma.CourseWhereUniqueInput
+}
+
+export type CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput = {
+  create?: Prisma.XOR<Prisma.CourseCreateWithoutAnkiMappingsInput, Prisma.CourseUncheckedCreateWithoutAnkiMappingsInput>
+  connectOrCreate?: Prisma.CourseCreateOrConnectWithoutAnkiMappingsInput
+  upsert?: Prisma.CourseUpsertWithoutAnkiMappingsInput
+  connect?: Prisma.CourseWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CourseUpdateToOneWithWhereWithoutAnkiMappingsInput, Prisma.CourseUpdateWithoutAnkiMappingsInput>, Prisma.CourseUncheckedUpdateWithoutAnkiMappingsInput>
+}
+
 export type CourseCreateNestedOneWithoutExamsInput = {
   create?: Prisma.XOR<Prisma.CourseCreateWithoutExamsInput, Prisma.CourseUncheckedCreateWithoutExamsInput>
   connectOrCreate?: Prisma.CourseCreateOrConnectWithoutExamsInput
@@ -736,6 +757,7 @@ export type CourseCreateWithoutGoalsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutGoalsInput = {
@@ -761,6 +783,7 @@ export type CourseUncheckedCreateWithoutGoalsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutGoalsInput = {
@@ -802,6 +825,7 @@ export type CourseUpdateWithoutGoalsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutGoalsInput = {
@@ -827,6 +851,7 @@ export type CourseUncheckedUpdateWithoutGoalsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutPlansInput = {
@@ -852,6 +877,7 @@ export type CourseCreateWithoutPlansInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutPlansInput = {
@@ -877,6 +903,7 @@ export type CourseUncheckedCreateWithoutPlansInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutPlansInput = {
@@ -918,6 +945,7 @@ export type CourseUpdateWithoutPlansInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutPlansInput = {
@@ -943,6 +971,7 @@ export type CourseUncheckedUpdateWithoutPlansInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutMilestonesInput = {
@@ -968,6 +997,7 @@ export type CourseCreateWithoutMilestonesInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutMilestonesInput = {
@@ -993,6 +1023,7 @@ export type CourseUncheckedCreateWithoutMilestonesInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutMilestonesInput = {
@@ -1034,6 +1065,7 @@ export type CourseUpdateWithoutMilestonesInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutMilestonesInput = {
@@ -1059,6 +1091,7 @@ export type CourseUncheckedUpdateWithoutMilestonesInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutSchemasInput = {
@@ -1084,6 +1117,7 @@ export type CourseCreateWithoutSchemasInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutSchemasInput = {
@@ -1109,6 +1143,7 @@ export type CourseUncheckedCreateWithoutSchemasInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutSchemasInput = {
@@ -1150,6 +1185,7 @@ export type CourseUpdateWithoutSchemasInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutSchemasInput = {
@@ -1175,6 +1211,7 @@ export type CourseUncheckedUpdateWithoutSchemasInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutLearningItemsInput = {
@@ -1200,6 +1237,7 @@ export type CourseCreateWithoutLearningItemsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutLearningItemsInput = {
@@ -1225,6 +1263,7 @@ export type CourseUncheckedCreateWithoutLearningItemsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutLearningItemsInput = {
@@ -1266,6 +1305,7 @@ export type CourseUpdateWithoutLearningItemsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutLearningItemsInput = {
@@ -1291,6 +1331,7 @@ export type CourseUncheckedUpdateWithoutLearningItemsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutPracticeItemsInput = {
@@ -1316,6 +1357,7 @@ export type CourseCreateWithoutPracticeItemsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutPracticeItemsInput = {
@@ -1341,6 +1383,7 @@ export type CourseUncheckedCreateWithoutPracticeItemsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutPracticeItemsInput = {
@@ -1382,6 +1425,7 @@ export type CourseUpdateWithoutPracticeItemsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutPracticeItemsInput = {
@@ -1407,6 +1451,7 @@ export type CourseUncheckedUpdateWithoutPracticeItemsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutFlashcardsInput = {
@@ -1432,6 +1477,7 @@ export type CourseCreateWithoutFlashcardsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutFlashcardsInput = {
@@ -1457,6 +1503,7 @@ export type CourseUncheckedCreateWithoutFlashcardsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutFlashcardsInput = {
@@ -1498,6 +1545,7 @@ export type CourseUpdateWithoutFlashcardsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutFlashcardsInput = {
@@ -1523,6 +1571,7 @@ export type CourseUncheckedUpdateWithoutFlashcardsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutMistakesInput = {
@@ -1548,6 +1597,7 @@ export type CourseCreateWithoutMistakesInput = {
   roadmaps?: Prisma.RoadmapCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutMistakesInput = {
@@ -1573,6 +1623,7 @@ export type CourseUncheckedCreateWithoutMistakesInput = {
   roadmaps?: Prisma.RoadmapUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutMistakesInput = {
@@ -1614,6 +1665,7 @@ export type CourseUpdateWithoutMistakesInput = {
   roadmaps?: Prisma.RoadmapUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutMistakesInput = {
@@ -1639,6 +1691,7 @@ export type CourseUncheckedUpdateWithoutMistakesInput = {
   roadmaps?: Prisma.RoadmapUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutImportBatchesInput = {
@@ -1664,6 +1717,7 @@ export type CourseCreateWithoutImportBatchesInput = {
   roadmaps?: Prisma.RoadmapCreateNestedManyWithoutCourseInput
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutImportBatchesInput = {
@@ -1689,6 +1743,7 @@ export type CourseUncheckedCreateWithoutImportBatchesInput = {
   roadmaps?: Prisma.RoadmapUncheckedCreateNestedManyWithoutCourseInput
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutImportBatchesInput = {
@@ -1730,6 +1785,7 @@ export type CourseUpdateWithoutImportBatchesInput = {
   roadmaps?: Prisma.RoadmapUpdateManyWithoutCourseNestedInput
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutImportBatchesInput = {
@@ -1755,6 +1811,7 @@ export type CourseUncheckedUpdateWithoutImportBatchesInput = {
   roadmaps?: Prisma.RoadmapUncheckedUpdateManyWithoutCourseNestedInput
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutRoadmapsInput = {
@@ -1780,6 +1837,7 @@ export type CourseCreateWithoutRoadmapsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutRoadmapsInput = {
@@ -1805,6 +1863,7 @@ export type CourseUncheckedCreateWithoutRoadmapsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutRoadmapsInput = {
@@ -1846,6 +1905,7 @@ export type CourseUpdateWithoutRoadmapsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutRoadmapsInput = {
@@ -1871,6 +1931,7 @@ export type CourseUncheckedUpdateWithoutRoadmapsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseCreateWithoutBooksInput = {
@@ -1896,6 +1957,7 @@ export type CourseCreateWithoutBooksInput = {
   roadmaps?: Prisma.RoadmapCreateNestedManyWithoutCourseInput
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutBooksInput = {
@@ -1921,6 +1983,7 @@ export type CourseUncheckedCreateWithoutBooksInput = {
   roadmaps?: Prisma.RoadmapUncheckedCreateNestedManyWithoutCourseInput
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutBooksInput = {
@@ -1962,6 +2025,7 @@ export type CourseUpdateWithoutBooksInput = {
   roadmaps?: Prisma.RoadmapUpdateManyWithoutCourseNestedInput
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutBooksInput = {
@@ -1987,6 +2051,127 @@ export type CourseUncheckedUpdateWithoutBooksInput = {
   roadmaps?: Prisma.RoadmapUncheckedUpdateManyWithoutCourseNestedInput
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
+}
+
+export type CourseCreateWithoutAnkiMappingsInput = {
+  id?: string
+  slug: string
+  name: string
+  description?: string | null
+  category: $Enums.CourseCategory
+  tab: $Enums.CourseTab
+  status?: $Enums.CourseStatus
+  color?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  goals?: Prisma.CourseGoalCreateNestedManyWithoutCourseInput
+  plans?: Prisma.CoursePlanCreateNestedManyWithoutCourseInput
+  milestones?: Prisma.CourseMilestoneCreateNestedManyWithoutCourseInput
+  schemas?: Prisma.ContentSchemaCreateNestedManyWithoutCourseInput
+  learningItems?: Prisma.LearningItemCreateNestedManyWithoutCourseInput
+  practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutCourseInput
+  flashcards?: Prisma.FlashcardCreateNestedManyWithoutCourseInput
+  exams?: Prisma.ExamCreateNestedManyWithoutCourseInput
+  roadmaps?: Prisma.RoadmapCreateNestedManyWithoutCourseInput
+  mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
+  importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
+  books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+}
+
+export type CourseUncheckedCreateWithoutAnkiMappingsInput = {
+  id?: string
+  slug: string
+  name: string
+  description?: string | null
+  category: $Enums.CourseCategory
+  tab: $Enums.CourseTab
+  status?: $Enums.CourseStatus
+  color?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  goals?: Prisma.CourseGoalUncheckedCreateNestedManyWithoutCourseInput
+  plans?: Prisma.CoursePlanUncheckedCreateNestedManyWithoutCourseInput
+  milestones?: Prisma.CourseMilestoneUncheckedCreateNestedManyWithoutCourseInput
+  schemas?: Prisma.ContentSchemaUncheckedCreateNestedManyWithoutCourseInput
+  learningItems?: Prisma.LearningItemUncheckedCreateNestedManyWithoutCourseInput
+  practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutCourseInput
+  flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutCourseInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCourseInput
+  roadmaps?: Prisma.RoadmapUncheckedCreateNestedManyWithoutCourseInput
+  mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
+  importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
+  books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+}
+
+export type CourseCreateOrConnectWithoutAnkiMappingsInput = {
+  where: Prisma.CourseWhereUniqueInput
+  create: Prisma.XOR<Prisma.CourseCreateWithoutAnkiMappingsInput, Prisma.CourseUncheckedCreateWithoutAnkiMappingsInput>
+}
+
+export type CourseUpsertWithoutAnkiMappingsInput = {
+  update: Prisma.XOR<Prisma.CourseUpdateWithoutAnkiMappingsInput, Prisma.CourseUncheckedUpdateWithoutAnkiMappingsInput>
+  create: Prisma.XOR<Prisma.CourseCreateWithoutAnkiMappingsInput, Prisma.CourseUncheckedCreateWithoutAnkiMappingsInput>
+  where?: Prisma.CourseWhereInput
+}
+
+export type CourseUpdateToOneWithWhereWithoutAnkiMappingsInput = {
+  where?: Prisma.CourseWhereInput
+  data: Prisma.XOR<Prisma.CourseUpdateWithoutAnkiMappingsInput, Prisma.CourseUncheckedUpdateWithoutAnkiMappingsInput>
+}
+
+export type CourseUpdateWithoutAnkiMappingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  tab?: Prisma.EnumCourseTabFieldUpdateOperationsInput | $Enums.CourseTab
+  status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goals?: Prisma.CourseGoalUpdateManyWithoutCourseNestedInput
+  plans?: Prisma.CoursePlanUpdateManyWithoutCourseNestedInput
+  milestones?: Prisma.CourseMilestoneUpdateManyWithoutCourseNestedInput
+  schemas?: Prisma.ContentSchemaUpdateManyWithoutCourseNestedInput
+  learningItems?: Prisma.LearningItemUpdateManyWithoutCourseNestedInput
+  practiceItems?: Prisma.PracticeItemUpdateManyWithoutCourseNestedInput
+  flashcards?: Prisma.FlashcardUpdateManyWithoutCourseNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutCourseNestedInput
+  roadmaps?: Prisma.RoadmapUpdateManyWithoutCourseNestedInput
+  mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
+  importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
+  books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+}
+
+export type CourseUncheckedUpdateWithoutAnkiMappingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.EnumCourseCategoryFieldUpdateOperationsInput | $Enums.CourseCategory
+  tab?: Prisma.EnumCourseTabFieldUpdateOperationsInput | $Enums.CourseTab
+  status?: Prisma.EnumCourseStatusFieldUpdateOperationsInput | $Enums.CourseStatus
+  color?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  goals?: Prisma.CourseGoalUncheckedUpdateManyWithoutCourseNestedInput
+  plans?: Prisma.CoursePlanUncheckedUpdateManyWithoutCourseNestedInput
+  milestones?: Prisma.CourseMilestoneUncheckedUpdateManyWithoutCourseNestedInput
+  schemas?: Prisma.ContentSchemaUncheckedUpdateManyWithoutCourseNestedInput
+  learningItems?: Prisma.LearningItemUncheckedUpdateManyWithoutCourseNestedInput
+  practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutCourseNestedInput
+  flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutCourseNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutCourseNestedInput
+  roadmaps?: Prisma.RoadmapUncheckedUpdateManyWithoutCourseNestedInput
+  mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
+  importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
+  books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
 }
 
 export type CourseCreateWithoutExamsInput = {
@@ -2012,6 +2197,7 @@ export type CourseCreateWithoutExamsInput = {
   mistakes?: Prisma.MistakeCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchCreateNestedManyWithoutCourseInput
   books?: Prisma.BookCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingCreateNestedManyWithoutCourseInput
 }
 
 export type CourseUncheckedCreateWithoutExamsInput = {
@@ -2037,6 +2223,7 @@ export type CourseUncheckedCreateWithoutExamsInput = {
   mistakes?: Prisma.MistakeUncheckedCreateNestedManyWithoutCourseInput
   importBatches?: Prisma.ImportBatchUncheckedCreateNestedManyWithoutCourseInput
   books?: Prisma.BookUncheckedCreateNestedManyWithoutRelatedCourseInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedCreateNestedManyWithoutCourseInput
 }
 
 export type CourseCreateOrConnectWithoutExamsInput = {
@@ -2078,6 +2265,7 @@ export type CourseUpdateWithoutExamsInput = {
   mistakes?: Prisma.MistakeUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUpdateManyWithoutCourseNestedInput
 }
 
 export type CourseUncheckedUpdateWithoutExamsInput = {
@@ -2103,6 +2291,7 @@ export type CourseUncheckedUpdateWithoutExamsInput = {
   mistakes?: Prisma.MistakeUncheckedUpdateManyWithoutCourseNestedInput
   importBatches?: Prisma.ImportBatchUncheckedUpdateManyWithoutCourseNestedInput
   books?: Prisma.BookUncheckedUpdateManyWithoutRelatedCourseNestedInput
+  ankiMappings?: Prisma.AnkiDeckMappingUncheckedUpdateManyWithoutCourseNestedInput
 }
 
 
@@ -2123,6 +2312,7 @@ export type CourseCountOutputType = {
   mistakes: number
   importBatches: number
   books: number
+  ankiMappings: number
 }
 
 export type CourseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2138,6 +2328,7 @@ export type CourseCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions
   mistakes?: boolean | CourseCountOutputTypeCountMistakesArgs
   importBatches?: boolean | CourseCountOutputTypeCountImportBatchesArgs
   books?: boolean | CourseCountOutputTypeCountBooksArgs
+  ankiMappings?: boolean | CourseCountOutputTypeCountAnkiMappingsArgs
 }
 
 /**
@@ -2234,6 +2425,13 @@ export type CourseCountOutputTypeCountBooksArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.BookWhereInput
 }
 
+/**
+ * CourseCountOutputType without action
+ */
+export type CourseCountOutputTypeCountAnkiMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnkiDeckMappingWhereInput
+}
+
 
 export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2259,6 +2457,7 @@ export type CourseSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   mistakes?: boolean | Prisma.Course$mistakesArgs<ExtArgs>
   importBatches?: boolean | Prisma.Course$importBatchesArgs<ExtArgs>
   books?: boolean | Prisma.Course$booksArgs<ExtArgs>
+  ankiMappings?: boolean | Prisma.Course$ankiMappingsArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["course"]>
 
@@ -2318,6 +2517,7 @@ export type CourseInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   mistakes?: boolean | Prisma.Course$mistakesArgs<ExtArgs>
   importBatches?: boolean | Prisma.Course$importBatchesArgs<ExtArgs>
   books?: boolean | Prisma.Course$booksArgs<ExtArgs>
+  ankiMappings?: boolean | Prisma.Course$ankiMappingsArgs<ExtArgs>
   _count?: boolean | Prisma.CourseCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CourseIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2338,6 +2538,7 @@ export type $CoursePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     mistakes: Prisma.$MistakePayload<ExtArgs>[]
     importBatches: Prisma.$ImportBatchPayload<ExtArgs>[]
     books: Prisma.$BookPayload<ExtArgs>[]
+    ankiMappings: Prisma.$AnkiDeckMappingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2757,6 +2958,7 @@ export interface Prisma__CourseClient<T, Null = never, ExtArgs extends runtime.T
   mistakes<T extends Prisma.Course$mistakesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$mistakesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MistakePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   importBatches<T extends Prisma.Course$importBatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$importBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ImportBatchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   books<T extends Prisma.Course$booksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$booksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ankiMappings<T extends Prisma.Course$ankiMappingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Course$ankiMappingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiDeckMappingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3475,6 +3677,30 @@ export type Course$booksArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.BookScalarFieldEnum | Prisma.BookScalarFieldEnum[]
+}
+
+/**
+ * Course.ankiMappings
+ */
+export type Course$ankiMappingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiDeckMapping
+   */
+  select?: Prisma.AnkiDeckMappingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiDeckMapping
+   */
+  omit?: Prisma.AnkiDeckMappingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiDeckMappingInclude<ExtArgs> | null
+  where?: Prisma.AnkiDeckMappingWhereInput
+  orderBy?: Prisma.AnkiDeckMappingOrderByWithRelationInput | Prisma.AnkiDeckMappingOrderByWithRelationInput[]
+  cursor?: Prisma.AnkiDeckMappingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnkiDeckMappingScalarFieldEnum | Prisma.AnkiDeckMappingScalarFieldEnum[]
 }
 
 /**

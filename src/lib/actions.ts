@@ -3,7 +3,13 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { prisma } from './db';
+import { ankiStatus, deckNames } from './anki-connect';
+import { syncAnki } from './anki-sync';
+import { generateCards, generatePractice, type PracticeRule } from './flashcard-gen';
+import { importMigakuWords, recomputeKnownWordStats, refreshAnkiKnownWords } from './known-words-sync';
+import { normalizeWord } from './lemmatize';
 import { rate, type Rating } from './srs';
+import type { FlashcardRule } from './schema-types';
 import { validateItems } from './schema-zod';
 import { fieldRowToDef } from './schema-serialize';
 import type { FieldDef } from './schema-types';
@@ -72,6 +78,50 @@ export async function toggleNoteRemember(noteId: string) {
 export async function deleteBookNote(noteId: string) {
   const note = await prisma.bookNote.delete({ where: { id: noteId } });
   revalidatePath(`/books/${note.bookId}`);
+}
+
+export async function addBookReadingSession(bookId: string, returnTo: string, formData: FormData) {
+  const pagesRead = Math.floor(Number(formData.get('pagesRead')));
+  const durationMin = Math.floor(Number(formData.get('durationMin')));
+  if (!Number.isFinite(pagesRead) || pagesRead < 1 || !Number.isFinite(durationMin) || durationMin < 1) return;
+
+  const book = await prisma.book.findUniqueOrThrow({
+    where: { id: bookId },
+    include: { readingSessions: { orderBy: { readAt: 'desc' }, take: 1 } },
+  });
+  const suppliedEndPage = formData.get('endPage') ? Math.floor(Number(formData.get('endPage'))) : null;
+  const previousEndPage = book.readingSessions[0]?.endPage ?? 0;
+  const endPage = suppliedEndPage && suppliedEndPage > 0 ? suppliedEndPage : previousEndPage + pagesRead;
+  const boundedEndPage = book.pageCount ? Math.min(endPage, book.pageCount) : endPage;
+  const startPage = Math.max(1, boundedEndPage - pagesRead + 1);
+  const readAtRaw = String(formData.get('readAt') ?? '').trim();
+  const readAt = /^\d{4}-\d{2}-\d{2}$/.test(readAtRaw) ? new Date(`${readAtRaw}T12:00:00`) : new Date();
+
+  await prisma.$transaction([
+    prisma.bookReadingSession.create({
+      data: {
+        bookId,
+        readAt,
+        startPage,
+        endPage: boundedEndPage,
+        pagesRead,
+        durationMin,
+        notes: String(formData.get('notes') ?? '').trim() || null,
+      },
+    }),
+    prisma.book.update({
+      where: { id: bookId },
+      data: {
+        status: book.status === 'WANT_TO_READ' ? 'READING' : book.status,
+        startDate: book.startDate ?? readAt,
+      },
+    }),
+  ]);
+  revalidatePath('/books');
+  revalidatePath(`/books/${bookId}`);
+  revalidatePath('/daily');
+  const destination = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : `/books/${bookId}`;
+  redirect(destination);
 }
 
 // ---------------------------------------------------------------- Roadmap
@@ -225,6 +275,225 @@ export async function createSchemaWithCourse(payload: NewSchemaPayload) {
   return { slug };
 }
 
+// ------------------------------------------------------------------- Anki
+
+export async function fetchAnkiDecks(): Promise<{ connected: boolean; decks: string[] }> {
+  const status = await ankiStatus();
+  if (!status.connected) return { connected: false, decks: [] };
+  try {
+    const decks = await deckNames();
+    return { connected: true, decks: decks.filter((d) => d !== 'Default').sort() };
+  } catch {
+    return { connected: false, decks: [] };
+  }
+}
+
+export async function saveDeckMapping(input: { deckName: string; courseId: string; schemaId: string | null }) {
+  await prisma.ankiDeckMapping.upsert({
+    where: { deckName: input.deckName },
+    create: { deckName: input.deckName, courseId: input.courseId, schemaId: input.schemaId },
+    update: { courseId: input.courseId, schemaId: input.schemaId },
+  });
+  revalidatePath('/anki');
+  revalidatePath('/analytics');
+}
+
+export async function removeDeckMapping(mappingId: string) {
+  await prisma.ankiDeckMapping.delete({ where: { id: mappingId } });
+  revalidatePath('/anki');
+  revalidatePath('/analytics');
+}
+
+export async function runAnkiSync() {
+  const summary = await syncAnki();
+  revalidatePath('/', 'layout');
+  return summary;
+}
+
+// ------------------------------------------------------------ Known words
+
+export async function importMigakuWordsAction(input: {
+  language: 'ja' | 'zh';
+  text: string;
+  includeLearning: boolean;
+}) {
+  const summary = await importMigakuWords(input.language, input.text, input.includeLearning);
+  revalidatePath('/words');
+  revalidatePath('/', 'layout');
+  return summary;
+}
+
+export async function refreshAnkiWordsAction() {
+  const summary = await refreshAnkiKnownWords();
+  revalidatePath('/words');
+  revalidatePath('/', 'layout');
+  return summary;
+}
+
+export async function addManualWord(formData: FormData) {
+  const surface = String(formData.get('word') ?? '').trim();
+  const language = String(formData.get('language')) === 'zh' ? 'zh' : 'ja';
+  if (!surface) return;
+  const normalized = await normalizeWord(language, surface);
+  if (!normalized) return;
+  await prisma.knownWord.createMany({
+    data: [{ language, ...normalized, source: 'manual' }],
+    skipDuplicates: true,
+  });
+  await recomputeKnownWordStats();
+  revalidatePath('/words');
+}
+
+export async function deleteKnownWord(wordId: string) {
+  await prisma.knownWord.delete({ where: { id: wordId } });
+  await recomputeKnownWordStats();
+  revalidatePath('/words');
+}
+
+export async function toggleMappingWordCount(mappingId: string) {
+  const mapping = await prisma.ankiDeckMapping.findUniqueOrThrow({ where: { id: mappingId } });
+  await prisma.ankiDeckMapping.update({
+    where: { id: mappingId },
+    data: { countsKnownWords: !mapping.countsKnownWords },
+  });
+  await refreshAnkiKnownWords();
+  revalidatePath('/anki');
+  revalidatePath('/words');
+}
+
+// --------------------------------------------------------------- Mistakes
+
+export async function addMistake(formData: FormData) {
+  const description = String(formData.get('description') ?? '').trim();
+  const courseId = String(formData.get('courseId') ?? '');
+  if (!description || !courseId) return;
+  await prisma.mistake.create({
+    data: {
+      courseId,
+      description,
+      category: String(formData.get('category') ?? '').trim() || null,
+    },
+  });
+  revalidatePath('/mistakes');
+  revalidatePath('/daily');
+}
+
+export async function toggleMistakeResolved(mistakeId: string) {
+  const mistake = await prisma.mistake.findUniqueOrThrow({ where: { id: mistakeId } });
+  await prisma.mistake.update({ where: { id: mistakeId }, data: { resolved: !mistake.resolved } });
+  revalidatePath('/mistakes');
+  revalidatePath('/daily');
+}
+
+export async function bumpMistake(mistakeId: string) {
+  await prisma.mistake.update({ where: { id: mistakeId }, data: { count: { increment: 1 } } });
+  revalidatePath('/mistakes');
+}
+
+export async function deleteMistake(mistakeId: string) {
+  await prisma.mistake.delete({ where: { id: mistakeId } });
+  revalidatePath('/mistakes');
+  revalidatePath('/daily');
+}
+
+// ------------------------------------------------------------- Generation
+
+export interface GenerateSummary {
+  cardsCreated: number;
+  practiceCreated: number;
+  skippedExisting: number;
+  ankiSkipped: string[]; // schema names left to Anki
+}
+
+/**
+ * Generate flashcards + practice items for a course from its schemas'
+ * flashcardRules/practiceRules. Schemas covered by an Anki deck mapping
+ * (subsection match or whole-course mapping) are skipped — Anki reviews those.
+ */
+export async function generateCourseCards(courseId: string): Promise<GenerateSummary> {
+  const course = await prisma.course.findUniqueOrThrow({
+    where: { id: courseId },
+    include: {
+      ankiMappings: true,
+      schemas: {
+        include: {
+          versions: { where: { isActive: true }, orderBy: { version: 'desc' }, take: 1 },
+          learningItems: { select: { id: true, data: true } },
+        },
+      },
+    },
+  });
+
+  const wholeCourseAnki = course.ankiMappings.some((m) => m.schemaId === null);
+  const summary: GenerateSummary = { cardsCreated: 0, practiceCreated: 0, skippedExisting: 0, ankiSkipped: [] };
+
+  for (const schema of course.schemas) {
+    const version = schema.versions[0];
+    if (!version || schema.learningItems.length === 0) continue;
+    if (wholeCourseAnki || course.ankiMappings.some((m) => m.schemaId === schema.id)) {
+      summary.ankiSkipped.push(schema.name);
+      continue;
+    }
+    const config = version.config as { flashcardRules?: FlashcardRule[]; practiceRules?: PracticeRule[] };
+    const items = schema.learningItems.map((i) => ({ id: i.id, data: i.data as Record<string, unknown> }));
+
+    if (config.flashcardRules?.length) {
+      const existing = await prisma.flashcard.findMany({
+        where: { learningItemId: { in: items.map((i) => i.id) } },
+        select: { learningItemId: true, metadata: true },
+      });
+      const existingKeys = new Set(
+        existing.map((f) => `${f.learningItemId}:${(f.metadata as { rule?: string }).rule ?? ''}`),
+      );
+      const cards = generateCards(items, config.flashcardRules).filter(
+        (c) => !existingKeys.has(`${c.learningItemId}:${c.ruleName}`),
+      );
+      summary.skippedExisting += generateCards(items, config.flashcardRules).length - cards.length;
+      for (const card of cards) {
+        await prisma.flashcard.create({
+          data: {
+            courseId,
+            learningItemId: card.learningItemId,
+            front: card.front,
+            back: card.back,
+            metadata: { rule: card.ruleName, generated: true },
+            review: { create: {} },
+          },
+        });
+        summary.cardsCreated++;
+      }
+    }
+
+    if (config.practiceRules?.length) {
+      const existingPractice = await prisma.practiceItem.findMany({
+        where: { learningItemId: { in: items.map((i) => i.id) } },
+        select: { learningItemId: true, type: true },
+      });
+      const existingKeys = new Set(existingPractice.map((p) => `${p.learningItemId}:${p.type}`));
+      const practice = generatePractice(items, config.practiceRules).filter(
+        (p) => !existingKeys.has(`${p.learningItemId}:${p.type}`),
+      );
+      for (const p of practice) {
+        await prisma.practiceItem.create({
+          data: {
+            courseId,
+            learningItemId: p.learningItemId,
+            type: p.type as never,
+            prompt: p.prompt,
+            answer: p.answer,
+            metadata: { generated: true },
+            review: { create: {} },
+          },
+        });
+        summary.practiceCreated++;
+      }
+    }
+  }
+
+  revalidatePath('/', 'layout');
+  return summary;
+}
+
 // ----------------------------------------------------------------- Review
 
 export async function rateFlashcard(recordId: string, rating: Rating) {
@@ -253,9 +522,14 @@ export async function rateFlashcard(recordId: string, rating: Rating) {
       lastReviewedAt: new Date(),
     },
   });
-  if (record.flashcardId) {
+  if (record.flashcardId || record.practiceItemId) {
     await prisma.attempt.create({
-      data: { flashcardId: record.flashcardId, rating, correct: rating !== 'AGAIN' },
+      data: {
+        flashcardId: record.flashcardId,
+        practiceItemId: record.practiceItemId,
+        rating,
+        correct: rating !== 'AGAIN',
+      },
     });
   }
   return { dueAt: result.dueAt.toISOString(), intervalDays: result.intervalDays };

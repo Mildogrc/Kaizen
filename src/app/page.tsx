@@ -1,18 +1,37 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
+import { ankiDueTodayCount } from '@/lib/anki-data';
+import { currentJlptProgress } from '@/lib/jlpt-progress';
+import { configuredMathTargetSlug } from '@/lib/math-goals';
 import { pathProgress } from '@/lib/roadmap';
 import { Badge, Card, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus } from '@/components/ui';
 
 export const dynamic = 'force-dynamic';
 
+// A study day = any in-app rating, any Anki review, or a logged session.
 async function getStreak() {
-  const sessions = await prisma.studySession.findMany({ orderBy: { date: 'desc' }, take: 60 });
-  const days = new Set(sessions.map((s) => s.date.toISOString().slice(0, 10)));
+  const cutoff = new Date(Date.now() - 400 * 86_400_000);
+  const [sessions, attempts, ankiReviews] = await Promise.all([
+    prisma.studySession.findMany({ where: { date: { gte: cutoff } }, select: { date: true } }),
+    prisma.attempt.findMany({ where: { createdAt: { gte: cutoff } }, select: { createdAt: true } }),
+    prisma.ankiReviewLog.findMany({ where: { reviewedAt: { gte: cutoff } }, select: { reviewedAt: true } }),
+  ]);
+  const dayKey = (d: Date) => {
+    const local = new Date(d);
+    local.setHours(0, 0, 0, 0);
+    return local.toISOString().slice(0, 10);
+  };
+  const days = new Set([
+    ...sessions.map((s) => dayKey(s.date)),
+    ...attempts.map((a) => dayKey(a.createdAt)),
+    ...ankiReviews.map((r) => dayKey(r.reviewedAt)),
+  ]);
   let streak = 0;
   const d = new Date();
+  d.setHours(0, 0, 0, 0);
   // Today counts if studied; otherwise start from yesterday.
-  if (!days.has(d.toISOString().slice(0, 10))) d.setDate(d.getDate() - 1);
-  while (days.has(d.toISOString().slice(0, 10))) {
+  if (!days.has(dayKey(d))) d.setDate(d.getDate() - 1);
+  while (days.has(dayKey(d))) {
     streak++;
     d.setDate(d.getDate() - 1);
   }
@@ -20,14 +39,17 @@ async function getStreak() {
 }
 
 export default async function Dashboard() {
-  const [goals, dueReviews, courses, books, mistakes, streak, roadmap] = await Promise.all([
+  const [goals, dueReviews, ankiDue, courses, books, mistakes, streak, roadmap, japaneseWordStat, grammarProgress] = await Promise.all([
     prisma.courseGoal.findMany({ where: { status: 'ACTIVE' }, include: { course: true }, orderBy: { createdAt: 'asc' } }),
     prisma.reviewRecord.count({ where: { dueAt: { lte: new Date() }, isSuspended: false } }),
-    prisma.course.findMany({ include: { _count: { select: { learningItems: true, flashcards: true } } } }),
+    ankiDueTodayCount(),
+    prisma.course.findMany({ include: { _count: { select: { learningItems: true, flashcards: true } }, exams: { include: { levels: { orderBy: { rank: 'asc' } } } } } }),
     prisma.book.findMany({ orderBy: { updatedAt: 'desc' } }),
     prisma.mistake.count({ where: { resolved: false } }),
     getStreak(),
     prisma.roadmap.findUnique({ where: { slug: 'math-roadmap' }, include: { nodes: true, edges: true } }),
+    prisma.knownWordStat.findFirst({ where: { language: 'ja' }, orderBy: { date: 'desc' } }),
+    prisma.grammarProgress.findMany({ include: { learningItem: { select: { data: true } } } }),
   ]);
 
   const byTab = (tab: string) => courses.filter((c) => c.tab === tab);
@@ -36,35 +58,47 @@ export default async function Dashboard() {
   const reading = books.filter((b) => b.status === 'READING');
   const finished = books.filter((b) => b.status === 'FINISHED');
 
-  const mathTargets = roadmap
-    ? roadmap.nodes
-        .filter((n) => n.isTarget)
-        .map((n) => ({ node: n, progress: pathProgress(n.id, roadmap.nodes, roadmap.edges) }))
-    : [];
-
-  const nextAction =
-    dueReviews > 0
-      ? { label: `Clear ${dueReviews} due reviews`, href: '/review' }
-      : itemCount('JAPANESE') === 0
-        ? { label: 'Import your first Japanese vocabulary batch', href: '/import' }
-        : { label: 'Start today’s study queue', href: '/daily' };
+  const grammarByLevel = new Map<string, { total: number; mastered: number }>();
+  for (const progress of grammarProgress) {
+    const data = progress.learningItem.data as Record<string, unknown>;
+    const level = String(data.jlptLevel ?? '');
+    const counts = grammarByLevel.get(level) ?? { total: 0, mastered: 0 };
+    counts.total++;
+    if (progress.status === 'MASTERED') counts.mastered++;
+    grammarByLevel.set(level, counts);
+  }
+  const japaneseCourse = courses.find((course) => course.slug === 'japanese');
+  const jlptExam = japaneseCourse?.exams.find((exam) => exam.slug === 'jlpt');
+  const japaneseGoal = jlptExam ? currentJlptProgress(jlptExam.levels.map((level) => {
+    const targets = level.targets as Record<string, number>;
+    const grammar = grammarByLevel.get(level.name) ?? { total: targets.targetGrammar ?? 0, mastered: 0 };
+    return { name: level.name, rank: level.rank, targetVocab: targets.targetVocab ?? 0, grammarTotal: grammar.total, grammarMastered: grammar.mastered };
+  }), japaneseWordStat?.lower ?? 0) : null;
+  const mathCourse = courses.find((course) => course.slug === 'math');
+  const roadmapTargets = roadmap?.nodes.filter((node) => node.isTarget) ?? [];
+  const mathGoalRecord = goals.find((goal) => goal.course.slug === 'math');
+  const currentMathTargetSlug = configuredMathTargetSlug(mathCourse?.metadata, roadmapTargets, mathGoalRecord?.title);
+  const currentMathTarget = roadmapTargets.find((node) => node.slug === currentMathTargetSlug) ?? null;
+  const currentMathProgress = currentMathTarget && roadmap ? pathProgress(currentMathTarget.id, roadmap.nodes, roadmap.edges) : null;
+  const otherGoals = goals.filter((goal) => goal.course.slug !== 'japanese' && goal.course.slug !== 'math');
+  const activeGoalCount = otherGoals.length + (japaneseGoal ? 1 : 0) + (currentMathTarget ? 1 : 0);
 
   return (
     <>
       <PageHeader title="Dashboard" subtitle="Where everything stands right now" />
 
       <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-5">
-        <StatCard label="Due reviews" value={dueReviews} hint="across all courses" />
+        <StatCard label="Due reviews" value={dueReviews + ankiDue} hint={`${ankiDue} in Anki · ${dueReviews} in-app`} />
         <StatCard label="Streak" value={`${streak}d`} hint="consecutive study days" />
-        <StatCard label="Active goals" value={goals.length} />
+        <StatCard label="Active goals" value={activeGoalCount} />
         <StatCard label="Open mistakes" value={mistakes} hint="unresolved" />
         <StatCard label="Books reading" value={reading.length} hint={`${finished.length} finished`} />
       </div>
 
       <Section title="Next recommended action">
-        <Link href={nextAction.href}>
+        <Link href="/daily">
           <Card className="flex items-center justify-between border-accent/30 hover:border-accent/60 transition-colors">
-            <span className="text-[14px] font-medium">{nextAction.label}</span>
+            <span className="text-[14px] font-medium">Do Daily</span>
             <span className="text-accent">→</span>
           </Card>
         </Link>
@@ -72,7 +106,14 @@ export default async function Dashboard() {
 
       <Section title="Active goals">
         <div className="grid gap-2 md:grid-cols-2">
-          {goals.map((g) => (
+          {japaneseGoal && japaneseCourse && (
+            <Card className="p-3">
+              <div className="flex items-center justify-between gap-2"><span className="text-[13px] font-medium">Prepare for JLPT {japaneseGoal.name}</span><Badge tone="blue">Japanese</Badge></div>
+              <div className="mt-2"><ProgressBar pct={japaneseGoal.overallProgress} color={japaneseCourse.color ?? undefined} /></div>
+              <p className="mt-1.5 text-[12px] text-muted tabular-nums">{japaneseGoal.wordsRemaining.toLocaleString()} words left · {japaneseGoal.grammarRemaining.toLocaleString()} grammar points left</p>
+            </Card>
+          )}
+          {otherGoals.map((g) => (
             <Card key={g.id} className="p-3">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-[13px] font-medium">{g.title}</span>
@@ -92,25 +133,14 @@ export default async function Dashboard() {
         </div>
       </Section>
 
-      <Section title="Math target paths">
-        <div className="grid gap-2 md:grid-cols-2">
-          {mathTargets.map(({ node, progress }) => (
-            <Link key={node.id} href={`/math?target=${node.slug}`}>
-              <Card className="p-3 hover:border-accent/40 transition-colors">
-                <div className="flex items-center justify-between">
-                  <span className="text-[13px] font-medium">{node.title}</span>
-                  <span className="text-[11px] text-muted tabular-nums">
-                    {progress.done}/{progress.total} courses
-                  </span>
-                </div>
-                <div className="mt-2">
-                  <ProgressBar pct={progress.pct} color="#2563eb" />
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </Section>
+      {currentMathTarget && currentMathProgress && <Section title="Current math path">
+        <Link href={`/math?target=${currentMathTarget.slug}`}>
+          <Card className="p-3 hover:border-accent/40 transition-colors">
+            <div className="flex items-center justify-between"><span className="text-[13px] font-medium">{currentMathTarget.title}</span><span className="text-[11px] text-muted tabular-nums">{currentMathProgress.done}/{currentMathProgress.total} courses</span></div>
+            <div className="mt-2"><ProgressBar pct={currentMathProgress.pct} color="#2563eb" /></div>
+          </Card>
+        </Link>
+      </Section>}
 
       <Section title="Content by area">
         <div className="grid grid-cols-2 gap-3 md:grid-cols-5">

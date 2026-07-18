@@ -12,9 +12,9 @@ export function PageHeader({ title, subtitle, actions }: { title: string; subtit
   );
 }
 
-export function Section({ title, actions, children, className = '' }: { title: string; actions?: ReactNode; children: ReactNode; className?: string }) {
+export function Section({ title, actions, children, className }: { title: string; actions?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section className={`mb-6 ${className}`}>
+    <section className={className ?? 'mb-6'}>
       <div className="mb-2 flex items-center justify-between">
         <h2 className="text-[13px] font-semibold uppercase tracking-wider text-muted">{title}</h2>
         {actions}

@@ -5,14 +5,14 @@ import { usePathname } from 'next/navigation';
 
 const NAV = [
   { href: '/', label: 'Dashboard', glyph: '◧' },
+  { href: '/daily', label: 'Daily', glyph: '☀' },
   { href: '/japanese', label: 'Japanese', glyph: '日' },
   { href: '/chinese', label: 'Chinese', glyph: '中' },
   { href: '/math', label: 'Math', glyph: '∑' },
   { href: '/skills', label: 'Random Skills', glyph: '⌨' },
   { href: '/books', label: 'Books', glyph: '⌘' },
-  { href: '/schemas', label: 'Schema Designer', glyph: '⬡' },
-  { href: '/daily', label: 'Daily Study', glyph: '☀' },
-  { href: '/review', label: 'Review', glyph: '↻' },
+  { href: '/configurations', label: 'Configurations', glyph: '◫' },
+  { href: '/mistakes', label: 'Mistakes', glyph: '⚑' },
   { href: '/import', label: 'Import', glyph: '⇥' },
   { href: '/analytics', label: 'Analytics', glyph: '∿' },
   { href: '/settings', label: 'Settings', glyph: '⚙' },
