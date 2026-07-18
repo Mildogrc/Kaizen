@@ -5,6 +5,7 @@
 import { prisma } from './db';
 import { normalizeWord } from './lemmatize';
 import { parseMigakuExport, unionBounds, type UnionEntry } from './known-words';
+import { hasCompletedActiveVocabGoal } from './progression';
 
 export type WordLanguage = 'ja' | 'zh';
 
@@ -168,12 +169,65 @@ export async function recomputeKnownWordStats(): Promise<LanguageWordStats[]> {
       },
     });
 
-    // Vocab goals track the conservative bound.
+    // Vocab goals and word milestones track the conservative bound.
     const tab = language === 'ja' ? 'JAPANESE' : 'CHINESE';
-    await prisma.courseGoal.updateMany({
-      where: { goalType: 'vocab_count', status: 'ACTIVE', course: { tab } },
-      data: { currentValue: bounds.lower },
+    const course = await prisma.course.findFirst({
+      where: { tab },
+      select: {
+        id: true,
+        goals: {
+          where: { goalType: 'vocab_count', status: 'ACTIVE' },
+          select: { targetValue: true, status: true },
+        },
+      },
     });
+    if (!course) continue;
+
+    const completedVocabGoal = hasCompletedActiveVocabGoal(course.goals, bounds.lower);
+    const completedAt = new Date();
+    await prisma.$transaction([
+      prisma.courseGoal.updateMany({
+        where: {
+          courseId: course.id,
+          goalType: 'vocab_count',
+          status: 'ACTIVE',
+          targetValue: { lte: bounds.lower },
+        },
+        data: { currentValue: bounds.lower, status: 'COMPLETED' },
+      }),
+      prisma.courseGoal.updateMany({
+        where: {
+          courseId: course.id,
+          goalType: 'vocab_count',
+          status: 'ACTIVE',
+          OR: [{ targetValue: null }, { targetValue: { gt: bounds.lower } }],
+        },
+        data: { currentValue: bounds.lower },
+      }),
+      prisma.courseMilestone.updateMany({
+        where: {
+          courseId: course.id,
+          metric: 'words',
+          targetValue: { lte: bounds.lower },
+          completedAt: null,
+        },
+        data: { completedAt },
+      }),
+    ]);
+
+    if (completedVocabGoal) {
+      const nextGoal = await prisma.courseGoal.findFirst({
+        where: { courseId: course.id, status: 'PLANNED' },
+        orderBy: { createdAt: 'asc' },
+        select: { id: true },
+      });
+      if (nextGoal) {
+        await prisma.courseGoal.update({
+          where: { id: nextGoal.id },
+          data: { status: 'ACTIVE' },
+        });
+      }
+    }
   }
   return out;
 }

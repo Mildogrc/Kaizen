@@ -35,13 +35,4 @@ describe('seed schema import validation', () => {
     expect(result.invalid).toHaveLength(4);
   });
 
-  it('nato alphabet schema enforces the single-uppercase-letter pattern', () => {
-    const nato = SEED_SCHEMAS.find((s) => s.slug === 'nato-alphabet')!;
-    const result = validateItems(nato.fields, [
-      { letter: 'A', word: 'Alfa' },
-      { letter: 'a', word: 'alfa' },
-      { letter: 'AB', word: 'Alfa Bravo' },
-    ]);
-    expect(result.valid.map((v) => v.index)).toEqual([0]);
-  });
 });

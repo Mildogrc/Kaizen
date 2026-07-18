@@ -74,6 +74,16 @@ export const ModelName = {
   RoadmapEdge: 'RoadmapEdge',
   Book: 'Book',
   BookNote: 'BookNote',
+  BookReadingSession: 'BookReadingSession',
+  GrammarProgress: 'GrammarProgress',
+  GrammarLesson: 'GrammarLesson',
+  CodeforcesProfile: 'CodeforcesProfile',
+  CodeforcesSubmission: 'CodeforcesSubmission',
+  CodeforcesRatingChange: 'CodeforcesRatingChange',
+  SpeedReadingPassage: 'SpeedReadingPassage',
+  SpeedReadingSession: 'SpeedReadingSession',
+  MandarinBlueprintLevel: 'MandarinBlueprintLevel',
+  MandarinDictionaryEntry: 'MandarinDictionaryEntry',
   AnkiDeckMapping: 'AnkiDeckMapping',
   AnkiCardSnapshot: 'AnkiCardSnapshot',
   AnkiReviewLog: 'AnkiReviewLog',
@@ -238,7 +248,8 @@ export const LearningItemScalarFieldEnum = {
   sourceId: 'sourceId',
   importBatchId: 'importBatchId',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  sourceKey: 'sourceKey'
 } as const
 
 export type LearningItemScalarFieldEnum = (typeof LearningItemScalarFieldEnum)[keyof typeof LearningItemScalarFieldEnum]
@@ -443,6 +454,197 @@ export const BookNoteScalarFieldEnum = {
 } as const
 
 export type BookNoteScalarFieldEnum = (typeof BookNoteScalarFieldEnum)[keyof typeof BookNoteScalarFieldEnum]
+
+
+export const BookReadingSessionScalarFieldEnum = {
+  id: 'id',
+  bookId: 'bookId',
+  readAt: 'readAt',
+  startPage: 'startPage',
+  endPage: 'endPage',
+  pagesRead: 'pagesRead',
+  durationMin: 'durationMin',
+  notes: 'notes',
+  createdAt: 'createdAt'
+} as const
+
+export type BookReadingSessionScalarFieldEnum = (typeof BookReadingSessionScalarFieldEnum)[keyof typeof BookReadingSessionScalarFieldEnum]
+
+
+export const GrammarProgressScalarFieldEnum = {
+  id: 'id',
+  learningItemId: 'learningItemId',
+  status: 'status',
+  curriculumOrder: 'curriculumOrder',
+  ease: 'ease',
+  intervalDays: 'intervalDays',
+  dueAt: 'dueAt',
+  repetitions: 'repetitions',
+  lapseCount: 'lapseCount',
+  isLeech: 'isLeech',
+  introducedAt: 'introducedAt',
+  lastStudiedAt: 'lastStudiedAt',
+  lastRating: 'lastRating',
+  totalCorrect: 'totalCorrect',
+  totalQuestions: 'totalQuestions',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GrammarProgressScalarFieldEnum = (typeof GrammarProgressScalarFieldEnum)[keyof typeof GrammarProgressScalarFieldEnum]
+
+
+export const GrammarLessonScalarFieldEnum = {
+  id: 'id',
+  scheduledFor: 'scheduledFor',
+  levelLabel: 'levelLabel',
+  prompt: 'prompt',
+  grammarItemIds: 'grammarItemIds',
+  vocabulary: 'vocabulary',
+  status: 'status',
+  response: 'response',
+  completedAt: 'completedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type GrammarLessonScalarFieldEnum = (typeof GrammarLessonScalarFieldEnum)[keyof typeof GrammarLessonScalarFieldEnum]
+
+
+export const CodeforcesProfileScalarFieldEnum = {
+  id: 'id',
+  handle: 'handle',
+  profileUrl: 'profileUrl',
+  displayName: 'displayName',
+  rating: 'rating',
+  maxRating: 'maxRating',
+  rank: 'rank',
+  maxRank: 'maxRank',
+  avatarUrl: 'avatarUrl',
+  contribution: 'contribution',
+  lastSyncedAt: 'lastSyncedAt',
+  syncError: 'syncError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CodeforcesProfileScalarFieldEnum = (typeof CodeforcesProfileScalarFieldEnum)[keyof typeof CodeforcesProfileScalarFieldEnum]
+
+
+export const CodeforcesSubmissionScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  codeforcesId: 'codeforcesId',
+  contestId: 'contestId',
+  problemIndex: 'problemIndex',
+  problemName: 'problemName',
+  problemRating: 'problemRating',
+  problemTags: 'problemTags',
+  verdict: 'verdict',
+  participantType: 'participantType',
+  programmingLanguage: 'programmingLanguage',
+  submittedAt: 'submittedAt',
+  timeConsumedMillis: 'timeConsumedMillis',
+  memoryConsumedBytes: 'memoryConsumedBytes'
+} as const
+
+export type CodeforcesSubmissionScalarFieldEnum = (typeof CodeforcesSubmissionScalarFieldEnum)[keyof typeof CodeforcesSubmissionScalarFieldEnum]
+
+
+export const CodeforcesRatingChangeScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  contestId: 'contestId',
+  contestName: 'contestName',
+  contestRank: 'contestRank',
+  oldRating: 'oldRating',
+  newRating: 'newRating',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CodeforcesRatingChangeScalarFieldEnum = (typeof CodeforcesRatingChangeScalarFieldEnum)[keyof typeof CodeforcesRatingChangeScalarFieldEnum]
+
+
+export const SpeedReadingPassageScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  topic: 'topic',
+  category: 'category',
+  difficulty: 'difficulty',
+  sourceUrl: 'sourceUrl',
+  text: 'text',
+  wordCount: 'wordCount',
+  questions: 'questions',
+  answerKey: 'answerKey',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type SpeedReadingPassageScalarFieldEnum = (typeof SpeedReadingPassageScalarFieldEnum)[keyof typeof SpeedReadingPassageScalarFieldEnum]
+
+
+export const SpeedReadingSessionScalarFieldEnum = {
+  id: 'id',
+  passageId: 'passageId',
+  mode: 'mode',
+  wpm: 'wpm',
+  chunkSize: 'chunkSize',
+  fontSize: 'fontSize',
+  punctuationPause: 'punctuationPause',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt',
+  durationSec: 'durationSec',
+  correctAnswers: 'correctAnswers',
+  totalQuestions: 'totalQuestions',
+  accuracy: 'accuracy',
+  responseTimeMs: 'responseTimeMs',
+  estimatedRetention: 'estimatedRetention',
+  recommendedNextWpm: 'recommendedNextWpm',
+  answers: 'answers',
+  retentionDueAt: 'retentionDueAt',
+  retentionCompletedAt: 'retentionCompletedAt',
+  retentionAccuracy: 'retentionAccuracy',
+  retentionAnswers: 'retentionAnswers'
+} as const
+
+export type SpeedReadingSessionScalarFieldEnum = (typeof SpeedReadingSessionScalarFieldEnum)[keyof typeof SpeedReadingSessionScalarFieldEnum]
+
+
+export const MandarinBlueprintLevelScalarFieldEnum = {
+  id: 'id',
+  level: 'level',
+  phase: 'phase',
+  reportedNewCharacterCount: 'reportedNewCharacterCount',
+  reportedTotalCharacters: 'reportedTotalCharacters',
+  reportedNewWordCount: 'reportedNewWordCount',
+  reportedTotalWords: 'reportedTotalWords',
+  characters: 'characters',
+  words: 'words',
+  sourceStats: 'sourceStats',
+  completedAt: 'completedAt',
+  pushedAt: 'pushedAt',
+  pushError: 'pushError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MandarinBlueprintLevelScalarFieldEnum = (typeof MandarinBlueprintLevelScalarFieldEnum)[keyof typeof MandarinBlueprintLevelScalarFieldEnum]
+
+
+export const MandarinDictionaryEntryScalarFieldEnum = {
+  id: 'id',
+  surface: 'surface',
+  kind: 'kind',
+  traditional: 'traditional',
+  pinyin: 'pinyin',
+  definitions: 'definitions',
+  audioUrls: 'audioUrls',
+  sourceUrl: 'sourceUrl',
+  fetchedAt: 'fetchedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MandarinDictionaryEntryScalarFieldEnum = (typeof MandarinDictionaryEntryScalarFieldEnum)[keyof typeof MandarinDictionaryEntryScalarFieldEnum]
 
 
 export const AnkiDeckMappingScalarFieldEnum = {

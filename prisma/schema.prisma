@@ -145,6 +145,30 @@ enum ImportStatus {
   FAILED
 }
 
+enum GrammarStudyStatus {
+  NEW
+  LEARNING
+  REVIEW
+  MASTERED
+}
+
+enum GrammarLessonStatus {
+  GENERATED
+  COMPLETED
+}
+
+enum ReadingMode {
+  RSVP
+  PACED
+  CHUNKING
+  BENCHMARK
+}
+
+enum MandarinEntryKind {
+  CHARACTER
+  WORD
+}
+
 // ---------------------------------------------------------------------------
 // User & courses
 // ---------------------------------------------------------------------------
@@ -266,15 +290,15 @@ model ContentSchema {
 }
 
 model ContentSchemaVersion {
-  id       String        @id @default(cuid())
-  schemaId String
-  schema   ContentSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
-  version  Int           @default(1)
+  id        String        @id @default(cuid())
+  schemaId  String
+  schema    ContentSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+  version   Int           @default(1)
   /// Non-field rules: flashcardRules, practiceRules, srsRules,
   /// importInstructions, exportInstructions, llmPrompt, completionCriteria
-  config   Json          @default("{}")
-  isActive Boolean       @default(true)
-  createdAt DateTime     @default(now())
+  config    Json          @default("{}")
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
 
   fields        ContentSchemaField[]
   learningItems LearningItem[]
@@ -284,20 +308,20 @@ model ContentSchemaVersion {
 }
 
 model ContentSchemaField {
-  id              String               @id @default(cuid())
-  versionId       String
-  schemaVersion   ContentSchemaVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
-  name            String // machine name, e.g. "reading"
-  label           String // display label
-  description     String?
-  fieldType       FieldType
-  required        Boolean              @default(false)
-  order           Int                  @default(0)
+  id                 String               @id @default(cuid())
+  versionId          String
+  schemaVersion      ContentSchemaVersion @relation(fields: [versionId], references: [id], onDelete: Cascade)
+  name               String // machine name, e.g. "reading"
+  label              String // display label
+  description        String?
+  fieldType          FieldType
+  required           Boolean              @default(false)
+  order              Int                  @default(0)
   /// { minLength, maxLength, min, max, pattern, itemType, ... }
-  validationRules Json                 @default("{}")
-  enumOptions     Json? // string[] when fieldType = ENUM
-  exampleValue    Json?
-  defaultValue    Json?
+  validationRules    Json                 @default("{}")
+  enumOptions        Json? // string[] when fieldType = ENUM
+  exampleValue       Json?
+  defaultValue       Json?
   importInstructions String?
   llmInstructions    String?
 
@@ -329,10 +353,14 @@ model LearningItem {
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
 
-  practiceItems PracticeItem[]
-  flashcards    Flashcard[]
-  tags          Tag[]
+  practiceItems   PracticeItem[]
+  flashcards      Flashcard[]
+  tags            Tag[]
+  grammarProgress GrammarProgress?
 
+  sourceKey String?
+
+  @@unique([courseId, itemType, sourceKey])
   @@index([courseId, itemType])
 }
 
@@ -554,8 +582,9 @@ model Book {
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
 
-  notes BookNote[]
-  tags  Tag[]
+  notes           BookNote[]
+  readingSessions BookReadingSession[]
+  tags            Tag[]
 
   @@index([status])
 }
@@ -582,6 +611,217 @@ model BookNote {
   @@index([remember])
 }
 
+model BookReadingSession {
+  id          String   @id @default(cuid())
+  bookId      String
+  book        Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  readAt      DateTime @default(now())
+  startPage   Int?
+  endPage     Int?
+  pagesRead   Int
+  durationMin Int
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([bookId, readAt])
+}
+
+// ---------------------------------------------------------------------------
+// Japanese grammar coach
+// ---------------------------------------------------------------------------
+
+model GrammarProgress {
+  id              String             @id @default(cuid())
+  learningItemId  String             @unique
+  learningItem    LearningItem       @relation(fields: [learningItemId], references: [id], onDelete: Cascade)
+  status          GrammarStudyStatus @default(NEW)
+  curriculumOrder Int                @default(0)
+  ease            Float              @default(2.5)
+  intervalDays    Float              @default(0)
+  dueAt           DateTime           @default(now())
+  repetitions     Int                @default(0)
+  lapseCount      Int                @default(0)
+  isLeech         Boolean            @default(false)
+  introducedAt    DateTime?
+  lastStudiedAt   DateTime?
+  lastRating      ReviewRating?
+  totalCorrect    Int                @default(0)
+  totalQuestions  Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  @@index([status, dueAt])
+  @@index([curriculumOrder])
+}
+
+model GrammarLesson {
+  id             String              @id @default(cuid())
+  scheduledFor   DateTime            @default(now())
+  levelLabel     String
+  prompt         String
+  grammarItemIds Json
+  vocabulary     Json                @default("[]")
+  status         GrammarLessonStatus @default(GENERATED)
+  response       Json?
+  completedAt    DateTime?
+  createdAt      DateTime            @default(now())
+
+  @@index([scheduledFor, status])
+}
+
+// ---------------------------------------------------------------------------
+// Codeforces tracking
+// ---------------------------------------------------------------------------
+
+model CodeforcesProfile {
+  id           String    @id @default(cuid())
+  handle       String    @unique
+  profileUrl   String
+  displayName  String?
+  rating       Int?
+  maxRating    Int?
+  rank         String?
+  maxRank      String?
+  avatarUrl    String?
+  contribution Int?
+  lastSyncedAt DateTime?
+  syncError    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  submissions   CodeforcesSubmission[]
+  ratingChanges CodeforcesRatingChange[]
+}
+
+model CodeforcesSubmission {
+  id                  String            @id @default(cuid())
+  profileId           String
+  profile             CodeforcesProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  codeforcesId        BigInt
+  contestId           Int?
+  problemIndex        String
+  problemName         String
+  problemRating       Int?
+  problemTags         Json              @default("[]")
+  verdict             String?
+  participantType     String?
+  programmingLanguage String?
+  submittedAt         DateTime
+  timeConsumedMillis  Int?
+  memoryConsumedBytes BigInt?
+
+  @@unique([profileId, codeforcesId])
+  @@index([profileId, submittedAt])
+  @@index([profileId, problemRating])
+}
+
+model CodeforcesRatingChange {
+  id          String            @id @default(cuid())
+  profileId   String
+  profile     CodeforcesProfile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  contestId   Int
+  contestName String
+  contestRank Int
+  oldRating   Int
+  newRating   Int
+  updatedAt   DateTime
+
+  @@unique([profileId, contestId])
+  @@index([profileId, updatedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Speed reading
+// ---------------------------------------------------------------------------
+
+model SpeedReadingPassage {
+  id         String   @id @default(cuid())
+  title      String
+  topic      String
+  category   String
+  difficulty String
+  sourceUrl  String?
+  text       String
+  wordCount  Int
+  questions  Json
+  answerKey  Json
+  source     String   @default("llm")
+  createdAt  DateTime @default(now())
+
+  sessions SpeedReadingSession[]
+
+  @@index([category, difficulty])
+}
+
+model SpeedReadingSession {
+  id                   String              @id @default(cuid())
+  passageId            String
+  passage              SpeedReadingPassage @relation(fields: [passageId], references: [id], onDelete: Cascade)
+  mode                 ReadingMode
+  wpm                  Int
+  chunkSize            Int
+  fontSize             Int
+  punctuationPause     Boolean             @default(true)
+  startedAt            DateTime
+  completedAt          DateTime            @default(now())
+  durationSec          Int
+  correctAnswers       Int
+  totalQuestions       Int
+  accuracy             Float
+  responseTimeMs       Int
+  estimatedRetention   Float
+  recommendedNextWpm   Int
+  answers              Json
+  retentionDueAt       DateTime?
+  retentionCompletedAt DateTime?
+  retentionAccuracy    Float?
+  retentionAnswers     Json?
+
+  @@index([completedAt])
+  @@index([retentionDueAt, retentionCompletedAt])
+}
+
+// ---------------------------------------------------------------------------
+// Mandarin Blueprint — level catalog, cached dictionary entries, Anki exports
+// ---------------------------------------------------------------------------
+
+model MandarinBlueprintLevel {
+  id                        String   @id @default(cuid())
+  level                     Int      @unique
+  phase                     Int?
+  reportedNewCharacterCount Int
+  reportedTotalCharacters   Int
+  reportedNewWordCount      Int
+  reportedTotalWords        Int
+  characters                Json     @default("[]")
+  words                     Json     @default("[]")
+  sourceStats               Json     @default("{}")
+  completedAt               DateTime?
+  pushedAt                  DateTime?
+  pushError                 String?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@index([completedAt])
+}
+
+model MandarinDictionaryEntry {
+  id          String            @id @default(cuid())
+  surface     String
+  kind        MandarinEntryKind
+  traditional String?
+  pinyin      Json              @default("[]")
+  definitions Json              @default("[]")
+  audioUrls   Json              @default("[]")
+  sourceUrl   String
+  fetchedAt   DateTime          @default(now())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@unique([surface, kind])
+  @@index([kind, surface])
+}
+
 // ---------------------------------------------------------------------------
 // Anki integration — Anki is the review engine for mapped decks; the app
 // snapshots deck/card/review data via AnkiConnect and runs analytics on it.
@@ -597,17 +837,17 @@ enum AnkiCardState {
 }
 
 model AnkiDeckMapping {
-  id           String         @id @default(cuid())
-  deckName     String         @unique
-  courseId     String
-  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  id               String         @id @default(cuid())
+  deckName         String         @unique
+  courseId         String
+  course           Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
   /// optional subsection anchor, e.g. japanese-grammar
-  schemaId     String?
-  contentSchema ContentSchema? @relation(fields: [schemaId], references: [id], onDelete: SetNull)
+  schemaId         String?
+  contentSchema    ContentSchema? @relation(fields: [schemaId], references: [id], onDelete: SetNull)
   /// mature cards from this deck feed the known-word count
-  countsKnownWords Boolean    @default(true)
-  lastSyncedAt DateTime?
-  createdAt    DateTime       @default(now())
+  countsKnownWords Boolean        @default(true)
+  lastSyncedAt     DateTime?
+  createdAt        DateTime       @default(now())
 
   cards      AnkiCardSnapshot[]
   reviewLogs AnkiReviewLog[]
@@ -636,18 +876,18 @@ model AnkiCardSnapshot {
 }
 
 model AnkiReviewLog {
-  id                String          @id @default(cuid())
+  id                 String          @id @default(cuid())
   /// Anki revlog id: epoch milliseconds of the review, unique per card
-  ankiReviewId      BigInt
-  mappingId         String
-  mapping           AnkiDeckMapping @relation(fields: [mappingId], references: [id], onDelete: Cascade)
-  ankiCardId        BigInt
-  reviewedAt        DateTime
+  ankiReviewId       BigInt
+  mappingId          String
+  mapping            AnkiDeckMapping @relation(fields: [mappingId], references: [id], onDelete: Cascade)
+  ankiCardId         BigInt
+  reviewedAt         DateTime
   /// 1=again 2=hard 3=good 4=easy
-  rating            Int
-  intervalAfterDays Int             @default(0)
-  intervalBeforeDays Int            @default(0)
-  timeMs            Int             @default(0)
+  rating             Int
+  intervalAfterDays  Int             @default(0)
+  intervalBeforeDays Int             @default(0)
+  timeMs             Int             @default(0)
 
   @@unique([ankiReviewId, ankiCardId])
   @@index([mappingId, reviewedAt])

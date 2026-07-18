@@ -80,6 +80,50 @@ export async function deleteBookNote(noteId: string) {
   revalidatePath(`/books/${note.bookId}`);
 }
 
+export async function addBookReadingSession(bookId: string, returnTo: string, formData: FormData) {
+  const pagesRead = Math.floor(Number(formData.get('pagesRead')));
+  const durationMin = Math.floor(Number(formData.get('durationMin')));
+  if (!Number.isFinite(pagesRead) || pagesRead < 1 || !Number.isFinite(durationMin) || durationMin < 1) return;
+
+  const book = await prisma.book.findUniqueOrThrow({
+    where: { id: bookId },
+    include: { readingSessions: { orderBy: { readAt: 'desc' }, take: 1 } },
+  });
+  const suppliedEndPage = formData.get('endPage') ? Math.floor(Number(formData.get('endPage'))) : null;
+  const previousEndPage = book.readingSessions[0]?.endPage ?? 0;
+  const endPage = suppliedEndPage && suppliedEndPage > 0 ? suppliedEndPage : previousEndPage + pagesRead;
+  const boundedEndPage = book.pageCount ? Math.min(endPage, book.pageCount) : endPage;
+  const startPage = Math.max(1, boundedEndPage - pagesRead + 1);
+  const readAtRaw = String(formData.get('readAt') ?? '').trim();
+  const readAt = /^\d{4}-\d{2}-\d{2}$/.test(readAtRaw) ? new Date(`${readAtRaw}T12:00:00`) : new Date();
+
+  await prisma.$transaction([
+    prisma.bookReadingSession.create({
+      data: {
+        bookId,
+        readAt,
+        startPage,
+        endPage: boundedEndPage,
+        pagesRead,
+        durationMin,
+        notes: String(formData.get('notes') ?? '').trim() || null,
+      },
+    }),
+    prisma.book.update({
+      where: { id: bookId },
+      data: {
+        status: book.status === 'WANT_TO_READ' ? 'READING' : book.status,
+        startDate: book.startDate ?? readAt,
+      },
+    }),
+  ]);
+  revalidatePath('/books');
+  revalidatePath(`/books/${bookId}`);
+  revalidatePath('/daily');
+  const destination = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : `/books/${bookId}`;
+  redirect(destination);
+}
+
 // ---------------------------------------------------------------- Roadmap
 
 const NODE_STATUS_CYCLE = ['NOT_STARTED', 'IN_PROGRESS', 'COMPLETED'] as const;

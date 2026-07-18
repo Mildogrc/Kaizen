@@ -44,6 +44,40 @@ export async function deckNames(): Promise<string[]> {
   return invoke<string[]>('deckNames');
 }
 
+export async function createDeck(deck: string): Promise<number> {
+  return invoke<number>('createDeck', { deck });
+}
+
+export async function modelNames(): Promise<string[]> {
+  return invoke<string[]>('modelNames');
+}
+
+export async function createModel(input: {
+  modelName: string;
+  inOrderFields: string[];
+  css: string;
+  cardTemplates: { Name: string; Front: string; Back: string }[];
+}): Promise<number> {
+  return invoke<number>('createModel', input);
+}
+
+export interface AnkiNoteInput {
+  deckName: string;
+  modelName: string;
+  fields: Record<string, string>;
+  tags: string[];
+  options?: { allowDuplicate?: boolean; duplicateScope?: string };
+  audio?: { url: string; filename: string; fields: string[] }[];
+}
+
+export async function addNotes(notes: AnkiNoteInput[]): Promise<(number | null)[]> {
+  const results: (number | null)[] = [];
+  for (let i = 0; i < notes.length; i += 50) {
+    results.push(...await invoke<(number | null)[]>('addNotes', { notes: notes.slice(i, i + 50) }));
+  }
+  return results;
+}
+
 export async function findCards(query: string): Promise<number[]> {
   return invoke<number[]>('findCards', { query });
 }

@@ -10,6 +10,10 @@
     "test": "vitest run",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed-grammar": "tsx scripts/import-jlpt-grammar.ts",
+    "db:seed-reading": "tsx scripts/seed-speed-reading.ts",
+    "db:import-mandarin": "tsx scripts/import-mandarin-blueprint.ts",
+    "words:recompute": "tsx scripts/recompute-known-words.ts",
     "db:studio": "prisma studio"
   },
   "dependencies": {

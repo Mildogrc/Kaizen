@@ -1,0 +1,65 @@
+Grammar,Kanji,終,% Done,# Done,Explanation,Example (JP),Translation (EN)
+63,,,0.00%,0,,,
+～ばいいのに,,FALSE,,,I wish/You should,行けばいいのに。,You should go.
+～わけです,訳,FALSE,,,That's why/It means that,疲れたわけです。,That’s why I’m tired.
+何といっても,何と言っても,FALSE,,,Above all,何といっても健康が大事だ。,"Above all, health is important."
+～ような気がする,気,FALSE,,,Feels like/seems like,彼は来ないような気がする。,I feel like he won’t come.
+～ことにする,事にする,FALSE,,,Decide to do,旅行に行くことにした。,I decided to go on a trip.
+以外の,以外,FALSE,,,Other than,彼以外の人,People other than him
+～に気をつける,気をつける,FALSE,,,Be careful about,運転に気をつけて。,Be careful driving.
+別に～ない,別に,FALSE,,,Not particularly,別に困っていない。,I'm not particularly troubled.
+～しか～ない,,FALSE,,,Only; nothing but,水しかない。,There’s only water.
+～にあたる,当たる,FALSE,,,Correspond to,月曜日は週の初めにあたる。,Monday corresponds to the start of the week.
+とうてい,到底,FALSE,,,Absolutely not,とうてい無理だ。,Absolutely impossible.
+のぼる,登る,FALSE,,,Climb,山にのぼる。,Climb a mountain.
+～ないで済む,済む,FALSE,,,Get by without doing,行かないで済んだ。,Got by without going.
+がてら,,FALSE,,,While doing,散歩がてら買い物する。,Shop while taking a walk.
+および,及び,FALSE,,,And (formal),氏名および住所,Name and address
+いったんーば,一旦～ば,FALSE,,,Once~ then,いったん始めれば終わるまでやる。,"Once I start, I go until the end."
+よっぽど,余程,FALSE,,,Very/quite,よっぽど疲れた。,I was really tired.
+つうじて（通じて）,通じて,FALSE,,,Through,一年を通じて暑い。,Hot throughout the year.
+思うように,思うように,FALSE,,,As one hopes,思うように話せない。,Can’t speak as I hope.
+いよいよ,愈々,FALSE,,,Finally,いよいよ始まる。,It finally begins.
+～からなる(成る),成る,FALSE,,,Consists of,日本は島から成る。,Japan consists of islands.
+～より仕方がない,仕方がない,FALSE,,,Have no choice but to,行くより仕方がない。,No choice but to go.
+～ものですから,,FALSE,,,Because (personal reason),病気なものですから。,Because I was sick.
+～なかなか～ない,中々,FALSE,,,Not easily,なかなか寝られない。,I can't sleep easily.
+せっかく,折角,FALSE,,,With effort,せっかく来たのに。,Even though I came all this way.
+やむをえず,止むを得ず,FALSE,,,Unavoidably,やむをえず辞めた。,I had to quit unavoidably.
+やっぱり,,FALSE,,,As expected,やっぱり彼が来た。,"As expected, he came."
+かたわら（傍ら）,傍ら,FALSE,,,Besides doing,教師の傍ら作家でもある。,"Besides being a teacher, he’s also a writer."
+ろくに,碌に,FALSE,,,Properly,ろくに寝ていない。,I haven't slept properly.
+なるべく,成る可く,FALSE,,,As much as possible,なるべく早く来て。,Come as soon as possible.
+かねる,兼ねる,FALSE,,,Unable to (formal),判断しかねる。,I’m unable to judge.
+せいか,所為か,FALSE,,,Maybe because,疲れたせいか眠い。,"Maybe because I’m tired, I’m sleepy."
+たしか,確か,FALSE,,,If I remember correctly,たしか彼は学生だ。,"If I remember, he’s a student."
+～ではないだろうか,,FALSE,,,Might it not be?,彼が犯人ではないだろうか。,Might he be the culprit?
+～わけにはいかない,訳にはいかない,FALSE,,,Cannot afford to,行くわけにはいかない。,I can't afford to go.
+まんいち（万一）,万一,FALSE,,,Just in case,万一雨が降れば中止。,"In case it rains, it's canceled."
+～は～に限る,限る,FALSE,,,Nothing better than,夏は海に限る。,Nothing better than the beach in summer.
+ゆえに,故に,FALSE,,,Therefore (formal),努力した、ゆえに成功した。,"I worked hard, therefore I succeeded."
+一方では,一方では,FALSE,,,On one hand,一方では賛成だ。,"On one hand, I agree."
+なにしろ（何しろ）,何しろ,FALSE,,,At any rate,なにしろ忙しい。,"At any rate, I'm busy."
+それにしても,,FALSE,,,Even so,それにしても寒い。,"Even so, it's cold."
+～を～にまかせる,任せる,FALSE,,,Leave to,運転を彼にまかせた。,I left the driving to him.
+～というわけではない,という訳ではない,FALSE,,,Doesn’t mean that,嫌いというわけではない。,It’s not that I dislike it.
+かけては,,FALSE,,,When it comes to,将棋にかけては強い。,He's strong when it comes to shogi.
+たちまち,忽ち,FALSE,,,Suddenly,たちまち消えた。,It disappeared suddenly.
+さすがに,流石に,FALSE,,,Indeed/as expected,さすがに疲れた。,"I was tired, as expected."
+～に越したことはない,越したことはない,FALSE,,,Nothing better than,早いに越したことはない。,"The earlier, the better."
+ものの,,FALSE,,,Although,高いものの美味しい。,"Although it’s expensive, it’s tasty."
+いつのまにか,何時の間にか,FALSE,,,Before I knew it,いつのまにか寝ていた。,I fell asleep before I knew it.
+さしつかえない,差し支えない,FALSE,,,No problem,質問してもさしつかえない。,It’s okay to ask questions.
+あえて,敢えて,FALSE,,,Dare to,あえて言うなら…,If I dare say...
+たまらない,堪らない,FALSE,,,Unbearable,暑くてたまらない。,It’s unbearably hot.
+～た上で,上で,FALSE,,,After doing,確認した上で連絡します。,I’ll contact you after confirming.
+～ないわけにはいかない,訳にはいかない,FALSE,,,Cannot help but,行かないわけにはいかない。,I can’t not go.
+ごとし（如し）,如し,FALSE,,,As if,夢の如し,Like a dream
+かねない,,FALSE,,,Might happen (negative),失敗しかねない。,It might fail.
+ろくに～ない,碌に,FALSE,,,Hardly/properly not,ろくに食べていない。,I’ve hardly eaten.
+～と言っても～,と言っても,FALSE,,,Even though I say,旅行と言っても近所です。,"Though I say travel, it’s nearby."
+～が気になる,気になる,FALSE,,,Be concerned about,成績が気になる。,I’m worried about my grades.
+せめて,,FALSE,,,At least,せめて一言言って。,At least say something.
+～でいいです,,FALSE,,,It’s fine with~,水でいいです。,Water is fine.
+くせに,癖に,FALSE,,,Even though (blaming),子供のくせに生意気だ。,He’s cheeky for a kid.
+いたるまで（至るまで）,至るまで,FALSE,,,Up to even,足の先に至るまで痛い。,"Even up to my toes, it hurts."

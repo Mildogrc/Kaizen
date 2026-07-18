@@ -3,6 +3,8 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { SEED_SCHEMAS } from './seed-data/schemas';
 import { MATH_NODES, MATH_EDGES } from './seed-data/math-roadmap';
+import { importJlptGrammar } from './seed-data/jlpt-grammar-import';
+import { ensureStarterSpeedReadingPassage } from './seed-data/speed-reading';
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
@@ -10,6 +12,12 @@ const prisma = new PrismaClient({
 
 async function reset() {
   // Order matters: children before parents.
+  await prisma.speedReadingSession.deleteMany();
+  await prisma.speedReadingPassage.deleteMany();
+  await prisma.grammarLesson.deleteMany();
+  await prisma.codeforcesSubmission.deleteMany();
+  await prisma.codeforcesRatingChange.deleteMany();
+  await prisma.codeforcesProfile.deleteMany();
   await prisma.attempt.deleteMany();
   await prisma.reviewRecord.deleteMany();
   await prisma.mistake.deleteMany();
@@ -54,7 +62,6 @@ async function seedCourses() {
     { slug: 'chinese', name: 'Chinese', category: 'LANGUAGE', tab: 'CHINESE', color: '#dc2626', description: 'Mandarin Chinese: HSK 1 through HSK 9, simplified and traditional.' },
     { slug: 'math', name: 'Mathematics', category: 'MATH', tab: 'MATH', color: '#2563eb', description: 'School math through advanced pure and applied mathematics.' },
     { slug: 'typing', name: 'Typing', category: 'SKILL', tab: 'SKILLS', color: '#16a34a', description: 'Typing speed and accuracy: WPM, weak keys, custom drills.' },
-    { slug: 'nato-alphabet', name: 'NATO Alphabet', category: 'SKILL', tab: 'SKILLS', color: '#0891b2', description: 'NATO phonetic alphabet: letter↔word recall, timed drills.' },
     { slug: 'geoguessr', name: 'GeoGuessr', category: 'SKILL', tab: 'SKILLS', color: '#ca8a04', description: 'Country identification: flags, signs, plates, bollards, scripts.' },
     { slug: 'books', name: 'Books', category: 'BOOK', tab: 'BOOKS', color: '#9333ea', description: 'Reading tracker and knowledge retention from books.' },
   ] as const;
@@ -67,16 +74,16 @@ async function seedCourses() {
 }
 
 async function seedExams(courses: Map<string, string>) {
-  // JLPT — placeholder targets, editable later.
+  // JLPT vocabulary thresholds plus the grammar counts in the imported curriculum.
   const jlpt = await prisma.exam.create({
     data: { courseId: courses.get('japanese')!, slug: 'jlpt', name: 'JLPT', description: 'Japanese-Language Proficiency Test, levels N5 (easiest) to N1.' },
   });
   const jlptLevels: [string, number, Record<string, number>][] = [
-    ['N5', 1, { targetVocab: 800, targetKanji: 100, targetGrammar: 80 }],
-    ['N4', 2, { targetVocab: 1500, targetKanji: 300, targetGrammar: 160 }],
-    ['N3', 3, { targetVocab: 3750, targetKanji: 650, targetGrammar: 280 }],
-    ['N2', 4, { targetVocab: 6000, targetKanji: 1000, targetGrammar: 420 }],
-    ['N1', 5, { targetVocab: 10000, targetKanji: 2000, targetGrammar: 600 }],
+    ['N5', 1, { targetVocab: 800, targetKanji: 100, targetGrammar: 40 }],
+    ['N4', 2, { targetVocab: 1500, targetKanji: 300, targetGrammar: 50 }],
+    ['N3', 3, { targetVocab: 3750, targetKanji: 650, targetGrammar: 63 }],
+    ['N2', 4, { targetVocab: 6000, targetKanji: 1000, targetGrammar: 63 }],
+    ['N1', 5, { targetVocab: 10000, targetKanji: 2000, targetGrammar: 70 }],
   ];
   for (const [name, rank, targets] of jlptLevels) {
     const level = await prisma.examLevel.create({
@@ -295,33 +302,6 @@ async function seedMathRoadmap(courses: Map<string, string>) {
 }
 
 async function seedSampleContent(courses: Map<string, string>) {
-  // NATO alphabet: complete, small, immediately useful.
-  const nato: [string, string, string][] = [
-    ['A', 'Alfa', 'AL-fah'], ['B', 'Bravo', 'BRAH-voh'], ['C', 'Charlie', 'CHAR-lee'],
-    ['D', 'Delta', 'DELL-tah'], ['E', 'Echo', 'ECK-oh'], ['F', 'Foxtrot', 'FOKS-trot'],
-    ['G', 'Golf', 'GOLF'], ['H', 'Hotel', 'hoh-TELL'], ['I', 'India', 'IN-dee-ah'],
-    ['J', 'Juliett', 'JEW-lee-ETT'], ['K', 'Kilo', 'KEY-loh'], ['L', 'Lima', 'LEE-mah'],
-    ['M', 'Mike', 'MIKE'], ['N', 'November', 'no-VEM-ber'], ['O', 'Oscar', 'OSS-cah'],
-    ['P', 'Papa', 'pah-PAH'], ['Q', 'Quebec', 'keh-BECK'], ['R', 'Romeo', 'ROW-me-oh'],
-    ['S', 'Sierra', 'see-AIR-rah'], ['T', 'Tango', 'TANG-go'], ['U', 'Uniform', 'YOU-nee-form'],
-    ['V', 'Victor', 'VIK-tah'], ['W', 'Whiskey', 'WISS-key'], ['X', 'X-ray', 'ECKS-ray'],
-    ['Y', 'Yankee', 'YANG-key'], ['Z', 'Zulu', 'ZOO-loo'],
-  ];
-  const natoSchema = await prisma.contentSchema.findUnique({
-    where: { slug: 'nato-alphabet' }, include: { versions: true },
-  });
-  for (const [letter, word, pronunciation] of nato) {
-    await prisma.learningItem.create({
-      data: {
-        courseId: courses.get('nato-alphabet')!,
-        schemaId: natoSchema!.id,
-        schemaVersionId: natoSchema!.versions[0].id,
-        itemType: 'NATOAlphabetItem',
-        data: { letter, word, pronunciation },
-      },
-    });
-  }
-
   // A couple of starter books demonstrating the notes system.
   const gödel = await prisma.book.create({
     data: {
@@ -354,6 +334,8 @@ async function main() {
   await seedSchemas(courses);
   await seedMathRoadmap(courses);
   await seedSampleContent(courses);
+  await importJlptGrammar(prisma);
+  await ensureStarterSpeedReadingPassage(prisma);
 
   const counts = {
     courses: await prisma.course.count(),
@@ -364,7 +346,9 @@ async function main() {
     roadmapNodes: await prisma.roadmapNode.count(),
     roadmapEdges: await prisma.roadmapEdge.count(),
     learningItems: await prisma.learningItem.count(),
+    grammarPoints: await prisma.grammarProgress.count(),
     books: await prisma.book.count(),
+    speedReadingPassages: await prisma.speedReadingPassage.count(),
   };
   console.log('Seed complete:', counts);
 }

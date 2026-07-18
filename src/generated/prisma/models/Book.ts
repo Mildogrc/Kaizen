@@ -290,6 +290,7 @@ export type BookWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Book"> | Date | string
   relatedCourse?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   notes?: Prisma.BookNoteListRelationFilter
+  readingSessions?: Prisma.BookReadingSessionListRelationFilter
   tags?: Prisma.TagListRelationFilter
 }
 
@@ -310,6 +311,7 @@ export type BookOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   relatedCourse?: Prisma.CourseOrderByWithRelationInput
   notes?: Prisma.BookNoteOrderByRelationAggregateInput
+  readingSessions?: Prisma.BookReadingSessionOrderByRelationAggregateInput
   tags?: Prisma.TagOrderByRelationAggregateInput
 }
 
@@ -333,6 +335,7 @@ export type BookWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Book"> | Date | string
   relatedCourse?: Prisma.XOR<Prisma.CourseNullableScalarRelationFilter, Prisma.CourseWhereInput> | null
   notes?: Prisma.BookNoteListRelationFilter
+  readingSessions?: Prisma.BookReadingSessionListRelationFilter
   tags?: Prisma.TagListRelationFilter
 }, "id">
 
@@ -394,6 +397,7 @@ export type BookCreateInput = {
   updatedAt?: Date | string
   relatedCourse?: Prisma.CourseCreateNestedOneWithoutBooksInput
   notes?: Prisma.BookNoteCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionCreateNestedManyWithoutBookInput
   tags?: Prisma.TagCreateNestedManyWithoutBooksInput
 }
 
@@ -413,6 +417,7 @@ export type BookUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.BookNoteUncheckedCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedCreateNestedManyWithoutBookInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutBooksInput
 }
 
@@ -432,6 +437,7 @@ export type BookUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   relatedCourse?: Prisma.CourseUpdateOneWithoutBooksNestedInput
   notes?: Prisma.BookNoteUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUpdateManyWithoutBooksNestedInput
 }
 
@@ -451,6 +457,7 @@ export type BookUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.BookNoteUncheckedUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutBooksNestedInput
 }
 
@@ -676,6 +683,20 @@ export type BookUpdateOneRequiredWithoutNotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BookUpdateToOneWithWhereWithoutNotesInput, Prisma.BookUpdateWithoutNotesInput>, Prisma.BookUncheckedUpdateWithoutNotesInput>
 }
 
+export type BookCreateNestedOneWithoutReadingSessionsInput = {
+  create?: Prisma.XOR<Prisma.BookCreateWithoutReadingSessionsInput, Prisma.BookUncheckedCreateWithoutReadingSessionsInput>
+  connectOrCreate?: Prisma.BookCreateOrConnectWithoutReadingSessionsInput
+  connect?: Prisma.BookWhereUniqueInput
+}
+
+export type BookUpdateOneRequiredWithoutReadingSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.BookCreateWithoutReadingSessionsInput, Prisma.BookUncheckedCreateWithoutReadingSessionsInput>
+  connectOrCreate?: Prisma.BookCreateOrConnectWithoutReadingSessionsInput
+  upsert?: Prisma.BookUpsertWithoutReadingSessionsInput
+  connect?: Prisma.BookWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookUpdateToOneWithWhereWithoutReadingSessionsInput, Prisma.BookUpdateWithoutReadingSessionsInput>, Prisma.BookUncheckedUpdateWithoutReadingSessionsInput>
+}
+
 export type BookCreateWithoutRelatedCourseInput = {
   id?: string
   title: string
@@ -691,6 +712,7 @@ export type BookCreateWithoutRelatedCourseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.BookNoteCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionCreateNestedManyWithoutBookInput
   tags?: Prisma.TagCreateNestedManyWithoutBooksInput
 }
 
@@ -709,6 +731,7 @@ export type BookUncheckedCreateWithoutRelatedCourseInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.BookNoteUncheckedCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedCreateNestedManyWithoutBookInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutBooksInput
 }
 
@@ -774,6 +797,7 @@ export type BookCreateWithoutTagsInput = {
   updatedAt?: Date | string
   relatedCourse?: Prisma.CourseCreateNestedOneWithoutBooksInput
   notes?: Prisma.BookNoteCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionCreateNestedManyWithoutBookInput
 }
 
 export type BookUncheckedCreateWithoutTagsInput = {
@@ -792,6 +816,7 @@ export type BookUncheckedCreateWithoutTagsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   notes?: Prisma.BookNoteUncheckedCreateNestedManyWithoutBookInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedCreateNestedManyWithoutBookInput
 }
 
 export type BookCreateOrConnectWithoutTagsInput = {
@@ -830,6 +855,7 @@ export type BookCreateWithoutNotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   relatedCourse?: Prisma.CourseCreateNestedOneWithoutBooksInput
+  readingSessions?: Prisma.BookReadingSessionCreateNestedManyWithoutBookInput
   tags?: Prisma.TagCreateNestedManyWithoutBooksInput
 }
 
@@ -848,6 +874,7 @@ export type BookUncheckedCreateWithoutNotesInput = {
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  readingSessions?: Prisma.BookReadingSessionUncheckedCreateNestedManyWithoutBookInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutBooksInput
 }
 
@@ -882,6 +909,7 @@ export type BookUpdateWithoutNotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   relatedCourse?: Prisma.CourseUpdateOneWithoutBooksNestedInput
+  readingSessions?: Prisma.BookReadingSessionUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUpdateManyWithoutBooksNestedInput
 }
 
@@ -900,6 +928,99 @@ export type BookUncheckedUpdateWithoutNotesInput = {
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readingSessions?: Prisma.BookReadingSessionUncheckedUpdateManyWithoutBookNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutBooksNestedInput
+}
+
+export type BookCreateWithoutReadingSessionsInput = {
+  id?: string
+  title: string
+  author?: string | null
+  category?: string | null
+  status?: $Enums.BookStatus
+  startDate?: Date | string | null
+  finishDate?: Date | string | null
+  rating?: number | null
+  pageCount?: number | null
+  sourceLanguage?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  relatedCourse?: Prisma.CourseCreateNestedOneWithoutBooksInput
+  notes?: Prisma.BookNoteCreateNestedManyWithoutBookInput
+  tags?: Prisma.TagCreateNestedManyWithoutBooksInput
+}
+
+export type BookUncheckedCreateWithoutReadingSessionsInput = {
+  id?: string
+  title: string
+  author?: string | null
+  category?: string | null
+  status?: $Enums.BookStatus
+  startDate?: Date | string | null
+  finishDate?: Date | string | null
+  rating?: number | null
+  pageCount?: number | null
+  sourceLanguage?: string | null
+  relatedCourseId?: string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  notes?: Prisma.BookNoteUncheckedCreateNestedManyWithoutBookInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutBooksInput
+}
+
+export type BookCreateOrConnectWithoutReadingSessionsInput = {
+  where: Prisma.BookWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookCreateWithoutReadingSessionsInput, Prisma.BookUncheckedCreateWithoutReadingSessionsInput>
+}
+
+export type BookUpsertWithoutReadingSessionsInput = {
+  update: Prisma.XOR<Prisma.BookUpdateWithoutReadingSessionsInput, Prisma.BookUncheckedUpdateWithoutReadingSessionsInput>
+  create: Prisma.XOR<Prisma.BookCreateWithoutReadingSessionsInput, Prisma.BookUncheckedCreateWithoutReadingSessionsInput>
+  where?: Prisma.BookWhereInput
+}
+
+export type BookUpdateToOneWithWhereWithoutReadingSessionsInput = {
+  where?: Prisma.BookWhereInput
+  data: Prisma.XOR<Prisma.BookUpdateWithoutReadingSessionsInput, Prisma.BookUncheckedUpdateWithoutReadingSessionsInput>
+}
+
+export type BookUpdateWithoutReadingSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  finishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  relatedCourse?: Prisma.CourseUpdateOneWithoutBooksNestedInput
+  notes?: Prisma.BookNoteUpdateManyWithoutBookNestedInput
+  tags?: Prisma.TagUpdateManyWithoutBooksNestedInput
+}
+
+export type BookUncheckedUpdateWithoutReadingSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  author?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumBookStatusFieldUpdateOperationsInput | $Enums.BookStatus
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  finishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  rating?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  pageCount?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sourceLanguage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  relatedCourseId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  notes?: Prisma.BookNoteUncheckedUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutBooksNestedInput
 }
 
@@ -934,6 +1055,7 @@ export type BookUpdateWithoutRelatedCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.BookNoteUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUpdateManyWithoutBooksNestedInput
 }
 
@@ -952,6 +1074,7 @@ export type BookUncheckedUpdateWithoutRelatedCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.BookNoteUncheckedUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedUpdateManyWithoutBookNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutBooksNestedInput
 }
 
@@ -987,6 +1110,7 @@ export type BookUpdateWithoutTagsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   relatedCourse?: Prisma.CourseUpdateOneWithoutBooksNestedInput
   notes?: Prisma.BookNoteUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUpdateManyWithoutBookNestedInput
 }
 
 export type BookUncheckedUpdateWithoutTagsInput = {
@@ -1005,6 +1129,7 @@ export type BookUncheckedUpdateWithoutTagsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   notes?: Prisma.BookNoteUncheckedUpdateManyWithoutBookNestedInput
+  readingSessions?: Prisma.BookReadingSessionUncheckedUpdateManyWithoutBookNestedInput
 }
 
 export type BookUncheckedUpdateManyWithoutTagsInput = {
@@ -1031,11 +1156,13 @@ export type BookUncheckedUpdateManyWithoutTagsInput = {
 
 export type BookCountOutputType = {
   notes: number
+  readingSessions: number
   tags: number
 }
 
 export type BookCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   notes?: boolean | BookCountOutputTypeCountNotesArgs
+  readingSessions?: boolean | BookCountOutputTypeCountReadingSessionsArgs
   tags?: boolean | BookCountOutputTypeCountTagsArgs
 }
 
@@ -1054,6 +1181,13 @@ export type BookCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
  */
 export type BookCountOutputTypeCountNotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BookNoteWhereInput
+}
+
+/**
+ * BookCountOutputType without action
+ */
+export type BookCountOutputTypeCountReadingSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookReadingSessionWhereInput
 }
 
 /**
@@ -1081,6 +1215,7 @@ export type BookSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   relatedCourse?: boolean | Prisma.Book$relatedCourseArgs<ExtArgs>
   notes?: boolean | Prisma.Book$notesArgs<ExtArgs>
+  readingSessions?: boolean | Prisma.Book$readingSessionsArgs<ExtArgs>
   tags?: boolean | Prisma.Book$tagsArgs<ExtArgs>
   _count?: boolean | Prisma.BookCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["book"]>
@@ -1142,6 +1277,7 @@ export type BookOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type BookInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   relatedCourse?: boolean | Prisma.Book$relatedCourseArgs<ExtArgs>
   notes?: boolean | Prisma.Book$notesArgs<ExtArgs>
+  readingSessions?: boolean | Prisma.Book$readingSessionsArgs<ExtArgs>
   tags?: boolean | Prisma.Book$tagsArgs<ExtArgs>
   _count?: boolean | Prisma.BookCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -1157,6 +1293,7 @@ export type $BookPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     relatedCourse: Prisma.$CoursePayload<ExtArgs> | null
     notes: Prisma.$BookNotePayload<ExtArgs>[]
+    readingSessions: Prisma.$BookReadingSessionPayload<ExtArgs>[]
     tags: Prisma.$TagPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1570,6 +1707,7 @@ export interface Prisma__BookClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   relatedCourse<T extends Prisma.Book$relatedCourseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Book$relatedCourseArgs<ExtArgs>>): Prisma.Prisma__CourseClient<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   notes<T extends Prisma.Book$notesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Book$notesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookNotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  readingSessions<T extends Prisma.Book$readingSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Book$readingSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookReadingSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tags<T extends Prisma.Book$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Book$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2055,6 +2193,30 @@ export type Book$notesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
   take?: number
   skip?: number
   distinct?: Prisma.BookNoteScalarFieldEnum | Prisma.BookNoteScalarFieldEnum[]
+}
+
+/**
+ * Book.readingSessions
+ */
+export type Book$readingSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BookReadingSession
+   */
+  select?: Prisma.BookReadingSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BookReadingSession
+   */
+  omit?: Prisma.BookReadingSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookReadingSessionInclude<ExtArgs> | null
+  where?: Prisma.BookReadingSessionWhereInput
+  orderBy?: Prisma.BookReadingSessionOrderByWithRelationInput | Prisma.BookReadingSessionOrderByWithRelationInput[]
+  cursor?: Prisma.BookReadingSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookReadingSessionScalarFieldEnum | Prisma.BookReadingSessionScalarFieldEnum[]
 }
 
 /**

@@ -1,65 +1,53 @@
 import { describe, expect, it } from 'vitest';
-import { buildDailyQueue, newCardCap, type QueueInput } from '../src/lib/daily';
-
-const input: QueueInput = {
-  inAppDue: [
-    { courseName: 'Mathematics', tab: 'MATH', count: 12 },
-    { courseName: 'NATO Alphabet', tab: 'SKILLS', count: 5 },
-  ],
-  inAppNew: [{ courseName: 'Mathematics', tab: 'MATH', count: 30 }],
-  ankiDue: [{ courseName: 'Chinese', tab: 'CHINESE', count: 226 }],
-  openMistakes: [{ courseName: 'Mathematics', tab: 'MATH', count: 3 }],
-  rememberNotes: 2,
-};
+import { buildDailyQueue } from '../src/lib/daily';
 
 describe('buildDailyQueue', () => {
-  it('balanced mode: anki first, then reviews, capped new cards, mistakes, books', () => {
-    const queue = buildDailyQueue(input, 'balanced');
-    expect(queue.map((b) => b.key)).toEqual(['anki', 'due', 'new', 'mistakes', 'books']);
-    expect(queue[2].count).toBe(20); // 30 available, capped at 20
-    expect(queue[0].emphasis).toBe(true);
-  });
-
-  it('review-heavy mode drops the new-cards block entirely', () => {
-    const queue = buildDailyQueue(input, 'review-heavy');
-    expect(queue.find((b) => b.key === 'new')).toBeUndefined();
-    expect(queue[0].key).toBe('anki');
-  });
-
-  it('mistake-cleanup puts mistakes first', () => {
-    expect(buildDailyQueue(input, 'mistake-cleanup')[0].key).toBe('mistakes');
-  });
-
-  it('new-content-heavy leads with a 40-card cap', () => {
-    const queue = buildDailyQueue(input, 'new-content-heavy');
-    expect(queue[0].key).toBe('new');
-    expect(queue[0].count).toBe(30); // all 30 available, under the 40 cap
-    expect(newCardCap('new-content-heavy')).toBe(40);
-  });
-
-  it('math-focused puts math blocks first and the rest after', () => {
-    const queue = buildDailyQueue(input, 'math-focused');
-    const keys = queue.map((b) => b.key);
-    expect(keys.indexOf('due-focus')).toBeLessThan(keys.indexOf('anki-rest'));
-    const focusBlock = queue.find((b) => b.key === 'due-focus')!;
-    expect(focusBlock.count).toBe(12); // math only
-    expect(focusBlock.emphasis).toBe(true);
-    const restAnki = queue.find((b) => b.key === 'anki-rest')!;
-    expect(restAnki.count).toBe(226);
-    expect(restAnki.emphasis).toBe(false);
-  });
-
-  it('chinese-focused leads with the Anki block for Chinese', () => {
-    const queue = buildDailyQueue(input, 'chinese-focused');
-    expect(queue[0].key).toBe('anki-focus');
+  it('creates Anki, grammar, and reading blocks without in-app reviews', () => {
+    const queue = buildDailyQueue({
+      ankiDue: 226,
+      grammarReviews: 4,
+      readingBook: { id: 'book-1', title: 'A Book' },
+      readToday: false,
+    });
+    expect(queue.map((block) => block.title)).toEqual(['Anki review', 'Japanese grammar', 'Read']);
     expect(queue[0].count).toBe(226);
+    expect(queue[1].count).toBe(4);
+    expect(queue[1].detail).toBe('4 reviews due');
+    expect(queue[1].href).toContain('returnTo=%2Fdaily');
+    expect(queue[2].href).toContain('returnTo=%2Fdaily');
+    expect(queue.some((block) => block.title === 'In-app review')).toBe(false);
   });
 
-  it('omits empty blocks', () => {
-    const empty = buildDailyQueue(
-      { inAppDue: [], inAppNew: [], ankiDue: [], openMistakes: [], rememberNotes: 0 },
-      'balanced',
-    );
-    expect(empty).toHaveLength(0);
+  it('uses singular wording for one grammar review', () => {
+    const queue = buildDailyQueue({ ankiDue: 0, grammarReviews: 1, readingBook: null, readToday: false });
+    expect(queue[1].detail).toBe('1 review due');
+  });
+
+  it('hides grammar when no reviews or new points are due', () => {
+    const queue = buildDailyQueue({ ankiDue: 0, grammarReviews: 0, readingBook: null, readToday: true });
+    expect(queue.map((block) => block.key)).toEqual(['anki', 'read']);
+    expect(queue.every((block) => block.complete)).toBe(true);
+  });
+
+  it('shows a weekly new-grammar batch without claiming reviews are due', () => {
+    const queue = buildDailyQueue({ ankiDue: 0, grammarReviews: 0, grammarNew: 5, readingBook: null, readToday: false });
+    const grammar = queue.find((block) => block.key === 'grammar');
+    expect(grammar?.detail).toBe('5 new points ready');
+    expect(grammar?.count).toBe(5);
+  });
+
+  it('adds Saturday skills before reading', () => {
+    const queue = buildDailyQueue({
+      ankiDue: 0,
+      grammarReviews: 0,
+      readingBook: null,
+      readToday: false,
+      weekendSkills: [
+        { key: 'geoguessr', title: 'GeoGuessr', detail: 'Saturday practice', href: 'https://www.geoguessr.com/analytics' },
+        { key: 'nato', title: 'NATO recall', detail: 'Saturday recall', href: '/nato' },
+      ],
+    });
+    expect(queue.slice(1, 3).map((block) => block.key)).toEqual(['geoguessr', 'nato']);
+    expect(queue.at(-1)?.key).toBe('read');
   });
 });

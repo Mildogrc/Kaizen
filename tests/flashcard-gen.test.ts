@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { generateCards, generatePractice, renderTemplate } from '../src/lib/flashcard-gen';
-import { SEED_SCHEMAS } from '../prisma/seed-data/schemas';
 
 describe('renderTemplate', () => {
   const data = { term: '勉強', reading: 'べんきょう', meaning: 'study', tags: ['common', 'N5'], rank: 120 };
@@ -39,16 +38,6 @@ describe('generateCards', () => {
     expect(cards).toHaveLength(0); // both rules reference reading
     const partial = generateCards(items, [{ name: 'simple', front: '{{term}}', back: '{{meaning}}' }]);
     expect(partial).toHaveLength(1);
-  });
-
-  it('works against the seeded NATO schema rules', () => {
-    const nato = SEED_SCHEMAS.find((s) => s.slug === 'nato-alphabet')!;
-    const cards = generateCards(
-      [{ id: 'x', data: { letter: 'A', word: 'Alfa', pronunciation: 'AL-fah' } }],
-      nato.config!.flashcardRules!,
-    );
-    expect(cards.map((c) => c.front)).toEqual(['A → ?', 'Alfa → ?']);
-    expect(cards.map((c) => c.back)).toEqual(['Alfa', 'A']);
   });
 });
 

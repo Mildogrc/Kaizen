@@ -134,6 +134,56 @@ export type Book = Prisma.BookModel
  */
 export type BookNote = Prisma.BookNoteModel
 /**
+ * Model BookReadingSession
+ * 
+ */
+export type BookReadingSession = Prisma.BookReadingSessionModel
+/**
+ * Model GrammarProgress
+ * 
+ */
+export type GrammarProgress = Prisma.GrammarProgressModel
+/**
+ * Model GrammarLesson
+ * 
+ */
+export type GrammarLesson = Prisma.GrammarLessonModel
+/**
+ * Model CodeforcesProfile
+ * 
+ */
+export type CodeforcesProfile = Prisma.CodeforcesProfileModel
+/**
+ * Model CodeforcesSubmission
+ * 
+ */
+export type CodeforcesSubmission = Prisma.CodeforcesSubmissionModel
+/**
+ * Model CodeforcesRatingChange
+ * 
+ */
+export type CodeforcesRatingChange = Prisma.CodeforcesRatingChangeModel
+/**
+ * Model SpeedReadingPassage
+ * 
+ */
+export type SpeedReadingPassage = Prisma.SpeedReadingPassageModel
+/**
+ * Model SpeedReadingSession
+ * 
+ */
+export type SpeedReadingSession = Prisma.SpeedReadingSessionModel
+/**
+ * Model MandarinBlueprintLevel
+ * 
+ */
+export type MandarinBlueprintLevel = Prisma.MandarinBlueprintLevelModel
+/**
+ * Model MandarinDictionaryEntry
+ * 
+ */
+export type MandarinDictionaryEntry = Prisma.MandarinDictionaryEntryModel
+/**
  * Model AnkiDeckMapping
  * 
  */

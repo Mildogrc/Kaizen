@@ -35,6 +35,7 @@ export type LearningItemMinAggregateOutputType = {
   importBatchId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceKey: string | null
 }
 
 export type LearningItemMaxAggregateOutputType = {
@@ -48,6 +49,7 @@ export type LearningItemMaxAggregateOutputType = {
   importBatchId: string | null
   createdAt: Date | null
   updatedAt: Date | null
+  sourceKey: string | null
 }
 
 export type LearningItemCountAggregateOutputType = {
@@ -62,6 +64,7 @@ export type LearningItemCountAggregateOutputType = {
   importBatchId: number
   createdAt: number
   updatedAt: number
+  sourceKey: number
   _all: number
 }
 
@@ -77,6 +80,7 @@ export type LearningItemMinAggregateInputType = {
   importBatchId?: true
   createdAt?: true
   updatedAt?: true
+  sourceKey?: true
 }
 
 export type LearningItemMaxAggregateInputType = {
@@ -90,6 +94,7 @@ export type LearningItemMaxAggregateInputType = {
   importBatchId?: true
   createdAt?: true
   updatedAt?: true
+  sourceKey?: true
 }
 
 export type LearningItemCountAggregateInputType = {
@@ -104,6 +109,7 @@ export type LearningItemCountAggregateInputType = {
   importBatchId?: true
   createdAt?: true
   updatedAt?: true
+  sourceKey?: true
   _all?: true
 }
 
@@ -191,6 +197,7 @@ export type LearningItemGroupByOutputType = {
   importBatchId: string | null
   createdAt: Date
   updatedAt: Date
+  sourceKey: string | null
   _count: LearningItemCountAggregateOutputType | null
   _min: LearningItemMinAggregateOutputType | null
   _max: LearningItemMaxAggregateOutputType | null
@@ -226,6 +233,7 @@ export type LearningItemWhereInput = {
   importBatchId?: Prisma.StringNullableFilter<"LearningItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
+  sourceKey?: Prisma.StringNullableFilter<"LearningItem"> | string | null
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   contentSchema?: Prisma.XOR<Prisma.ContentSchemaNullableScalarRelationFilter, Prisma.ContentSchemaWhereInput> | null
   schemaVersion?: Prisma.XOR<Prisma.ContentSchemaVersionNullableScalarRelationFilter, Prisma.ContentSchemaVersionWhereInput> | null
@@ -235,6 +243,7 @@ export type LearningItemWhereInput = {
   practiceItems?: Prisma.PracticeItemListRelationFilter
   flashcards?: Prisma.FlashcardListRelationFilter
   tags?: Prisma.TagListRelationFilter
+  grammarProgress?: Prisma.XOR<Prisma.GrammarProgressNullableScalarRelationFilter, Prisma.GrammarProgressWhereInput> | null
 }
 
 export type LearningItemOrderByWithRelationInput = {
@@ -249,6 +258,7 @@ export type LearningItemOrderByWithRelationInput = {
   importBatchId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrderInput | Prisma.SortOrder
   course?: Prisma.CourseOrderByWithRelationInput
   contentSchema?: Prisma.ContentSchemaOrderByWithRelationInput
   schemaVersion?: Prisma.ContentSchemaVersionOrderByWithRelationInput
@@ -258,10 +268,12 @@ export type LearningItemOrderByWithRelationInput = {
   practiceItems?: Prisma.PracticeItemOrderByRelationAggregateInput
   flashcards?: Prisma.FlashcardOrderByRelationAggregateInput
   tags?: Prisma.TagOrderByRelationAggregateInput
+  grammarProgress?: Prisma.GrammarProgressOrderByWithRelationInput
 }
 
 export type LearningItemWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  courseId_itemType_sourceKey?: Prisma.LearningItemCourseIdItemTypeSourceKeyCompoundUniqueInput
   AND?: Prisma.LearningItemWhereInput | Prisma.LearningItemWhereInput[]
   OR?: Prisma.LearningItemWhereInput[]
   NOT?: Prisma.LearningItemWhereInput | Prisma.LearningItemWhereInput[]
@@ -275,6 +287,7 @@ export type LearningItemWhereUniqueInput = Prisma.AtLeast<{
   importBatchId?: Prisma.StringNullableFilter<"LearningItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
+  sourceKey?: Prisma.StringNullableFilter<"LearningItem"> | string | null
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   contentSchema?: Prisma.XOR<Prisma.ContentSchemaNullableScalarRelationFilter, Prisma.ContentSchemaWhereInput> | null
   schemaVersion?: Prisma.XOR<Prisma.ContentSchemaVersionNullableScalarRelationFilter, Prisma.ContentSchemaVersionWhereInput> | null
@@ -284,7 +297,8 @@ export type LearningItemWhereUniqueInput = Prisma.AtLeast<{
   practiceItems?: Prisma.PracticeItemListRelationFilter
   flashcards?: Prisma.FlashcardListRelationFilter
   tags?: Prisma.TagListRelationFilter
-}, "id">
+  grammarProgress?: Prisma.XOR<Prisma.GrammarProgressNullableScalarRelationFilter, Prisma.GrammarProgressWhereInput> | null
+}, "id" | "courseId_itemType_sourceKey">
 
 export type LearningItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -298,6 +312,7 @@ export type LearningItemOrderByWithAggregationInput = {
   importBatchId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.LearningItemCountOrderByAggregateInput
   _max?: Prisma.LearningItemMaxOrderByAggregateInput
   _min?: Prisma.LearningItemMinOrderByAggregateInput
@@ -318,6 +333,7 @@ export type LearningItemScalarWhereWithAggregatesInput = {
   importBatchId?: Prisma.StringNullableWithAggregatesFilter<"LearningItem"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"LearningItem"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"LearningItem"> | Date | string
+  sourceKey?: Prisma.StringNullableWithAggregatesFilter<"LearningItem"> | string | null
 }
 
 export type LearningItemCreateInput = {
@@ -326,6 +342,7 @@ export type LearningItemCreateInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -335,6 +352,7 @@ export type LearningItemCreateInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateInput = {
@@ -349,9 +367,11 @@ export type LearningItemUncheckedCreateInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUpdateInput = {
@@ -360,6 +380,7 @@ export type LearningItemUpdateInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -369,6 +390,7 @@ export type LearningItemUpdateInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateInput = {
@@ -383,9 +405,11 @@ export type LearningItemUncheckedUpdateInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemCreateManyInput = {
@@ -400,6 +424,7 @@ export type LearningItemCreateManyInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateManyMutationInput = {
@@ -408,6 +433,7 @@ export type LearningItemUpdateManyMutationInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemUncheckedUpdateManyInput = {
@@ -422,6 +448,7 @@ export type LearningItemUncheckedUpdateManyInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemListRelationFilter = {
@@ -432,6 +459,12 @@ export type LearningItemListRelationFilter = {
 
 export type LearningItemOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type LearningItemCourseIdItemTypeSourceKeyCompoundUniqueInput = {
+  courseId: string
+  itemType: string
+  sourceKey: string
 }
 
 export type LearningItemCountOrderByAggregateInput = {
@@ -446,6 +479,7 @@ export type LearningItemCountOrderByAggregateInput = {
   importBatchId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
 }
 
 export type LearningItemMaxOrderByAggregateInput = {
@@ -459,6 +493,7 @@ export type LearningItemMaxOrderByAggregateInput = {
   importBatchId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
 }
 
 export type LearningItemMinOrderByAggregateInput = {
@@ -472,11 +507,17 @@ export type LearningItemMinOrderByAggregateInput = {
   importBatchId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  sourceKey?: Prisma.SortOrder
 }
 
 export type LearningItemNullableScalarRelationFilter = {
   is?: Prisma.LearningItemWhereInput | null
   isNot?: Prisma.LearningItemWhereInput | null
+}
+
+export type LearningItemScalarRelationFilter = {
+  is?: Prisma.LearningItemWhereInput
+  isNot?: Prisma.LearningItemWhereInput
 }
 
 export type LearningItemCreateNestedManyWithoutCourseInput = {
@@ -801,12 +842,27 @@ export type LearningItemUncheckedUpdateManyWithoutRoadmapNodeNestedInput = {
   deleteMany?: Prisma.LearningItemScalarWhereInput | Prisma.LearningItemScalarWhereInput[]
 }
 
+export type LearningItemCreateNestedOneWithoutGrammarProgressInput = {
+  create?: Prisma.XOR<Prisma.LearningItemCreateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedCreateWithoutGrammarProgressInput>
+  connectOrCreate?: Prisma.LearningItemCreateOrConnectWithoutGrammarProgressInput
+  connect?: Prisma.LearningItemWhereUniqueInput
+}
+
+export type LearningItemUpdateOneRequiredWithoutGrammarProgressNestedInput = {
+  create?: Prisma.XOR<Prisma.LearningItemCreateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedCreateWithoutGrammarProgressInput>
+  connectOrCreate?: Prisma.LearningItemCreateOrConnectWithoutGrammarProgressInput
+  upsert?: Prisma.LearningItemUpsertWithoutGrammarProgressInput
+  connect?: Prisma.LearningItemWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LearningItemUpdateToOneWithWhereWithoutGrammarProgressInput, Prisma.LearningItemUpdateWithoutGrammarProgressInput>, Prisma.LearningItemUncheckedUpdateWithoutGrammarProgressInput>
+}
+
 export type LearningItemCreateWithoutCourseInput = {
   id?: string
   itemType: string
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
   roadmapNode?: Prisma.RoadmapNodeCreateNestedOneWithoutLearningItemsInput
@@ -815,6 +871,7 @@ export type LearningItemCreateWithoutCourseInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutCourseInput = {
@@ -828,9 +885,11 @@ export type LearningItemUncheckedCreateWithoutCourseInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutCourseInput = {
@@ -874,6 +933,7 @@ export type LearningItemScalarWhereInput = {
   importBatchId?: Prisma.StringNullableFilter<"LearningItem"> | string | null
   createdAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"LearningItem"> | Date | string
+  sourceKey?: Prisma.StringNullableFilter<"LearningItem"> | string | null
 }
 
 export type LearningItemCreateWithoutContentSchemaInput = {
@@ -882,6 +942,7 @@ export type LearningItemCreateWithoutContentSchemaInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
   roadmapNode?: Prisma.RoadmapNodeCreateNestedOneWithoutLearningItemsInput
@@ -890,6 +951,7 @@ export type LearningItemCreateWithoutContentSchemaInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutContentSchemaInput = {
@@ -903,9 +965,11 @@ export type LearningItemUncheckedCreateWithoutContentSchemaInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutContentSchemaInput = {
@@ -940,6 +1004,7 @@ export type LearningItemCreateWithoutSchemaVersionInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   roadmapNode?: Prisma.RoadmapNodeCreateNestedOneWithoutLearningItemsInput
@@ -948,6 +1013,7 @@ export type LearningItemCreateWithoutSchemaVersionInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutSchemaVersionInput = {
@@ -961,9 +1027,11 @@ export type LearningItemUncheckedCreateWithoutSchemaVersionInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutSchemaVersionInput = {
@@ -998,6 +1066,7 @@ export type LearningItemCreateWithoutPracticeItemsInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1006,6 +1075,7 @@ export type LearningItemCreateWithoutPracticeItemsInput = {
   importBatch?: Prisma.ImportBatchCreateNestedOneWithoutLearningItemsInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutPracticeItemsInput = {
@@ -1020,8 +1090,10 @@ export type LearningItemUncheckedCreateWithoutPracticeItemsInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutPracticeItemsInput = {
@@ -1046,6 +1118,7 @@ export type LearningItemUpdateWithoutPracticeItemsInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1054,6 +1127,7 @@ export type LearningItemUpdateWithoutPracticeItemsInput = {
   importBatch?: Prisma.ImportBatchUpdateOneWithoutLearningItemsNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutPracticeItemsInput = {
@@ -1068,8 +1142,10 @@ export type LearningItemUncheckedUpdateWithoutPracticeItemsInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemCreateWithoutFlashcardsInput = {
@@ -1078,6 +1154,7 @@ export type LearningItemCreateWithoutFlashcardsInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1086,6 +1163,7 @@ export type LearningItemCreateWithoutFlashcardsInput = {
   importBatch?: Prisma.ImportBatchCreateNestedOneWithoutLearningItemsInput
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutFlashcardsInput = {
@@ -1100,8 +1178,10 @@ export type LearningItemUncheckedCreateWithoutFlashcardsInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutFlashcardsInput = {
@@ -1126,6 +1206,7 @@ export type LearningItemUpdateWithoutFlashcardsInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1134,6 +1215,7 @@ export type LearningItemUpdateWithoutFlashcardsInput = {
   importBatch?: Prisma.ImportBatchUpdateOneWithoutLearningItemsNestedInput
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutFlashcardsInput = {
@@ -1148,8 +1230,10 @@ export type LearningItemUncheckedUpdateWithoutFlashcardsInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemCreateWithoutTagsInput = {
@@ -1158,6 +1242,7 @@ export type LearningItemCreateWithoutTagsInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1166,6 +1251,7 @@ export type LearningItemCreateWithoutTagsInput = {
   importBatch?: Prisma.ImportBatchCreateNestedOneWithoutLearningItemsInput
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutTagsInput = {
@@ -1180,8 +1266,10 @@ export type LearningItemUncheckedCreateWithoutTagsInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutTagsInput = {
@@ -1211,6 +1299,7 @@ export type LearningItemCreateWithoutSourceInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1219,6 +1308,7 @@ export type LearningItemCreateWithoutSourceInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutSourceInput = {
@@ -1232,9 +1322,11 @@ export type LearningItemUncheckedCreateWithoutSourceInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutSourceInput = {
@@ -1269,6 +1361,7 @@ export type LearningItemCreateWithoutImportBatchInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1277,6 +1370,7 @@ export type LearningItemCreateWithoutImportBatchInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutImportBatchInput = {
@@ -1290,9 +1384,11 @@ export type LearningItemUncheckedCreateWithoutImportBatchInput = {
   sourceId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutImportBatchInput = {
@@ -1327,6 +1423,7 @@ export type LearningItemCreateWithoutRoadmapNodeInput = {
   data: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
   schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
@@ -1335,6 +1432,7 @@ export type LearningItemCreateWithoutRoadmapNodeInput = {
   practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemUncheckedCreateWithoutRoadmapNodeInput = {
@@ -1348,9 +1446,11 @@ export type LearningItemUncheckedCreateWithoutRoadmapNodeInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
   practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
   flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
   tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedCreateNestedOneWithoutLearningItemInput
 }
 
 export type LearningItemCreateOrConnectWithoutRoadmapNodeInput = {
@@ -1379,6 +1479,94 @@ export type LearningItemUpdateManyWithWhereWithoutRoadmapNodeInput = {
   data: Prisma.XOR<Prisma.LearningItemUpdateManyMutationInput, Prisma.LearningItemUncheckedUpdateManyWithoutRoadmapNodeInput>
 }
 
+export type LearningItemCreateWithoutGrammarProgressInput = {
+  id?: string
+  itemType: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceKey?: string | null
+  course: Prisma.CourseCreateNestedOneWithoutLearningItemsInput
+  contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutLearningItemsInput
+  schemaVersion?: Prisma.ContentSchemaVersionCreateNestedOneWithoutLearningItemsInput
+  roadmapNode?: Prisma.RoadmapNodeCreateNestedOneWithoutLearningItemsInput
+  source?: Prisma.SourceCreateNestedOneWithoutLearningItemsInput
+  importBatch?: Prisma.ImportBatchCreateNestedOneWithoutLearningItemsInput
+  practiceItems?: Prisma.PracticeItemCreateNestedManyWithoutLearningItemInput
+  flashcards?: Prisma.FlashcardCreateNestedManyWithoutLearningItemInput
+  tags?: Prisma.TagCreateNestedManyWithoutLearningItemsInput
+}
+
+export type LearningItemUncheckedCreateWithoutGrammarProgressInput = {
+  id?: string
+  courseId: string
+  schemaId?: string | null
+  schemaVersionId?: string | null
+  itemType: string
+  data: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  roadmapNodeId?: string | null
+  sourceId?: string | null
+  importBatchId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sourceKey?: string | null
+  practiceItems?: Prisma.PracticeItemUncheckedCreateNestedManyWithoutLearningItemInput
+  flashcards?: Prisma.FlashcardUncheckedCreateNestedManyWithoutLearningItemInput
+  tags?: Prisma.TagUncheckedCreateNestedManyWithoutLearningItemsInput
+}
+
+export type LearningItemCreateOrConnectWithoutGrammarProgressInput = {
+  where: Prisma.LearningItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.LearningItemCreateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedCreateWithoutGrammarProgressInput>
+}
+
+export type LearningItemUpsertWithoutGrammarProgressInput = {
+  update: Prisma.XOR<Prisma.LearningItemUpdateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedUpdateWithoutGrammarProgressInput>
+  create: Prisma.XOR<Prisma.LearningItemCreateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedCreateWithoutGrammarProgressInput>
+  where?: Prisma.LearningItemWhereInput
+}
+
+export type LearningItemUpdateToOneWithWhereWithoutGrammarProgressInput = {
+  where?: Prisma.LearningItemWhereInput
+  data: Prisma.XOR<Prisma.LearningItemUpdateWithoutGrammarProgressInput, Prisma.LearningItemUncheckedUpdateWithoutGrammarProgressInput>
+}
+
+export type LearningItemUpdateWithoutGrammarProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  itemType?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
+  contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
+  schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
+  roadmapNode?: Prisma.RoadmapNodeUpdateOneWithoutLearningItemsNestedInput
+  source?: Prisma.SourceUpdateOneWithoutLearningItemsNestedInput
+  importBatch?: Prisma.ImportBatchUpdateOneWithoutLearningItemsNestedInput
+  practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
+  flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
+  tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+}
+
+export type LearningItemUncheckedUpdateWithoutGrammarProgressInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  schemaVersionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  itemType?: Prisma.StringFieldUpdateOperationsInput | string
+  data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  roadmapNodeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
+  flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
+  tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+}
+
 export type LearningItemCreateManyCourseInput = {
   id?: string
   schemaId?: string | null
@@ -1390,6 +1578,7 @@ export type LearningItemCreateManyCourseInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutCourseInput = {
@@ -1398,6 +1587,7 @@ export type LearningItemUpdateWithoutCourseInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
   roadmapNode?: Prisma.RoadmapNodeUpdateOneWithoutLearningItemsNestedInput
@@ -1406,6 +1596,7 @@ export type LearningItemUpdateWithoutCourseInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutCourseInput = {
@@ -1419,9 +1610,11 @@ export type LearningItemUncheckedUpdateWithoutCourseInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutCourseInput = {
@@ -1435,6 +1628,7 @@ export type LearningItemUncheckedUpdateManyWithoutCourseInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemCreateManyContentSchemaInput = {
@@ -1448,6 +1642,7 @@ export type LearningItemCreateManyContentSchemaInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutContentSchemaInput = {
@@ -1456,6 +1651,7 @@ export type LearningItemUpdateWithoutContentSchemaInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
   roadmapNode?: Prisma.RoadmapNodeUpdateOneWithoutLearningItemsNestedInput
@@ -1464,6 +1660,7 @@ export type LearningItemUpdateWithoutContentSchemaInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutContentSchemaInput = {
@@ -1477,9 +1674,11 @@ export type LearningItemUncheckedUpdateWithoutContentSchemaInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutContentSchemaInput = {
@@ -1493,6 +1692,7 @@ export type LearningItemUncheckedUpdateManyWithoutContentSchemaInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemCreateManySchemaVersionInput = {
@@ -1506,6 +1706,7 @@ export type LearningItemCreateManySchemaVersionInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutSchemaVersionInput = {
@@ -1514,6 +1715,7 @@ export type LearningItemUpdateWithoutSchemaVersionInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   roadmapNode?: Prisma.RoadmapNodeUpdateOneWithoutLearningItemsNestedInput
@@ -1522,6 +1724,7 @@ export type LearningItemUpdateWithoutSchemaVersionInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutSchemaVersionInput = {
@@ -1535,9 +1738,11 @@ export type LearningItemUncheckedUpdateWithoutSchemaVersionInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutSchemaVersionInput = {
@@ -1551,6 +1756,7 @@ export type LearningItemUncheckedUpdateManyWithoutSchemaVersionInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemUpdateWithoutTagsInput = {
@@ -1559,6 +1765,7 @@ export type LearningItemUpdateWithoutTagsInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1567,6 +1774,7 @@ export type LearningItemUpdateWithoutTagsInput = {
   importBatch?: Prisma.ImportBatchUpdateOneWithoutLearningItemsNestedInput
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutTagsInput = {
@@ -1581,8 +1789,10 @@ export type LearningItemUncheckedUpdateWithoutTagsInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutTagsInput = {
@@ -1597,6 +1807,7 @@ export type LearningItemUncheckedUpdateManyWithoutTagsInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemCreateManySourceInput = {
@@ -1610,6 +1821,7 @@ export type LearningItemCreateManySourceInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutSourceInput = {
@@ -1618,6 +1830,7 @@ export type LearningItemUpdateWithoutSourceInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1626,6 +1839,7 @@ export type LearningItemUpdateWithoutSourceInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutSourceInput = {
@@ -1639,9 +1853,11 @@ export type LearningItemUncheckedUpdateWithoutSourceInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutSourceInput = {
@@ -1655,6 +1871,7 @@ export type LearningItemUncheckedUpdateManyWithoutSourceInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemCreateManyImportBatchInput = {
@@ -1668,6 +1885,7 @@ export type LearningItemCreateManyImportBatchInput = {
   sourceId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutImportBatchInput = {
@@ -1676,6 +1894,7 @@ export type LearningItemUpdateWithoutImportBatchInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1684,6 +1903,7 @@ export type LearningItemUpdateWithoutImportBatchInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutImportBatchInput = {
@@ -1697,9 +1917,11 @@ export type LearningItemUncheckedUpdateWithoutImportBatchInput = {
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutImportBatchInput = {
@@ -1713,6 +1935,7 @@ export type LearningItemUncheckedUpdateManyWithoutImportBatchInput = {
   sourceId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type LearningItemCreateManyRoadmapNodeInput = {
@@ -1726,6 +1949,7 @@ export type LearningItemCreateManyRoadmapNodeInput = {
   importBatchId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sourceKey?: string | null
 }
 
 export type LearningItemUpdateWithoutRoadmapNodeInput = {
@@ -1734,6 +1958,7 @@ export type LearningItemUpdateWithoutRoadmapNodeInput = {
   data?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateOneRequiredWithoutLearningItemsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutLearningItemsNestedInput
   schemaVersion?: Prisma.ContentSchemaVersionUpdateOneWithoutLearningItemsNestedInput
@@ -1742,6 +1967,7 @@ export type LearningItemUpdateWithoutRoadmapNodeInput = {
   practiceItems?: Prisma.PracticeItemUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateWithoutRoadmapNodeInput = {
@@ -1755,9 +1981,11 @@ export type LearningItemUncheckedUpdateWithoutRoadmapNodeInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   practiceItems?: Prisma.PracticeItemUncheckedUpdateManyWithoutLearningItemNestedInput
   flashcards?: Prisma.FlashcardUncheckedUpdateManyWithoutLearningItemNestedInput
   tags?: Prisma.TagUncheckedUpdateManyWithoutLearningItemsNestedInput
+  grammarProgress?: Prisma.GrammarProgressUncheckedUpdateOneWithoutLearningItemNestedInput
 }
 
 export type LearningItemUncheckedUpdateManyWithoutRoadmapNodeInput = {
@@ -1771,6 +1999,7 @@ export type LearningItemUncheckedUpdateManyWithoutRoadmapNodeInput = {
   importBatchId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sourceKey?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -1834,6 +2063,7 @@ export type LearningItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
   importBatchId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceKey?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.LearningItem$contentSchemaArgs<ExtArgs>
   schemaVersion?: boolean | Prisma.LearningItem$schemaVersionArgs<ExtArgs>
@@ -1843,6 +2073,7 @@ export type LearningItemSelect<ExtArgs extends runtime.Types.Extensions.Internal
   practiceItems?: boolean | Prisma.LearningItem$practiceItemsArgs<ExtArgs>
   flashcards?: boolean | Prisma.LearningItem$flashcardsArgs<ExtArgs>
   tags?: boolean | Prisma.LearningItem$tagsArgs<ExtArgs>
+  grammarProgress?: boolean | Prisma.LearningItem$grammarProgressArgs<ExtArgs>
   _count?: boolean | Prisma.LearningItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["learningItem"]>
 
@@ -1858,6 +2089,7 @@ export type LearningItemSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   importBatchId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceKey?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.LearningItem$contentSchemaArgs<ExtArgs>
   schemaVersion?: boolean | Prisma.LearningItem$schemaVersionArgs<ExtArgs>
@@ -1878,6 +2110,7 @@ export type LearningItemSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   importBatchId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceKey?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.LearningItem$contentSchemaArgs<ExtArgs>
   schemaVersion?: boolean | Prisma.LearningItem$schemaVersionArgs<ExtArgs>
@@ -1898,9 +2131,10 @@ export type LearningItemSelectScalar = {
   importBatchId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  sourceKey?: boolean
 }
 
-export type LearningItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "courseId" | "schemaId" | "schemaVersionId" | "itemType" | "data" | "roadmapNodeId" | "sourceId" | "importBatchId" | "createdAt" | "updatedAt", ExtArgs["result"]["learningItem"]>
+export type LearningItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "courseId" | "schemaId" | "schemaVersionId" | "itemType" | "data" | "roadmapNodeId" | "sourceId" | "importBatchId" | "createdAt" | "updatedAt" | "sourceKey", ExtArgs["result"]["learningItem"]>
 export type LearningItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.LearningItem$contentSchemaArgs<ExtArgs>
@@ -1911,6 +2145,7 @@ export type LearningItemInclude<ExtArgs extends runtime.Types.Extensions.Interna
   practiceItems?: boolean | Prisma.LearningItem$practiceItemsArgs<ExtArgs>
   flashcards?: boolean | Prisma.LearningItem$flashcardsArgs<ExtArgs>
   tags?: boolean | Prisma.LearningItem$tagsArgs<ExtArgs>
+  grammarProgress?: boolean | Prisma.LearningItem$grammarProgressArgs<ExtArgs>
   _count?: boolean | Prisma.LearningItemCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LearningItemIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1942,6 +2177,7 @@ export type $LearningItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
     practiceItems: Prisma.$PracticeItemPayload<ExtArgs>[]
     flashcards: Prisma.$FlashcardPayload<ExtArgs>[]
     tags: Prisma.$TagPayload<ExtArgs>[]
+    grammarProgress: Prisma.$GrammarProgressPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1958,6 +2194,7 @@ export type $LearningItemPayload<ExtArgs extends runtime.Types.Extensions.Intern
     importBatchId: string | null
     createdAt: Date
     updatedAt: Date
+    sourceKey: string | null
   }, ExtArgs["result"]["learningItem"]>
   composites: {}
 }
@@ -2361,6 +2598,7 @@ export interface Prisma__LearningItemClient<T, Null = never, ExtArgs extends run
   practiceItems<T extends Prisma.LearningItem$practiceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningItem$practiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PracticeItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   flashcards<T extends Prisma.LearningItem$flashcardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningItem$flashcardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FlashcardPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tags<T extends Prisma.LearningItem$tagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningItem$tagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  grammarProgress<T extends Prisma.LearningItem$grammarProgressArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.LearningItem$grammarProgressArgs<ExtArgs>>): Prisma.Prisma__GrammarProgressClient<runtime.Types.Result.GetResult<Prisma.$GrammarProgressPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2401,6 +2639,7 @@ export interface LearningItemFieldRefs {
   readonly importBatchId: Prisma.FieldRef<"LearningItem", 'String'>
   readonly createdAt: Prisma.FieldRef<"LearningItem", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"LearningItem", 'DateTime'>
+  readonly sourceKey: Prisma.FieldRef<"LearningItem", 'String'>
 }
     
 
@@ -2966,6 +3205,25 @@ export type LearningItem$tagsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.TagScalarFieldEnum | Prisma.TagScalarFieldEnum[]
+}
+
+/**
+ * LearningItem.grammarProgress
+ */
+export type LearningItem$grammarProgressArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the GrammarProgress
+   */
+  select?: Prisma.GrammarProgressSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the GrammarProgress
+   */
+  omit?: Prisma.GrammarProgressOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.GrammarProgressInclude<ExtArgs> | null
+  where?: Prisma.GrammarProgressWhereInput
 }
 
 /**

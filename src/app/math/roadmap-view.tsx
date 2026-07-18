@@ -160,7 +160,7 @@ function edgePath(from: { x: number; y: number }, to: { x: number; y: number }) 
 }
 
 export function MathRoadmap({ nodes, edges, initialTarget }: { nodes: NodeVM[]; edges: EdgeVM[]; initialTarget: string | null }) {
-  const targets = nodes.filter((n) => n.isTarget);
+  const targets = useMemo(() => nodes.filter((node) => node.isTarget), [nodes]);
   const [targetSlug, setTargetSlug] = useState<string | null>(initialTarget);
   const [hideAdvanced, setHideAdvanced] = useState(false);
   const [, startTransition] = useTransition();
@@ -262,6 +262,13 @@ export function MathRoadmap({ nodes, edges, initialTarget }: { nodes: NodeVM[]; 
     [targetNode, nodes, edges],
   );
   const doneCount = visibleNodes.filter((n) => effective(n) === 'COMPLETED').length;
+  const fullRoadmapProgress = nodes.length === 0 ? 0 : (nodes.filter((node) => effective(node) === 'COMPLETED').length / nodes.length) * 100;
+  const targetProgress = useMemo(() => new Map(targets.map((target) => {
+    const path = pathToTarget(target.id, nodes, edges) as NodeVM[];
+    const completed = path.filter((node) => effective(node) === 'COMPLETED').length;
+    return [target.slug, path.length === 0 ? 0 : (completed / path.length) * 100];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  })), [targets, nodes, edges, statusOverride]);
 
   const onNodeClick = (node: NodeVM) => {
     const cycle = ['NOT_STARTED', 'IN_PROGRESS', 'COMPLETED'];
@@ -270,17 +277,19 @@ export function MathRoadmap({ nodes, edges, initialTarget }: { nodes: NodeVM[]; 
     startTransition(() => cycleNodeStatus(node.id));
   };
 
-  const targetBtn = (label: string, slug: string | null, active: boolean) => (
+  const targetBtn = (label: string, slug: string | null, active: boolean, progress: number) => (
     <button
       key={slug ?? 'all'}
       onClick={() => setTargetSlug(slug)}
-      className={`rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors cursor-pointer ${
+      className={`relative overflow-hidden rounded-md border px-3 py-1.5 text-[12px] font-medium transition-colors cursor-pointer ${
         active
-          ? 'border-amber-600 bg-amber-950/50 text-amber-200'
+          ? 'border-amber-600 bg-surface-2 text-amber-100'
           : 'border-line bg-surface-2 text-muted hover:border-amber-700/50 hover:text-foreground'
       }`}
+      aria-label={`${label}: ${Math.round(progress)}% complete`}
     >
-      {label}
+      <span className={`absolute inset-y-0 left-0 ${active ? 'bg-amber-600/35' : 'bg-blue-600/30'}`} style={{ width: `${Math.min(100, progress)}%` }} />
+      <span className="relative z-10">{label}</span>
     </button>
   );
 
@@ -288,8 +297,8 @@ export function MathRoadmap({ nodes, edges, initialTarget }: { nodes: NodeVM[]; 
     <div>
       {/* Target buttons */}
       <div className="mb-3 flex flex-wrap items-center gap-1.5">
-        {targetBtn('Full roadmap', null, targetSlug === null)}
-        {targets.map((t) => targetBtn(t.title, t.slug, targetSlug === t.slug))}
+        {targetBtn('Full roadmap', null, targetSlug === null, fullRoadmapProgress)}
+        {targets.map((target) => targetBtn(target.title, target.slug, targetSlug === target.slug, targetProgress.get(target.slug) ?? 0))}
         {!targetNode && (
           <label className="ml-2 flex items-center gap-1.5 text-[12px] text-muted cursor-pointer">
             <input type="checkbox" checked={hideAdvanced} onChange={(e) => setHideAdvanced(e.target.checked)} />

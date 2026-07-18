@@ -4,10 +4,12 @@
 
 import { prisma } from './db';
 import { stripAnkiHtml } from './anki-html';
+import { nestedDeckFallback } from './anki-deck';
 import {
   AnkiUnavailableError,
   cardReviews,
   cardsInfo,
+  deckNames,
   findCards,
   notesInfoTags,
   type AnkiCardInfo,
@@ -100,13 +102,26 @@ export async function syncAnki(): Promise<SyncSummary> {
 
   try {
     const mappings = await prisma.ankiDeckMapping.findMany();
+    const availableDeckNames = await deckNames();
     const todayDayNumber = await probeTodayDayNumber();
 
     for (const mapping of mappings) {
-      const esc = mapping.deckName.replace(/"/g, '\\"');
-      const cardIds = await findCards(`deck:"${esc}"`);
+      let resolvedDeckName = mapping.deckName;
+      let escapedDeckName = resolvedDeckName.replace(/"/g, '\\"');
+      let cardIds = await findCards(`deck:"${escapedDeckName}"`);
+      if (cardIds.length === 0) {
+        const fallback = nestedDeckFallback(mapping.deckName, availableDeckNames);
+        if (fallback) {
+          resolvedDeckName = fallback;
+          escapedDeckName = fallback.replace(/"/g, '\\"');
+          cardIds = await findCards(`deck:"${escapedDeckName}"`);
+        }
+      }
       const cards = await cardsInfo(cardIds);
       const tagsByNote = await notesInfoTags([...new Set(cards.map((c) => c.note))]);
+
+      const existingSnapshotCount = await prisma.ankiCardSnapshot.count({ where: { mappingId: mapping.id } });
+      if (cards.length === 0 && existingSnapshotCount > 0) continue;
 
       // Prune snapshots for cards no longer in the deck.
       await prisma.ankiCardSnapshot.deleteMany({
@@ -146,7 +161,7 @@ export async function syncAnki(): Promise<SyncSummary> {
         _max: { ankiReviewId: true },
       });
       const startID = Number(latest._max.ankiReviewId ?? 0n);
-      const reviews = await cardReviews(mapping.deckName, startID);
+      const reviews = await cardReviews(resolvedDeckName, startID);
       if (reviews.length > 0) {
         const result = await prisma.ankiReviewLog.createMany({
           data: reviews.map(([reviewTime, cardID, , buttonPressed, newInterval, previousInterval, , duration]) => ({

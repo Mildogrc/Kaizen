@@ -39,16 +39,24 @@ export interface HeatDay {
   reviews: number;
 }
 
-const heatColor = (n: number) =>
-  n === 0 ? '#161b27' : n < 10 ? RAMP[0] : n < 25 ? RAMP[1] : n < 50 ? RAMP[2] : RAMP[3];
+const heatColor = (n: number, thresholds: [number, number, number]) =>
+  n === 0 ? '#161b27' : n <= thresholds[0] ? RAMP[0] : n <= thresholds[1] ? RAMP[1] : n <= thresholds[2] ? RAMP[2] : RAMP[3];
 
 /** GitHub-style 365-day activity heatmap. Sequential single-hue ramp. */
-export function ActivityHeatmap({ days }: { days: HeatDay[] }) {
+export function ActivityHeatmap({
+  days,
+  unit = 'reviews',
+  thresholds = [9, 24, 49],
+}: {
+  days: HeatDay[];
+  unit?: string;
+  thresholds?: [number, number, number];
+}) {
   const { show, hide, node } = useTooltip();
   const CELL = 10;
   const GAP = 2;
   // Column per ISO week; pad the front so weeks align on Monday.
-  const firstDay = new Date(days[0]?.date ?? Date.now());
+  const firstDay = new Date(days[0]?.date ?? '1970-01-01');
   const padStart = (firstDay.getDay() + 6) % 7; // Monday = 0
   const cells: (HeatDay | null)[] = [...Array<null>(padStart).fill(null), ...days];
   const weeks: (HeatDay | null)[][] = [];
@@ -84,8 +92,8 @@ export function ActivityHeatmap({ days }: { days: HeatDay[] }) {
                 width={CELL}
                 height={CELL}
                 rx={2}
-                fill={heatColor(day.reviews)}
-                onMouseEnter={(e) => show(e, `${day.date}: ${day.reviews} reviews`)}
+                fill={heatColor(day.reviews, thresholds)}
+                onMouseEnter={(e) => show(e, `${day.date}: ${day.reviews} ${unit}`)}
                 onMouseLeave={hide}
               />
             ),
@@ -100,6 +108,47 @@ export function ActivityHeatmap({ days }: { days: HeatDay[] }) {
         ))}
         more
       </div>
+    </div>
+  );
+}
+
+// --------------------------------------------------------------------- Line
+
+export interface LineDatum {
+  label: string;
+  value: number;
+  tooltip: string;
+}
+
+export function MetricLine({ data, color = '#3987e5', height = 150 }: { data: LineDatum[]; color?: string; height?: number }) {
+  const { show, hide, node } = useTooltip();
+  if (data.length === 0) return <div className="text-[12px] text-muted">No history yet.</div>;
+  const width = Math.max(320, data.length * 30);
+  const values = data.map((point) => point.value);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const span = Math.max(1, max - min);
+  const x = (index: number) => (data.length === 1 ? width / 2 : 8 + (index / (data.length - 1)) * (width - 16));
+  const y = (value: number) => 8 + ((max - value) / span) * (height - 16);
+  const path = data.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point.value)}`).join(' ');
+
+  return (
+    <div data-chart className="relative overflow-x-auto">
+      <svg viewBox={`0 0 ${width} ${height + 18}`} className="block min-w-full">
+        {[0.25, 0.5, 0.75].map((fraction) => (
+          <line key={fraction} x1={0} x2={width} y1={8 + fraction * (height - 16)} y2={8 + fraction * (height - 16)} stroke={GRID} strokeWidth={0.5} />
+        ))}
+        <path d={path} fill="none" stroke={color} strokeWidth={2} />
+        {data.map((point, index) => (
+          <g key={`${point.label}-${index}`}>
+            <circle cx={x(index)} cy={y(point.value)} r={3} fill={color} />
+            <rect x={x(index) - 10} y={0} width={20} height={height} fill="transparent" onMouseEnter={(event) => show(event, point.tooltip)} onMouseLeave={hide} />
+          </g>
+        ))}
+        <text x={4} y={height + 14} fill={INK_MUTED} fontSize={9}>{data[0].label}</text>
+        <text x={width - 4} y={height + 14} textAnchor="end" fill={INK_MUTED} fontSize={9}>{data[data.length - 1].label}</text>
+      </svg>
+      {node}
     </div>
   );
 }
