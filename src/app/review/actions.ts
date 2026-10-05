@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import { rate, type Rating } from '@/lib/srs';
 
@@ -30,7 +29,4 @@ export async function rateGrammarReviewAction(progressId: string, rating: Rating
       lastRating: rating,
     },
   });
-  revalidatePath('/review');
-  revalidatePath('/japanese/grammar');
-  revalidatePath('/daily');
 }

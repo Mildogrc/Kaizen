@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { ankiDueTodayCount } from '@/lib/anki-data';
 import { currentJlptProgress } from '@/lib/jlpt-progress';
-import { configuredMathTargetSlug } from '@/lib/math-goals';
+import { configuredMathLongTermTargetSlugs, configuredMathTargetSlug } from '@/lib/math-goals';
 import { pathProgress } from '@/lib/roadmap';
 import { Badge, Card, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus } from '@/components/ui';
 
@@ -75,7 +75,8 @@ export default async function Dashboard() {
     return { name: level.name, rank: level.rank, targetVocab: targets.targetVocab ?? 0, grammarTotal: grammar.total, grammarMastered: grammar.mastered };
   }), japaneseWordStat?.lower ?? 0) : null;
   const mathCourse = courses.find((course) => course.slug === 'math');
-  const roadmapTargets = roadmap?.nodes.filter((node) => node.isTarget) ?? [];
+  const longTermMathTargetSlugs = configuredMathLongTermTargetSlugs(mathCourse?.metadata, roadmap?.nodes ?? []);
+  const roadmapTargets = roadmap?.nodes.filter((node) => longTermMathTargetSlugs.includes(node.slug)) ?? [];
   const mathGoalRecord = goals.find((goal) => goal.course.slug === 'math');
   const currentMathTargetSlug = configuredMathTargetSlug(mathCourse?.metadata, roadmapTargets, mathGoalRecord?.title);
   const currentMathTarget = roadmapTargets.find((node) => node.slug === currentMathTargetSlug) ?? null;
@@ -109,7 +110,10 @@ export default async function Dashboard() {
           {japaneseGoal && japaneseCourse && (
             <Card className="p-3">
               <div className="flex items-center justify-between gap-2"><span className="text-[13px] font-medium">Prepare for JLPT {japaneseGoal.name}</span><Badge tone="blue">Japanese</Badge></div>
-              <div className="mt-2"><ProgressBar pct={japaneseGoal.overallProgress} color={japaneseCourse.color ?? undefined} /></div>
+              <div className="mt-3 grid grid-cols-2 gap-4 text-[11px]">
+                <div><div className="mb-1 flex justify-between"><span>Words</span><span className="tabular-nums">{Math.round(japaneseGoal.wordProgress)}%</span></div><ProgressBar pct={japaneseGoal.wordProgress} color="#22d3ee" /></div>
+                <div><div className="mb-1 flex justify-between"><span>Grammar</span><span className="tabular-nums">{Math.round(japaneseGoal.grammarProgress)}%</span></div><ProgressBar pct={japaneseGoal.grammarProgress} color="#fb7185" /></div>
+              </div>
               <p className="mt-1.5 text-[12px] text-muted tabular-nums">{japaneseGoal.wordsRemaining.toLocaleString()} words left · {japaneseGoal.grammarRemaining.toLocaleString()} grammar points left</p>
             </Card>
           )}

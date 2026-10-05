@@ -21,11 +21,40 @@ describe('parseMigakuExport', () => {
     expect(parseMigakuExport(json, true).words).toHaveLength(1);
   });
 
+  it('keeps only the selected language from a mixed Migaku JSON export', () => {
+    const json = JSON.stringify({
+      words: [
+        { word: '食べる', reading: 'たべる', language: 'ja', status: 'KNOWN' },
+        { word: '学习', language: 'zh', status: 'KNOWN' },
+        { word: 'study', language: 'en', status: 'KNOWN' },
+        { word: '猫', status: 'KNOWN' },
+      ],
+    });
+    const result = parseMigakuExport(json, false, 'ja');
+    expect(result.words.map((word) => word.word)).toEqual(['食べる', '猫']);
+    expect(result.filteredOut).toBe(2);
+  });
+
+  it('recognizes common language aliases', () => {
+    const json = JSON.stringify([
+      { word: '猫', language: 'Japanese' },
+      { word: '勉強', language: 'jp' },
+      { word: '学习', language: 'zh-CN' },
+    ]);
+    expect(parseMigakuExport(json, false, 'ja').words.map((word) => word.word)).toEqual(['猫', '勉強']);
+    expect(parseMigakuExport(json, false, 'zh').words.map((word) => word.word)).toEqual(['学习']);
+  });
+
   it('parses CSV with a header row, honoring quoted fields', () => {
     const csv = 'Word,Status,Reading\n食べる,Known,たべる\n"走る",Learning,はしる\n猫,Known,ねこ';
     const result = parseMigakuExport(csv);
     expect(result.format).toBe('csv');
     expect(result.words.map((w) => w.word)).toEqual(['食べる', '猫']);
+  });
+
+  it('filters mixed CSV exports by language', () => {
+    const csv = 'Word,Status,Reading,Language\n食べる,Known,たべる,ja\nstudy,Known,,en\n学习,Known,,zh';
+    expect(parseMigakuExport(csv, false, 'ja').words.map((word) => word.word)).toEqual(['食べる']);
   });
 
   it('parses plain text word-per-line (with optional status column)', () => {

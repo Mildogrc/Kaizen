@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/db';
-import { configuredMathTargetSlug } from '@/lib/math-goals';
+import { configuredMathLongTermTargetSlugs, configuredMathTargetSlug } from '@/lib/math-goals';
 import { Badge, Card, EmptyState, PageHeader, Section, StatCard, btnCls } from '@/components/ui';
 import { GenerateButton } from '@/components/generate-button';
 import { MathRoadmap } from './roadmap-view';
@@ -25,9 +25,12 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
 
   const done = roadmap.nodes.filter((n) => n.status === 'COMPLETED').length;
   const inProgress = roadmap.nodes.filter((n) => n.status === 'IN_PROGRESS').length;
-  const mathTargets = roadmap.nodes.filter((node) => node.isTarget);
+  const longTermTargetSlugs = configuredMathLongTermTargetSlugs(course.metadata, roadmap.nodes);
+  const longTermTargetSet = new Set(longTermTargetSlugs);
+  const mathTargets = roadmap.nodes.filter((node) => longTermTargetSet.has(node.slug));
   const currentTargetSlug = configuredMathTargetSlug(course.metadata, mathTargets, course.goals[0]?.title);
   const currentTarget = mathTargets.find((node) => node.slug === currentTargetSlug) ?? null;
+  const initialTarget = target && longTermTargetSet.has(target) ? target : currentTargetSlug;
 
   return (
     <>
@@ -62,10 +65,10 @@ export default async function MathPage({ searchParams }: { searchParams: Promise
         <MathRoadmap
           nodes={roadmap.nodes.map((n) => ({
             id: n.id, slug: n.slug, title: n.title, status: n.status,
-            branch: n.branch, level: n.level, isTarget: n.isTarget, description: n.description,
+            branch: n.branch, level: n.level, isTarget: longTermTargetSet.has(n.slug), description: n.description,
           }))}
           edges={roadmap.edges.map((e) => ({ fromNodeId: e.fromNodeId, toNodeId: e.toNodeId, kind: e.kind }))}
-          initialTarget={target ?? currentTargetSlug}
+          initialTarget={initialTarget}
         />
       </Section>
 

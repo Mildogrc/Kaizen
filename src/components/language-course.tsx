@@ -2,10 +2,11 @@ import Link from 'next/link';
 import { prisma } from '@/lib/db';
 import { ankiDueTodayCount, ankiRowsForMappings } from '@/lib/anki-data';
 import { retention, streaks } from '@/lib/anki-analytics';
-import { currentJlptProgress } from '@/lib/jlpt-progress';
+import { cumulativeJlptLevels, currentJlptProgress } from '@/lib/jlpt-progress';
 import { levelBandProgressPercent } from '@/lib/progression';
 import { Badge, Card, EmptyState, PageHeader, ProgressBar, Section, StatCard, statusTone, fmtStatus, btnCls, btnPrimaryCls } from '@/components/ui';
 import { GenerateButton } from '@/components/generate-button';
+import { AnkiSyncButton } from '@/components/anki-sync-button';
 
 function ExamLevelTile({
   label,
@@ -13,37 +14,51 @@ function ExamLevelTile({
   secondaryProgress,
   complete,
   tone = 'cyan',
+  primaryLabel = 'Progress',
+  secondaryLabel = 'Secondary',
+  tooltipPrimaryProgress,
+  tooltipSecondaryProgress,
 }: {
   label: string;
   primaryProgress: number;
   secondaryProgress?: number;
   complete: boolean;
   tone?: 'cyan' | 'amber';
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  tooltipPrimaryProgress?: number;
+  tooltipSecondaryProgress?: number;
 }) {
   const primaryFill = complete ? 'bg-green-600/70' : tone === 'amber' ? 'bg-amber-500/55' : 'bg-cyan-500/55';
   const secondaryFill = complete ? 'bg-green-600/70' : 'bg-rose-500/55';
-  const progressLabel = secondaryProgress == null
-    ? `${Math.round(primaryProgress)}%`
-    : `${Math.round(primaryProgress)}% vocabulary and ${Math.round(secondaryProgress)}% grammar`;
+  const tooltipPrimary = tooltipPrimaryProgress ?? primaryProgress;
+  const tooltipSecondary = tooltipSecondaryProgress ?? secondaryProgress;
+  const progressLabel = tooltipSecondary == null
+    ? `${primaryLabel}: ${Math.round(tooltipPrimary)}%`
+    : `${primaryLabel}: ${Math.round(tooltipPrimary)}%. ${secondaryLabel}: ${Math.round(tooltipSecondary)}%`;
 
   return (
-    <div
-      className={`relative flex h-11 min-w-16 items-center justify-center overflow-hidden rounded-md border px-2 text-center ${complete ? 'border-green-600 text-green-100' : 'border-line bg-surface-2'}`}
-      aria-label={`${label}: ${progressLabel}`}
-    >
-      {secondaryProgress == null ? (
-        <div className={`absolute inset-x-0 bottom-0 ${primaryFill}`} style={{ height: `${primaryProgress}%` }} />
-      ) : (
-        <>
-          <div className="absolute inset-y-0 left-0 w-1/2 overflow-hidden">
-            <div className={`absolute inset-x-0 bottom-0 ${primaryFill}`} style={{ height: `${primaryProgress}%` }} />
-          </div>
-          <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden border-l border-line">
-            <div className={`absolute inset-x-0 bottom-0 ${secondaryFill}`} style={{ height: `${secondaryProgress}%` }} />
-          </div>
-        </>
-      )}
-      <span className="relative z-10 text-[12px] font-semibold drop-shadow-sm">{label}</span>
+    <div className="group relative" aria-label={`${label}: ${progressLabel}`} tabIndex={0}>
+      <div className={`relative flex h-11 min-w-16 items-center justify-center overflow-hidden rounded-md border px-2 text-center ${complete ? 'border-green-600 text-green-100' : 'border-line bg-surface-2'}`}>
+        {secondaryProgress == null ? (
+          <div className={`absolute inset-x-0 bottom-0 ${primaryFill}`} style={{ height: `${primaryProgress}%` }} />
+        ) : (
+          <>
+            <div className="absolute inset-y-0 left-0 w-1/2 overflow-hidden">
+              <div className={`absolute inset-x-0 bottom-0 ${primaryFill}`} style={{ height: `${primaryProgress}%` }} />
+            </div>
+            <div className="absolute inset-y-0 right-0 w-1/2 overflow-hidden border-l border-line">
+              <div className={`absolute inset-x-0 bottom-0 ${secondaryFill}`} style={{ height: `${secondaryProgress}%` }} />
+            </div>
+          </>
+        )}
+        <span className="relative z-10 text-[12px] font-semibold drop-shadow-sm">{label}</span>
+      </div>
+      <div role="tooltip" className="pointer-events-none absolute bottom-full left-1/2 z-30 mb-2 hidden min-w-32 -translate-x-1/2 rounded-md border border-line bg-surface px-3 py-2 text-left text-[11px] shadow-xl group-hover:block group-focus:block">
+        <div className="font-semibold">{label}</div>
+        <div className="mt-1 text-cyan-300">{primaryLabel}: {Math.round(tooltipPrimary)}%</div>
+        {tooltipSecondary != null && <div className="text-rose-300">{secondaryLabel}: {Math.round(tooltipSecondary)}%</div>}
+      </div>
     </div>
   );
 }
@@ -92,7 +107,15 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
     grammarByLevel.set(level, counts);
   }
   let matureKanjiCount = 0;
-  let anki: { dueToday: number; streak: number; matureRetention: number | null; maturePct: number; deckNames: string } | null = null;
+  let anki: {
+    cards: number;
+    dueToday: number;
+    streak: number;
+    matureRetention: number | null;
+    maturePct: number;
+    deckNames: string;
+    lastSyncedAt: Date | null;
+  } | null = null;
   if (ankiMappings.length > 0) {
     const { snapshots, logs } = await ankiRowsForMappings(ankiMappings.map((m) => m.id));
     const mature = snapshots.filter((s) => s.state === 'MATURE').length;
@@ -103,17 +126,36 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
     );
     matureKanjiCount = snapshots.filter((snapshot) => snapshot.state === 'MATURE' && snapshot.mappingId && kanjiMappingIds.has(snapshot.mappingId)).length;
     anki = {
+      cards: snapshots.length,
       dueToday: await ankiDueTodayCount(course.id),
       streak: streaks(logs).current,
       matureRetention: retention(logs).mature,
       maturePct: snapshots.length > 0 ? Math.round((mature / snapshots.length) * 100) : 0,
       deckNames: ankiMappings.map((m) => m.deckName).join(' · '),
+      lastSyncedAt: ankiMappings.reduce<Date | null>((latest, mapping) => {
+        if (!mapping.lastSyncedAt) return latest;
+        return !latest || mapping.lastSyncedAt > latest ? mapping.lastSyncedAt : latest;
+      }, null),
     };
   }
 
   const activeGoals = course.goals.filter((g) => g.status === 'ACTIVE');
   const plannedGoals = course.goals.filter((g) => g.status === 'PLANNED');
   const jlptExam = course.exams.find((exam) => exam.slug === 'jlpt');
+  const jlptLevels = jlptExam
+    ? cumulativeJlptLevels(jlptExam.levels.map((level) => {
+        const targets = level.targets as Record<string, number>;
+        const grammar = grammarByLevel.get(level.name) ?? { total: targets.targetGrammar ?? 0, mastered: 0 };
+        return {
+          name: level.name,
+          rank: level.rank,
+          targetVocab: targets.targetVocab ?? 0,
+          grammarTotal: grammar.total,
+          grammarMastered: grammar.mastered,
+        };
+      }))
+    : [];
+  const jlptLevelsByName = new Map(jlptLevels.map((level) => [level.name, level]));
   const japaneseGoal = course.tab === 'JAPANESE' && jlptExam
     ? currentJlptProgress(jlptExam.levels.map((level) => {
         const targets = level.targets as Record<string, number>;
@@ -136,6 +178,8 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         actions={
           <>
             {course.slug === 'japanese' && <Link href="/japanese/grammar" className={btnPrimaryCls}>文 Grammar coach</Link>}
+            {course.slug === 'japanese' && <Link href="/japanese/kanji-repair" className={btnPrimaryCls}>漢 Kanji Repair</Link>}
+            {course.slug === 'chinese' && <Link href="/chinese/pronunciation" className={btnPrimaryCls}>声 Pronunciation</Link>}
             {course.slug === 'chinese' && <Link href="/chinese/mandarin-blueprint" className={btnPrimaryCls}>蓝 Mandarin Blueprint</Link>}
             <GenerateButton courseId={course.id} />
             <Link href={`/import?course=${course.slug}`} className={btnCls}>⇥ Import content</Link>
@@ -144,10 +188,11 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         }
       />
 
-      <div className="mb-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatCard label="Learning items" value={course._count.learningItems} accent={course.color ?? undefined} />
-        <StatCard label="Flashcards" value={course._count.flashcards} />
-        <StatCard label="Due reviews" value={dueReviews} />
+      <div className={`mb-6 grid grid-cols-2 gap-3 ${ankiMappings.length ? 'md:grid-cols-5' : 'md:grid-cols-4'}`}>
+        <StatCard label="Content items" value={course._count.learningItems} hint="stored in the app, not Anki" accent={course.color ?? undefined} />
+        <StatCard label="App flashcards" value={course._count.flashcards} hint="local cards; excludes Anki" />
+        {ankiMappings.length > 0 && <StatCard label="Anki cards" value={anki?.cards ?? 0} hint={anki?.lastSyncedAt ? `synced ${anki.lastSyncedAt.toLocaleDateString()}` : 'mapped but never synced'} />}
+        <StatCard label="App due reviews" value={dueReviews} hint="local review queue" />
         <StatCard label="Open mistakes" value={course._count.mistakes} />
       </div>
 
@@ -155,6 +200,7 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         <div className="mb-6 rounded-lg border border-line bg-surface px-4 py-2.5">
           <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[12px]">
             <span className="font-semibold text-muted">★ Anki</span>
+            <span>cards <span className="font-semibold tabular-nums text-accent">{anki.cards.toLocaleString()}</span></span>
             <span>due today <span className="font-semibold tabular-nums text-accent">{anki.dueToday}</span></span>
             <span>streak <span className="font-semibold tabular-nums">{anki.streak}d</span></span>
             <span>mature retention <span className="font-semibold tabular-nums">{anki.matureRetention === null ? '—' : `${Math.round(anki.matureRetention * 100)}%`}</span></span>
@@ -172,7 +218,12 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
                 kanji <span className="font-semibold tabular-nums text-amber-300">{matureKanjiCount.toLocaleString()}</span>
               </Link>
             )}
-            <Link href={`/analytics?area=${analyticsArea}`} className="ml-auto text-accent hover:underline">full analytics →</Link>
+            <span className="text-muted">{anki.lastSyncedAt ? `synced ${anki.lastSyncedAt.toLocaleString()}` : 'never synced'}</span>
+            <span className="ml-auto flex items-center gap-2">
+              <AnkiSyncButton />
+              <Link href="/anki" className="text-accent hover:underline">manage decks</Link>
+              <Link href={`/analytics?area=${analyticsArea}`} className="text-accent hover:underline">analytics →</Link>
+            </span>
           </div>
           <div className="mt-0.5 text-[11px] text-muted">{anki.deckNames}</div>
         </div>
@@ -185,7 +236,10 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
               <span className="text-[13px] font-medium">Prepare for JLPT {japaneseGoal.name}</span>
               <Badge tone="blue">active</Badge>
             </div>
-            <div className="mt-2"><ProgressBar pct={japaneseGoal.overallProgress} color={course.color ?? undefined} /></div>
+            <div className="mt-3 grid grid-cols-2 gap-4 text-[11px]">
+              <div><div className="mb-1 flex justify-between"><span>Words</span><span className="tabular-nums">{Math.round(japaneseGoal.wordProgress)}%</span></div><ProgressBar pct={japaneseGoal.wordProgress} color="#22d3ee" /></div>
+              <div><div className="mb-1 flex justify-between"><span>Grammar</span><span className="tabular-nums">{Math.round(japaneseGoal.grammarProgress)}%</span></div><ProgressBar pct={japaneseGoal.grammarProgress} color="#fb7185" /></div>
+            </div>
             <p className="mt-1.5 text-[12px] text-muted tabular-nums">{japaneseGoal.wordsRemaining.toLocaleString()} words left · {japaneseGoal.grammarRemaining.toLocaleString()} grammar points left</p>
           </Card>
         ) : (
@@ -237,12 +291,19 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
                     ? exam.levels[levelIndex - 1].targets as Record<string, number>
                     : {};
                   const grammar = grammarByLevel.get(level.name);
-                  const wordProgress = levelBandProgressPercent(wordStat?.lower ?? 0, targets.targetVocab, previousTargets.targetVocab);
-                  const grammarProgressPercent = levelBandProgressPercent(grammar?.mastered ?? 0, grammar?.total);
-                  const kanjiProgress = levelBandProgressPercent(matureKanjiCount, targets.targetKanji, previousTargets.targetKanji);
                   const isJlpt = exam.slug === 'jlpt';
                   const isHsk = exam.slug === 'hsk';
                   const isKanken = exam.slug === 'kanji-kentei';
+                  const cumulativeJlptLevel = isJlpt ? jlptLevelsByName.get(level.name) : undefined;
+                  const wordProgress = levelBandProgressPercent(wordStat?.lower ?? 0, targets.targetVocab, previousTargets.targetVocab);
+                  const grammarProgressPercent = levelBandProgressPercent(grammar?.mastered ?? 0, grammar?.total);
+                  const cumulativeWordProgress = isJlpt
+                    ? levelBandProgressPercent(wordStat?.lower ?? 0, targets.targetVocab)
+                    : wordProgress;
+                  const cumulativeGrammarProgress = isJlpt
+                    ? levelBandProgressPercent(cumulativeJlptLevel?.grammarMastered ?? 0, cumulativeJlptLevel?.grammarTotal)
+                    : grammarProgressPercent;
+                  const kanjiProgress = levelBandProgressPercent(matureKanjiCount, targets.targetKanji, previousTargets.targetKanji);
                   const primaryProgress = isKanken ? kanjiProgress : isJlpt || isHsk ? wordProgress : 0;
                   const complete = isJlpt
                     ? wordProgress === 100 && grammarProgressPercent === 100
@@ -257,6 +318,10 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
                       secondaryProgress={isJlpt ? grammarProgressPercent : undefined}
                       complete={complete}
                       tone={isKanken ? 'amber' : 'cyan'}
+                      primaryLabel={isJlpt ? 'Words' : 'Progress'}
+                      secondaryLabel="Grammar"
+                      tooltipPrimaryProgress={cumulativeWordProgress}
+                      tooltipSecondaryProgress={isJlpt ? cumulativeGrammarProgress : undefined}
                     />
                   );
                 })}
@@ -266,7 +331,7 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
         </div>
       </Section>
 
-      <Section title="Progression milestones">
+      {course.tab !== 'JAPANESE' && <Section title="Progression milestones">
         {course.milestones.length === 0 ? (
           <EmptyState>No milestones yet.</EmptyState>
         ) : (
@@ -286,7 +351,7 @@ export async function LanguageCoursePage({ slug }: { slug: string }) {
             </ol>
           </Card>
         )}
-      </Section>
+      </Section>}
 
       <details className="mb-3 rounded-lg border border-line bg-surface">
         <summary className="cursor-pointer px-4 py-3 text-[13px] font-medium">Content databases <span className="text-muted">({course.schemas.length})</span></summary>

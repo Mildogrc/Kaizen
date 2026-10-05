@@ -178,6 +178,10 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   settings?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateListRelationFilter
+  adaptiveAnkiState?: Prisma.XOR<Prisma.AnkiAdaptiveBudgetStateNullableScalarRelationFilter, Prisma.AnkiAdaptiveBudgetStateWhereInput> | null
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayListRelationFilter
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -186,6 +190,10 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   settings?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  kanjiRepairStates?: Prisma.KanjiRepairStateOrderByRelationAggregateInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateOrderByWithRelationInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayOrderByRelationAggregateInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -197,6 +205,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   settings?: Prisma.JsonFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateListRelationFilter
+  adaptiveAnkiState?: Prisma.XOR<Prisma.AnkiAdaptiveBudgetStateNullableScalarRelationFilter, Prisma.AnkiAdaptiveBudgetStateWhereInput> | null
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayListRelationFilter
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -227,6 +239,10 @@ export type UserCreateInput = {
   name: string
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -235,6 +251,10 @@ export type UserUncheckedCreateInput = {
   name: string
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -243,6 +263,10 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -251,6 +275,10 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -299,6 +327,11 @@ export type UserMinOrderByAggregateInput = {
   createdAt?: Prisma.SortOrder
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -307,6 +340,349 @@ export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
+export type UserCreateNestedOneWithoutKanjiRepairStatesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedCreateWithoutKanjiRepairStatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKanjiRepairStatesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutKanjiRepairStatesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedCreateWithoutKanjiRepairStatesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutKanjiRepairStatesInput
+  upsert?: Prisma.UserUpsertWithoutKanjiRepairStatesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutKanjiRepairStatesInput, Prisma.UserUpdateWithoutKanjiRepairStatesInput>, Prisma.UserUncheckedUpdateWithoutKanjiRepairStatesInput>
+}
+
+export type UserCreateNestedOneWithoutAdaptiveAnkiStateInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiStateInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiStateInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAdaptiveAnkiStateNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiStateInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiStateInput
+  upsert?: Prisma.UserUpsertWithoutAdaptiveAnkiStateInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdaptiveAnkiStateInput, Prisma.UserUpdateWithoutAdaptiveAnkiStateInput>, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiStateInput>
+}
+
+export type UserCreateNestedOneWithoutAdaptiveAnkiEvidenceDaysInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiEvidenceDaysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiEvidenceDaysInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAdaptiveAnkiEvidenceDaysNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiEvidenceDaysInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiEvidenceDaysInput
+  upsert?: Prisma.UserUpsertWithoutAdaptiveAnkiEvidenceDaysInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUpdateWithoutAdaptiveAnkiEvidenceDaysInput>, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiEvidenceDaysInput>
+}
+
+export type UserCreateNestedOneWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiBudgetDecisionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiBudgetDecisionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutAdaptiveAnkiBudgetDecisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiBudgetDecisionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAdaptiveAnkiBudgetDecisionsInput
+  upsert?: Prisma.UserUpsertWithoutAdaptiveAnkiBudgetDecisionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUpdateWithoutAdaptiveAnkiBudgetDecisionsInput>, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiBudgetDecisionsInput>
+}
+
+export type UserCreateWithoutKanjiRepairStatesInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutKanjiRepairStatesInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutKanjiRepairStatesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedCreateWithoutKanjiRepairStatesInput>
+}
+
+export type UserUpsertWithoutKanjiRepairStatesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedUpdateWithoutKanjiRepairStatesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedCreateWithoutKanjiRepairStatesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutKanjiRepairStatesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutKanjiRepairStatesInput, Prisma.UserUncheckedUpdateWithoutKanjiRepairStatesInput>
+}
+
+export type UserUpdateWithoutKanjiRepairStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutKanjiRepairStatesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAdaptiveAnkiStateInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateCreateNestedManyWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAdaptiveAnkiStateInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAdaptiveAnkiStateInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiStateInput>
+}
+
+export type UserUpsertWithoutAdaptiveAnkiStateInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiStateInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiStateInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAdaptiveAnkiStateInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiStateInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiStateInput>
+}
+
+export type UserUpdateWithoutAdaptiveAnkiStateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUpdateManyWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAdaptiveAnkiStateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAdaptiveAnkiEvidenceDaysInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateCreateNestedOneWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAdaptiveAnkiEvidenceDaysInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedCreateNestedOneWithoutUserInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAdaptiveAnkiEvidenceDaysInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiEvidenceDaysInput>
+}
+
+export type UserUpsertWithoutAdaptiveAnkiEvidenceDaysInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiEvidenceDaysInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiEvidenceDaysInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAdaptiveAnkiEvidenceDaysInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiEvidenceDaysInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiEvidenceDaysInput>
+}
+
+export type UserUpdateWithoutAdaptiveAnkiEvidenceDaysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUpdateOneWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAdaptiveAnkiEvidenceDaysInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedUpdateOneWithoutUserNestedInput
+  adaptiveAnkiBudgetDecisions?: Prisma.AnkiAdaptiveBudgetDecisionUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  id?: string
+  email: string
+  name: string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedCreateNestedManyWithoutUserInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedCreateNestedOneWithoutUserInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiBudgetDecisionsInput>
+}
+
+export type UserUpsertWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiBudgetDecisionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedCreateWithoutAdaptiveAnkiBudgetDecisionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAdaptiveAnkiBudgetDecisionsInput, Prisma.UserUncheckedUpdateWithoutAdaptiveAnkiBudgetDecisionsInput>
+}
+
+export type UserUpdateWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAdaptiveAnkiBudgetDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  settings?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  kanjiRepairStates?: Prisma.KanjiRepairStateUncheckedUpdateManyWithoutUserNestedInput
+  adaptiveAnkiState?: Prisma.AnkiAdaptiveBudgetStateUncheckedUpdateOneWithoutUserNestedInput
+  adaptiveAnkiEvidenceDays?: Prisma.AnkiAdaptiveEvidenceDayUncheckedUpdateManyWithoutUserNestedInput
+}
+
+
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  kanjiRepairStates: number
+  adaptiveAnkiEvidenceDays: number
+  adaptiveAnkiBudgetDecisions: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kanjiRepairStates?: boolean | UserCountOutputTypeCountKanjiRepairStatesArgs
+  adaptiveAnkiEvidenceDays?: boolean | UserCountOutputTypeCountAdaptiveAnkiEvidenceDaysArgs
+  adaptiveAnkiBudgetDecisions?: boolean | UserCountOutputTypeCountAdaptiveAnkiBudgetDecisionsArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountKanjiRepairStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.KanjiRepairStateWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAdaptiveAnkiEvidenceDaysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnkiAdaptiveEvidenceDayWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAdaptiveAnkiBudgetDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnkiAdaptiveBudgetDecisionWhereInput
+}
 
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -315,6 +691,11 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   settings?: boolean
   createdAt?: boolean
+  kanjiRepairStates?: boolean | Prisma.User$kanjiRepairStatesArgs<ExtArgs>
+  adaptiveAnkiState?: boolean | Prisma.User$adaptiveAnkiStateArgs<ExtArgs>
+  adaptiveAnkiEvidenceDays?: boolean | Prisma.User$adaptiveAnkiEvidenceDaysArgs<ExtArgs>
+  adaptiveAnkiBudgetDecisions?: boolean | Prisma.User$adaptiveAnkiBudgetDecisionsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -342,10 +723,24 @@ export type UserSelectScalar = {
 }
 
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "settings" | "createdAt", ExtArgs["result"]["user"]>
+export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  kanjiRepairStates?: boolean | Prisma.User$kanjiRepairStatesArgs<ExtArgs>
+  adaptiveAnkiState?: boolean | Prisma.User$adaptiveAnkiStateArgs<ExtArgs>
+  adaptiveAnkiEvidenceDays?: boolean | Prisma.User$adaptiveAnkiEvidenceDaysArgs<ExtArgs>
+  adaptiveAnkiBudgetDecisions?: boolean | Prisma.User$adaptiveAnkiBudgetDecisionsArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
 
 export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "User"
-  objects: {}
+  objects: {
+    kanjiRepairStates: Prisma.$KanjiRepairStatePayload<ExtArgs>[]
+    adaptiveAnkiState: Prisma.$AnkiAdaptiveBudgetStatePayload<ExtArgs> | null
+    adaptiveAnkiEvidenceDays: Prisma.$AnkiAdaptiveEvidenceDayPayload<ExtArgs>[]
+    adaptiveAnkiBudgetDecisions: Prisma.$AnkiAdaptiveBudgetDecisionPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
@@ -746,6 +1141,10 @@ readonly fields: UserFieldRefs;
  */
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  kanjiRepairStates<T extends Prisma.User$kanjiRepairStatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$kanjiRepairStatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$KanjiRepairStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adaptiveAnkiState<T extends Prisma.User$adaptiveAnkiStateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adaptiveAnkiStateArgs<ExtArgs>>): Prisma.Prisma__AnkiAdaptiveBudgetStateClient<runtime.Types.Result.GetResult<Prisma.$AnkiAdaptiveBudgetStatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  adaptiveAnkiEvidenceDays<T extends Prisma.User$adaptiveAnkiEvidenceDaysArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adaptiveAnkiEvidenceDaysArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiAdaptiveEvidenceDayPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adaptiveAnkiBudgetDecisions<T extends Prisma.User$adaptiveAnkiBudgetDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$adaptiveAnkiBudgetDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -797,6 +1196,10 @@ export type UserFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -815,6 +1218,10 @@ export type UserFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where: Prisma.UserWhereUniqueInput
@@ -832,6 +1239,10 @@ export type UserFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which User to fetch.
    */
@@ -881,6 +1292,10 @@ export type UserFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter, which User to fetch.
    */
   where?: Prisma.UserWhereInput
@@ -928,6 +1343,10 @@ export type UserFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * Filter, which Users to fetch.
    */
@@ -977,6 +1396,10 @@ export type UserCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The data needed to create a User.
    */
   data: Prisma.XOR<Prisma.UserCreateInput, Prisma.UserUncheckedCreateInput>
@@ -1024,6 +1447,10 @@ export type UserUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
   /**
    * The data needed to update a User.
    */
@@ -1091,6 +1518,10 @@ export type UserUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * The filter to search for the User to update in case it exists.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1117,6 +1548,10 @@ export type UserDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  /**
    * Filter which User to delete.
    */
   where: Prisma.UserWhereUniqueInput
@@ -1137,6 +1572,97 @@ export type UserDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * User.kanjiRepairStates
+ */
+export type User$kanjiRepairStatesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the KanjiRepairState
+   */
+  select?: Prisma.KanjiRepairStateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the KanjiRepairState
+   */
+  omit?: Prisma.KanjiRepairStateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.KanjiRepairStateInclude<ExtArgs> | null
+  where?: Prisma.KanjiRepairStateWhereInput
+  orderBy?: Prisma.KanjiRepairStateOrderByWithRelationInput | Prisma.KanjiRepairStateOrderByWithRelationInput[]
+  cursor?: Prisma.KanjiRepairStateWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.KanjiRepairStateScalarFieldEnum | Prisma.KanjiRepairStateScalarFieldEnum[]
+}
+
+/**
+ * User.adaptiveAnkiState
+ */
+export type User$adaptiveAnkiStateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiAdaptiveBudgetState
+   */
+  select?: Prisma.AnkiAdaptiveBudgetStateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiAdaptiveBudgetState
+   */
+  omit?: Prisma.AnkiAdaptiveBudgetStateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiAdaptiveBudgetStateInclude<ExtArgs> | null
+  where?: Prisma.AnkiAdaptiveBudgetStateWhereInput
+}
+
+/**
+ * User.adaptiveAnkiEvidenceDays
+ */
+export type User$adaptiveAnkiEvidenceDaysArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiAdaptiveEvidenceDay
+   */
+  select?: Prisma.AnkiAdaptiveEvidenceDaySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiAdaptiveEvidenceDay
+   */
+  omit?: Prisma.AnkiAdaptiveEvidenceDayOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiAdaptiveEvidenceDayInclude<ExtArgs> | null
+  where?: Prisma.AnkiAdaptiveEvidenceDayWhereInput
+  orderBy?: Prisma.AnkiAdaptiveEvidenceDayOrderByWithRelationInput | Prisma.AnkiAdaptiveEvidenceDayOrderByWithRelationInput[]
+  cursor?: Prisma.AnkiAdaptiveEvidenceDayWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnkiAdaptiveEvidenceDayScalarFieldEnum | Prisma.AnkiAdaptiveEvidenceDayScalarFieldEnum[]
+}
+
+/**
+ * User.adaptiveAnkiBudgetDecisions
+ */
+export type User$adaptiveAnkiBudgetDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiAdaptiveBudgetDecision
+   */
+  select?: Prisma.AnkiAdaptiveBudgetDecisionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiAdaptiveBudgetDecision
+   */
+  omit?: Prisma.AnkiAdaptiveBudgetDecisionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiAdaptiveBudgetDecisionInclude<ExtArgs> | null
+  where?: Prisma.AnkiAdaptiveBudgetDecisionWhereInput
+  orderBy?: Prisma.AnkiAdaptiveBudgetDecisionOrderByWithRelationInput | Prisma.AnkiAdaptiveBudgetDecisionOrderByWithRelationInput[]
+  cursor?: Prisma.AnkiAdaptiveBudgetDecisionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnkiAdaptiveBudgetDecisionScalarFieldEnum | Prisma.AnkiAdaptiveBudgetDecisionScalarFieldEnum[]
+}
+
+/**
  * User without action
  */
 export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1148,4 +1674,8 @@ export type UserDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the User
    */
   omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
 }

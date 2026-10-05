@@ -38,7 +38,7 @@ export function WordsImport() {
       const s = await importMigakuWordsAction({ language, text, includeLearning });
       setMessage(
         `✓ ${s.added} added · ${s.duplicates} already known · ${s.unparseable} unparseable` +
-          (s.filteredOut ? ` · ${s.filteredOut} filtered by status` : '') +
+          (s.filteredOut ? ` · ${s.filteredOut} filtered by language/status` : '') +
           ` (from ${s.parsed} entries)`,
       );
       setText('');

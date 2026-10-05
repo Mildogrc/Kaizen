@@ -30,6 +30,7 @@ export type AnkiDeckMappingMinAggregateOutputType = {
   courseId: string | null
   schemaId: string | null
   countsKnownWords: boolean | null
+  adaptiveNewCards: boolean | null
   lastSyncedAt: Date | null
   createdAt: Date | null
 }
@@ -40,6 +41,7 @@ export type AnkiDeckMappingMaxAggregateOutputType = {
   courseId: string | null
   schemaId: string | null
   countsKnownWords: boolean | null
+  adaptiveNewCards: boolean | null
   lastSyncedAt: Date | null
   createdAt: Date | null
 }
@@ -50,6 +52,7 @@ export type AnkiDeckMappingCountAggregateOutputType = {
   courseId: number
   schemaId: number
   countsKnownWords: number
+  adaptiveNewCards: number
   lastSyncedAt: number
   createdAt: number
   _all: number
@@ -62,6 +65,7 @@ export type AnkiDeckMappingMinAggregateInputType = {
   courseId?: true
   schemaId?: true
   countsKnownWords?: true
+  adaptiveNewCards?: true
   lastSyncedAt?: true
   createdAt?: true
 }
@@ -72,6 +76,7 @@ export type AnkiDeckMappingMaxAggregateInputType = {
   courseId?: true
   schemaId?: true
   countsKnownWords?: true
+  adaptiveNewCards?: true
   lastSyncedAt?: true
   createdAt?: true
 }
@@ -82,6 +87,7 @@ export type AnkiDeckMappingCountAggregateInputType = {
   courseId?: true
   schemaId?: true
   countsKnownWords?: true
+  adaptiveNewCards?: true
   lastSyncedAt?: true
   createdAt?: true
   _all?: true
@@ -165,6 +171,7 @@ export type AnkiDeckMappingGroupByOutputType = {
   courseId: string
   schemaId: string | null
   countsKnownWords: boolean
+  adaptiveNewCards: boolean
   lastSyncedAt: Date | null
   createdAt: Date
   _count: AnkiDeckMappingCountAggregateOutputType | null
@@ -196,12 +203,14 @@ export type AnkiDeckMappingWhereInput = {
   courseId?: Prisma.StringFilter<"AnkiDeckMapping"> | string
   schemaId?: Prisma.StringNullableFilter<"AnkiDeckMapping"> | string | null
   countsKnownWords?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
+  adaptiveNewCards?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"AnkiDeckMapping"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AnkiDeckMapping"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   contentSchema?: Prisma.XOR<Prisma.ContentSchemaNullableScalarRelationFilter, Prisma.ContentSchemaWhereInput> | null
   cards?: Prisma.AnkiCardSnapshotListRelationFilter
   reviewLogs?: Prisma.AnkiReviewLogListRelationFilter
+  adaptiveDeckState?: Prisma.XOR<Prisma.AnkiAdaptiveDeckStateNullableScalarRelationFilter, Prisma.AnkiAdaptiveDeckStateWhereInput> | null
 }
 
 export type AnkiDeckMappingOrderByWithRelationInput = {
@@ -210,12 +219,14 @@ export type AnkiDeckMappingOrderByWithRelationInput = {
   courseId?: Prisma.SortOrder
   schemaId?: Prisma.SortOrderInput | Prisma.SortOrder
   countsKnownWords?: Prisma.SortOrder
+  adaptiveNewCards?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   course?: Prisma.CourseOrderByWithRelationInput
   contentSchema?: Prisma.ContentSchemaOrderByWithRelationInput
   cards?: Prisma.AnkiCardSnapshotOrderByRelationAggregateInput
   reviewLogs?: Prisma.AnkiReviewLogOrderByRelationAggregateInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateOrderByWithRelationInput
 }
 
 export type AnkiDeckMappingWhereUniqueInput = Prisma.AtLeast<{
@@ -227,12 +238,14 @@ export type AnkiDeckMappingWhereUniqueInput = Prisma.AtLeast<{
   courseId?: Prisma.StringFilter<"AnkiDeckMapping"> | string
   schemaId?: Prisma.StringNullableFilter<"AnkiDeckMapping"> | string | null
   countsKnownWords?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
+  adaptiveNewCards?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"AnkiDeckMapping"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AnkiDeckMapping"> | Date | string
   course?: Prisma.XOR<Prisma.CourseScalarRelationFilter, Prisma.CourseWhereInput>
   contentSchema?: Prisma.XOR<Prisma.ContentSchemaNullableScalarRelationFilter, Prisma.ContentSchemaWhereInput> | null
   cards?: Prisma.AnkiCardSnapshotListRelationFilter
   reviewLogs?: Prisma.AnkiReviewLogListRelationFilter
+  adaptiveDeckState?: Prisma.XOR<Prisma.AnkiAdaptiveDeckStateNullableScalarRelationFilter, Prisma.AnkiAdaptiveDeckStateWhereInput> | null
 }, "id" | "deckName">
 
 export type AnkiDeckMappingOrderByWithAggregationInput = {
@@ -241,6 +254,7 @@ export type AnkiDeckMappingOrderByWithAggregationInput = {
   courseId?: Prisma.SortOrder
   schemaId?: Prisma.SortOrderInput | Prisma.SortOrder
   countsKnownWords?: Prisma.SortOrder
+  adaptiveNewCards?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.AnkiDeckMappingCountOrderByAggregateInput
@@ -257,6 +271,7 @@ export type AnkiDeckMappingScalarWhereWithAggregatesInput = {
   courseId?: Prisma.StringWithAggregatesFilter<"AnkiDeckMapping"> | string
   schemaId?: Prisma.StringNullableWithAggregatesFilter<"AnkiDeckMapping"> | string | null
   countsKnownWords?: Prisma.BoolWithAggregatesFilter<"AnkiDeckMapping"> | boolean
+  adaptiveNewCards?: Prisma.BoolWithAggregatesFilter<"AnkiDeckMapping"> | boolean
   lastSyncedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"AnkiDeckMapping"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AnkiDeckMapping"> | Date | string
 }
@@ -265,12 +280,14 @@ export type AnkiDeckMappingCreateInput = {
   id?: string
   deckName: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutAnkiMappingsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutAnkiMappingsInput
   cards?: Prisma.AnkiCardSnapshotCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUncheckedCreateInput = {
@@ -279,22 +296,26 @@ export type AnkiDeckMappingUncheckedCreateInput = {
   courseId: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput
   cards?: Prisma.AnkiCardSnapshotUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateInput = {
@@ -303,10 +324,12 @@ export type AnkiDeckMappingUncheckedUpdateInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingCreateManyInput = {
@@ -315,6 +338,7 @@ export type AnkiDeckMappingCreateManyInput = {
   courseId: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -323,6 +347,7 @@ export type AnkiDeckMappingUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -333,6 +358,7 @@ export type AnkiDeckMappingUncheckedUpdateManyInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -353,6 +379,7 @@ export type AnkiDeckMappingCountOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   schemaId?: Prisma.SortOrder
   countsKnownWords?: Prisma.SortOrder
+  adaptiveNewCards?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -363,6 +390,7 @@ export type AnkiDeckMappingMaxOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   schemaId?: Prisma.SortOrder
   countsKnownWords?: Prisma.SortOrder
+  adaptiveNewCards?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -373,6 +401,7 @@ export type AnkiDeckMappingMinOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
   schemaId?: Prisma.SortOrder
   countsKnownWords?: Prisma.SortOrder
+  adaptiveNewCards?: Prisma.SortOrder
   lastSyncedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
@@ -494,15 +523,31 @@ export type AnkiDeckMappingUpdateOneRequiredWithoutReviewLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AnkiDeckMappingUpdateToOneWithWhereWithoutReviewLogsInput, Prisma.AnkiDeckMappingUpdateWithoutReviewLogsInput>, Prisma.AnkiDeckMappingUncheckedUpdateWithoutReviewLogsInput>
 }
 
+export type AnkiDeckMappingCreateNestedOneWithoutAdaptiveDeckStateInput = {
+  create?: Prisma.XOR<Prisma.AnkiDeckMappingCreateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedCreateWithoutAdaptiveDeckStateInput>
+  connectOrCreate?: Prisma.AnkiDeckMappingCreateOrConnectWithoutAdaptiveDeckStateInput
+  connect?: Prisma.AnkiDeckMappingWhereUniqueInput
+}
+
+export type AnkiDeckMappingUpdateOneRequiredWithoutAdaptiveDeckStateNestedInput = {
+  create?: Prisma.XOR<Prisma.AnkiDeckMappingCreateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedCreateWithoutAdaptiveDeckStateInput>
+  connectOrCreate?: Prisma.AnkiDeckMappingCreateOrConnectWithoutAdaptiveDeckStateInput
+  upsert?: Prisma.AnkiDeckMappingUpsertWithoutAdaptiveDeckStateInput
+  connect?: Prisma.AnkiDeckMappingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AnkiDeckMappingUpdateToOneWithWhereWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUpdateWithoutAdaptiveDeckStateInput>, Prisma.AnkiDeckMappingUncheckedUpdateWithoutAdaptiveDeckStateInput>
+}
+
 export type AnkiDeckMappingCreateWithoutCourseInput = {
   id?: string
   deckName: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutAnkiMappingsInput
   cards?: Prisma.AnkiCardSnapshotCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUncheckedCreateWithoutCourseInput = {
@@ -510,10 +555,12 @@ export type AnkiDeckMappingUncheckedCreateWithoutCourseInput = {
   deckName: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingCreateOrConnectWithoutCourseInput = {
@@ -551,6 +598,7 @@ export type AnkiDeckMappingScalarWhereInput = {
   courseId?: Prisma.StringFilter<"AnkiDeckMapping"> | string
   schemaId?: Prisma.StringNullableFilter<"AnkiDeckMapping"> | string | null
   countsKnownWords?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
+  adaptiveNewCards?: Prisma.BoolFilter<"AnkiDeckMapping"> | boolean
   lastSyncedAt?: Prisma.DateTimeNullableFilter<"AnkiDeckMapping"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"AnkiDeckMapping"> | Date | string
 }
@@ -559,11 +607,13 @@ export type AnkiDeckMappingCreateWithoutContentSchemaInput = {
   id?: string
   deckName: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutAnkiMappingsInput
   cards?: Prisma.AnkiCardSnapshotCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUncheckedCreateWithoutContentSchemaInput = {
@@ -571,10 +621,12 @@ export type AnkiDeckMappingUncheckedCreateWithoutContentSchemaInput = {
   deckName: string
   courseId: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedCreateNestedManyWithoutMappingInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingCreateOrConnectWithoutContentSchemaInput = {
@@ -607,11 +659,13 @@ export type AnkiDeckMappingCreateWithoutCardsInput = {
   id?: string
   deckName: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutAnkiMappingsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutAnkiMappingsInput
   reviewLogs?: Prisma.AnkiReviewLogCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUncheckedCreateWithoutCardsInput = {
@@ -620,9 +674,11 @@ export type AnkiDeckMappingUncheckedCreateWithoutCardsInput = {
   courseId: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   reviewLogs?: Prisma.AnkiReviewLogUncheckedCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingCreateOrConnectWithoutCardsInput = {
@@ -645,11 +701,13 @@ export type AnkiDeckMappingUpdateWithoutCardsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateWithoutCardsInput = {
@@ -658,20 +716,24 @@ export type AnkiDeckMappingUncheckedUpdateWithoutCardsInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reviewLogs?: Prisma.AnkiReviewLogUncheckedUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingCreateWithoutReviewLogsInput = {
   id?: string
   deckName: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   course: Prisma.CourseCreateNestedOneWithoutAnkiMappingsInput
   contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutAnkiMappingsInput
   cards?: Prisma.AnkiCardSnapshotCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingUncheckedCreateWithoutReviewLogsInput = {
@@ -680,9 +742,11 @@ export type AnkiDeckMappingUncheckedCreateWithoutReviewLogsInput = {
   courseId: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedCreateNestedManyWithoutMappingInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedCreateNestedOneWithoutMappingInput
 }
 
 export type AnkiDeckMappingCreateOrConnectWithoutReviewLogsInput = {
@@ -705,11 +769,13 @@ export type AnkiDeckMappingUpdateWithoutReviewLogsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput
   cards?: Prisma.AnkiCardSnapshotUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateWithoutReviewLogsInput = {
@@ -718,9 +784,79 @@ export type AnkiDeckMappingUncheckedUpdateWithoutReviewLogsInput = {
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedUpdateOneWithoutMappingNestedInput
+}
+
+export type AnkiDeckMappingCreateWithoutAdaptiveDeckStateInput = {
+  id?: string
+  deckName: string
+  countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
+  lastSyncedAt?: Date | string | null
+  createdAt?: Date | string
+  course: Prisma.CourseCreateNestedOneWithoutAnkiMappingsInput
+  contentSchema?: Prisma.ContentSchemaCreateNestedOneWithoutAnkiMappingsInput
+  cards?: Prisma.AnkiCardSnapshotCreateNestedManyWithoutMappingInput
+  reviewLogs?: Prisma.AnkiReviewLogCreateNestedManyWithoutMappingInput
+}
+
+export type AnkiDeckMappingUncheckedCreateWithoutAdaptiveDeckStateInput = {
+  id?: string
+  deckName: string
+  courseId: string
+  schemaId?: string | null
+  countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
+  lastSyncedAt?: Date | string | null
+  createdAt?: Date | string
+  cards?: Prisma.AnkiCardSnapshotUncheckedCreateNestedManyWithoutMappingInput
+  reviewLogs?: Prisma.AnkiReviewLogUncheckedCreateNestedManyWithoutMappingInput
+}
+
+export type AnkiDeckMappingCreateOrConnectWithoutAdaptiveDeckStateInput = {
+  where: Prisma.AnkiDeckMappingWhereUniqueInput
+  create: Prisma.XOR<Prisma.AnkiDeckMappingCreateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedCreateWithoutAdaptiveDeckStateInput>
+}
+
+export type AnkiDeckMappingUpsertWithoutAdaptiveDeckStateInput = {
+  update: Prisma.XOR<Prisma.AnkiDeckMappingUpdateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedUpdateWithoutAdaptiveDeckStateInput>
+  create: Prisma.XOR<Prisma.AnkiDeckMappingCreateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedCreateWithoutAdaptiveDeckStateInput>
+  where?: Prisma.AnkiDeckMappingWhereInput
+}
+
+export type AnkiDeckMappingUpdateToOneWithWhereWithoutAdaptiveDeckStateInput = {
+  where?: Prisma.AnkiDeckMappingWhereInput
+  data: Prisma.XOR<Prisma.AnkiDeckMappingUpdateWithoutAdaptiveDeckStateInput, Prisma.AnkiDeckMappingUncheckedUpdateWithoutAdaptiveDeckStateInput>
+}
+
+export type AnkiDeckMappingUpdateWithoutAdaptiveDeckStateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  deckName?: Prisma.StringFieldUpdateOperationsInput | string
+  countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  course?: Prisma.CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput
+  contentSchema?: Prisma.ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput
+  cards?: Prisma.AnkiCardSnapshotUpdateManyWithoutMappingNestedInput
+  reviewLogs?: Prisma.AnkiReviewLogUpdateManyWithoutMappingNestedInput
+}
+
+export type AnkiDeckMappingUncheckedUpdateWithoutAdaptiveDeckStateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  deckName?: Prisma.StringFieldUpdateOperationsInput | string
+  courseId?: Prisma.StringFieldUpdateOperationsInput | string
+  schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cards?: Prisma.AnkiCardSnapshotUncheckedUpdateManyWithoutMappingNestedInput
+  reviewLogs?: Prisma.AnkiReviewLogUncheckedUpdateManyWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingCreateManyCourseInput = {
@@ -728,6 +864,7 @@ export type AnkiDeckMappingCreateManyCourseInput = {
   deckName: string
   schemaId?: string | null
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -736,11 +873,13 @@ export type AnkiDeckMappingUpdateWithoutCourseInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contentSchema?: Prisma.ContentSchemaUpdateOneWithoutAnkiMappingsNestedInput
   cards?: Prisma.AnkiCardSnapshotUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateWithoutCourseInput = {
@@ -748,10 +887,12 @@ export type AnkiDeckMappingUncheckedUpdateWithoutCourseInput = {
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateManyWithoutCourseInput = {
@@ -759,6 +900,7 @@ export type AnkiDeckMappingUncheckedUpdateManyWithoutCourseInput = {
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   schemaId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -768,6 +910,7 @@ export type AnkiDeckMappingCreateManyContentSchemaInput = {
   deckName: string
   courseId: string
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: Date | string | null
   createdAt?: Date | string
 }
@@ -776,11 +919,13 @@ export type AnkiDeckMappingUpdateWithoutContentSchemaInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   course?: Prisma.CourseUpdateOneRequiredWithoutAnkiMappingsNestedInput
   cards?: Prisma.AnkiCardSnapshotUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateWithoutContentSchemaInput = {
@@ -788,10 +933,12 @@ export type AnkiDeckMappingUncheckedUpdateWithoutContentSchemaInput = {
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   cards?: Prisma.AnkiCardSnapshotUncheckedUpdateManyWithoutMappingNestedInput
   reviewLogs?: Prisma.AnkiReviewLogUncheckedUpdateManyWithoutMappingNestedInput
+  adaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateUncheckedUpdateOneWithoutMappingNestedInput
 }
 
 export type AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaInput = {
@@ -799,6 +946,7 @@ export type AnkiDeckMappingUncheckedUpdateManyWithoutContentSchemaInput = {
   deckName?: Prisma.StringFieldUpdateOperationsInput | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
   countsKnownWords?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  adaptiveNewCards?: Prisma.BoolFieldUpdateOperationsInput | boolean
   lastSyncedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -849,12 +997,14 @@ export type AnkiDeckMappingSelect<ExtArgs extends runtime.Types.Extensions.Inter
   courseId?: boolean
   schemaId?: boolean
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: boolean
   createdAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.AnkiDeckMapping$contentSchemaArgs<ExtArgs>
   cards?: boolean | Prisma.AnkiDeckMapping$cardsArgs<ExtArgs>
   reviewLogs?: boolean | Prisma.AnkiDeckMapping$reviewLogsArgs<ExtArgs>
+  adaptiveDeckState?: boolean | Prisma.AnkiDeckMapping$adaptiveDeckStateArgs<ExtArgs>
   _count?: boolean | Prisma.AnkiDeckMappingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ankiDeckMapping"]>
 
@@ -864,6 +1014,7 @@ export type AnkiDeckMappingSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   courseId?: boolean
   schemaId?: boolean
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: boolean
   createdAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -876,6 +1027,7 @@ export type AnkiDeckMappingSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   courseId?: boolean
   schemaId?: boolean
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: boolean
   createdAt?: boolean
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
@@ -888,16 +1040,18 @@ export type AnkiDeckMappingSelectScalar = {
   courseId?: boolean
   schemaId?: boolean
   countsKnownWords?: boolean
+  adaptiveNewCards?: boolean
   lastSyncedAt?: boolean
   createdAt?: boolean
 }
 
-export type AnkiDeckMappingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deckName" | "courseId" | "schemaId" | "countsKnownWords" | "lastSyncedAt" | "createdAt", ExtArgs["result"]["ankiDeckMapping"]>
+export type AnkiDeckMappingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "deckName" | "courseId" | "schemaId" | "countsKnownWords" | "adaptiveNewCards" | "lastSyncedAt" | "createdAt", ExtArgs["result"]["ankiDeckMapping"]>
 export type AnkiDeckMappingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.CourseDefaultArgs<ExtArgs>
   contentSchema?: boolean | Prisma.AnkiDeckMapping$contentSchemaArgs<ExtArgs>
   cards?: boolean | Prisma.AnkiDeckMapping$cardsArgs<ExtArgs>
   reviewLogs?: boolean | Prisma.AnkiDeckMapping$reviewLogsArgs<ExtArgs>
+  adaptiveDeckState?: boolean | Prisma.AnkiDeckMapping$adaptiveDeckStateArgs<ExtArgs>
   _count?: boolean | Prisma.AnkiDeckMappingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AnkiDeckMappingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -916,6 +1070,7 @@ export type $AnkiDeckMappingPayload<ExtArgs extends runtime.Types.Extensions.Int
     contentSchema: Prisma.$ContentSchemaPayload<ExtArgs> | null
     cards: Prisma.$AnkiCardSnapshotPayload<ExtArgs>[]
     reviewLogs: Prisma.$AnkiReviewLogPayload<ExtArgs>[]
+    adaptiveDeckState: Prisma.$AnkiAdaptiveDeckStatePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -929,6 +1084,10 @@ export type $AnkiDeckMappingPayload<ExtArgs extends runtime.Types.Extensions.Int
      * mature cards from this deck feed the known-word count
      */
     countsKnownWords: boolean
+    /**
+     * this mapped Japanese vocabulary deck receives the adaptive new-card budget
+     */
+    adaptiveNewCards: boolean
     lastSyncedAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["ankiDeckMapping"]>
@@ -1329,6 +1488,7 @@ export interface Prisma__AnkiDeckMappingClient<T, Null = never, ExtArgs extends 
   contentSchema<T extends Prisma.AnkiDeckMapping$contentSchemaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnkiDeckMapping$contentSchemaArgs<ExtArgs>>): Prisma.Prisma__ContentSchemaClient<runtime.Types.Result.GetResult<Prisma.$ContentSchemaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   cards<T extends Prisma.AnkiDeckMapping$cardsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnkiDeckMapping$cardsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiCardSnapshotPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reviewLogs<T extends Prisma.AnkiDeckMapping$reviewLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnkiDeckMapping$reviewLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnkiReviewLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  adaptiveDeckState<T extends Prisma.AnkiDeckMapping$adaptiveDeckStateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AnkiDeckMapping$adaptiveDeckStateArgs<ExtArgs>>): Prisma.Prisma__AnkiAdaptiveDeckStateClient<runtime.Types.Result.GetResult<Prisma.$AnkiAdaptiveDeckStatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1363,6 +1523,7 @@ export interface AnkiDeckMappingFieldRefs {
   readonly courseId: Prisma.FieldRef<"AnkiDeckMapping", 'String'>
   readonly schemaId: Prisma.FieldRef<"AnkiDeckMapping", 'String'>
   readonly countsKnownWords: Prisma.FieldRef<"AnkiDeckMapping", 'Boolean'>
+  readonly adaptiveNewCards: Prisma.FieldRef<"AnkiDeckMapping", 'Boolean'>
   readonly lastSyncedAt: Prisma.FieldRef<"AnkiDeckMapping", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"AnkiDeckMapping", 'DateTime'>
 }
@@ -1830,6 +1991,25 @@ export type AnkiDeckMapping$reviewLogsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.AnkiReviewLogScalarFieldEnum | Prisma.AnkiReviewLogScalarFieldEnum[]
+}
+
+/**
+ * AnkiDeckMapping.adaptiveDeckState
+ */
+export type AnkiDeckMapping$adaptiveDeckStateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AnkiAdaptiveDeckState
+   */
+  select?: Prisma.AnkiAdaptiveDeckStateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AnkiAdaptiveDeckState
+   */
+  omit?: Prisma.AnkiAdaptiveDeckStateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnkiAdaptiveDeckStateInclude<ExtArgs> | null
+  where?: Prisma.AnkiAdaptiveDeckStateWhereInput
 }
 
 /**

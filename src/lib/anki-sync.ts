@@ -164,7 +164,7 @@ export async function syncAnki(): Promise<SyncSummary> {
       const reviews = await cardReviews(resolvedDeckName, startID);
       if (reviews.length > 0) {
         const result = await prisma.ankiReviewLog.createMany({
-          data: reviews.map(([reviewTime, cardID, , buttonPressed, newInterval, previousInterval, , duration]) => ({
+          data: reviews.map(([reviewTime, cardID, , buttonPressed, newInterval, previousInterval, , duration, reviewType]) => ({
             ankiReviewId: BigInt(reviewTime),
             mappingId: mapping.id,
             ankiCardId: BigInt(cardID),
@@ -173,6 +173,7 @@ export async function syncAnki(): Promise<SyncSummary> {
             intervalAfterDays: newInterval >= 0 ? newInterval : 0,
             intervalBeforeDays: previousInterval >= 0 ? previousInterval : 0,
             timeMs: duration,
+            reviewType,
           })),
           skipDuplicates: true,
         });
@@ -200,6 +201,8 @@ export async function syncAnki(): Promise<SyncSummary> {
     // Mature-card set may have shifted — keep the known-word count in step.
     const { refreshAnkiKnownWords } = await import('./known-words-sync');
     await refreshAnkiKnownWords().catch(() => {});
+    const { reconcileAdaptiveAnkiAfterSync } = await import('./adaptive-anki-service');
+    await reconcileAdaptiveAnkiAfterSync().catch(() => {});
   } catch (e) {
     summary.ok = false;
     summary.error = e instanceof AnkiUnavailableError ? e.message : (e as Error).message;
@@ -217,7 +220,27 @@ export async function maybeAutoSync(): Promise<void> {
     where: { status: 'ok' },
     orderBy: { startedAt: 'desc' },
   });
-  if (lastOk && Date.now() - lastOk.startedAt.getTime() < 60 * 60 * 1000) return;
+  let needsDailyAdaptiveDecision = false;
+  const user = await prisma.user.findFirst({ select: { id: true, settings: true } });
+  if (user) {
+    const { japaneseAdaptiveAnkiConfiguration } = await import('./app-settings');
+    const { ankiDayKey } = await import('./adaptive-anki-budget');
+    const configuration = japaneseAdaptiveAnkiConfiguration(user.settings);
+    if (configuration.enabled) {
+      const selectedDeckCount = await prisma.ankiDeckMapping.count({
+        where: { adaptiveNewCards: true, course: { slug: 'japanese' } },
+      });
+      if (selectedDeckCount > 0) {
+        const currentDay = ankiDayKey(new Date(), configuration.ankiDayStartHour);
+        const decision = await prisma.ankiAdaptiveBudgetDecision.findUnique({
+          where: { userId_ankiDay: { userId: user.id, ankiDay: currentDay } },
+          select: { applyStatus: true },
+        });
+        needsDailyAdaptiveDecision = !decision || decision.applyStatus === 'failed';
+      }
+    }
+  }
+  if (lastOk && Date.now() - lastOk.startedAt.getTime() < 60 * 60 * 1000 && !needsDailyAdaptiveDecision) return;
   const mappingCount = await prisma.ankiDeckMapping.count();
   if (mappingCount === 0) return;
   await syncAnki();

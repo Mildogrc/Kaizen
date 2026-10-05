@@ -31,6 +31,37 @@ async function invoke<T>(action: string, params: Record<string, unknown> = {}): 
   return body.result;
 }
 
+export interface AnkiDeckConfig {
+  id: number;
+  name: string;
+  new: {
+    perDay: number;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
+
+export async function getDeckConfig(deck: string): Promise<AnkiDeckConfig | false> {
+  return invoke<AnkiDeckConfig | false>('getDeckConfig', { deck });
+}
+
+export async function saveDeckConfig(config: AnkiDeckConfig): Promise<boolean> {
+  return invoke<boolean>('saveDeckConfig', { config });
+}
+
+export async function cloneDeckConfigId(name: string, cloneFrom: number): Promise<number | false> {
+  return invoke<number | false>('cloneDeckConfigId', { name, cloneFrom });
+}
+
+export async function setDeckConfigId(decks: string[], configId: number): Promise<boolean> {
+  return invoke<boolean>('setDeckConfigId', { decks, configId });
+}
+
+export async function newCardCount(deckName: string): Promise<number> {
+  const escaped = deckName.replace(/"/g, '\\"');
+  return (await invoke<number[]>('findCards', { query: `deck:"${escaped}" is:new` })).length;
+}
+
 export async function ankiStatus(): Promise<{ connected: boolean; version?: number }> {
   try {
     const version = await invoke<number>('version');
@@ -106,6 +137,10 @@ export async function cardsInfo(cardIds: number[]): Promise<AnkiCardInfo[]> {
     out.push(...(await invoke<AnkiCardInfo[]>('cardsInfo', { cards: cardIds.slice(i, i + CHUNK) })));
   }
   return out;
+}
+
+export async function retrieveMediaFile(filename: string): Promise<string | false> {
+  return invoke<string | false>('retrieveMediaFile', { filename });
 }
 
 /** Card ids Anki currently considers due (new/learning/review) per deck. */

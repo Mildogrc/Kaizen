@@ -179,6 +179,11 @@ model User {
   name      String
   settings  Json     @default("{}")
   createdAt DateTime @default(now())
+
+  kanjiRepairStates           KanjiRepairState[]
+  adaptiveAnkiState           AnkiAdaptiveBudgetState?
+  adaptiveAnkiEvidenceDays    AnkiAdaptiveEvidenceDay[]
+  adaptiveAnkiBudgetDecisions AnkiAdaptiveBudgetDecision[]
 }
 
 model Course {
@@ -627,6 +632,56 @@ model BookReadingSession {
 }
 
 // ---------------------------------------------------------------------------
+// YouTube playlist learning
+// ---------------------------------------------------------------------------
+
+model YouTubePlaylist {
+  id                String       @id @default(cuid())
+  youtubePlaylistId String       @unique
+  sourceUrl         String
+  title             String
+  description       String?
+  channelTitle      String?
+  thumbnailUrl      String?
+  customImageUrl    String?
+  imagePrompt       String?
+  currentVideoId    String?
+  currentPosition   Int          @default(0)
+  currentSeconds    Int          @default(0)
+  status            CourseStatus @default(ACTIVE)
+  totalItems        Int          @default(0)
+  metadataSource    String       @default("youtube-page")
+  lastFetchedAt     DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  items YouTubePlaylistItem[]
+
+  @@index([status, updatedAt])
+}
+
+model YouTubePlaylistItem {
+  id              String          @id @default(cuid())
+  playlistId      String
+  playlist        YouTubePlaylist @relation(fields: [playlistId], references: [id], onDelete: Cascade)
+  youtubeVideoId  String
+  position        Int
+  title           String
+  description     String?
+  thumbnailUrl    String?
+  durationSeconds Int?
+  completed       Boolean         @default(false)
+  watchedSeconds  Int             @default(0)
+  publishedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([playlistId, position])
+  @@index([playlistId, youtubeVideoId])
+  @@index([playlistId, completed])
+}
+
+// ---------------------------------------------------------------------------
 // Japanese grammar coach
 // ---------------------------------------------------------------------------
 
@@ -667,6 +722,23 @@ model GrammarLesson {
   createdAt      DateTime            @default(now())
 
   @@index([scheduledFor, status])
+}
+
+model KanjiRepairState {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kanji               String
+  lastRepairedAt      DateTime
+  cooldownUntil       DateTime
+  repairCount         Int      @default(1)
+  lastRepairScore     Float    @default(0)
+  performanceAtRepair Json     @default("{}")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@unique([userId, kanji])
+  @@index([userId, cooldownUntil])
 }
 
 // ---------------------------------------------------------------------------
@@ -786,21 +858,21 @@ model SpeedReadingSession {
 // ---------------------------------------------------------------------------
 
 model MandarinBlueprintLevel {
-  id                        String   @id @default(cuid())
-  level                     Int      @unique
+  id                        String    @id @default(cuid())
+  level                     Int       @unique
   phase                     Int?
   reportedNewCharacterCount Int
   reportedTotalCharacters   Int
   reportedNewWordCount      Int
   reportedTotalWords        Int
-  characters                Json     @default("[]")
-  words                     Json     @default("[]")
-  sourceStats               Json     @default("{}")
+  characters                Json      @default("[]")
+  words                     Json      @default("[]")
+  sourceStats               Json      @default("{}")
   completedAt               DateTime?
   pushedAt                  DateTime?
   pushError                 String?
-  createdAt                 DateTime @default(now())
-  updatedAt                 DateTime @updatedAt
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
 
   @@index([completedAt])
 }
@@ -846,11 +918,14 @@ model AnkiDeckMapping {
   contentSchema    ContentSchema? @relation(fields: [schemaId], references: [id], onDelete: SetNull)
   /// mature cards from this deck feed the known-word count
   countsKnownWords Boolean        @default(true)
+  /// this mapped Japanese vocabulary deck receives the adaptive new-card budget
+  adaptiveNewCards Boolean        @default(false)
   lastSyncedAt     DateTime?
   createdAt        DateTime       @default(now())
 
-  cards      AnkiCardSnapshot[]
-  reviewLogs AnkiReviewLog[]
+  cards             AnkiCardSnapshot[]
+  reviewLogs        AnkiReviewLog[]
+  adaptiveDeckState AnkiAdaptiveDeckState?
 
   @@index([courseId])
 }
@@ -888,6 +963,8 @@ model AnkiReviewLog {
   intervalAfterDays  Int             @default(0)
   intervalBeforeDays Int             @default(0)
   timeMs             Int             @default(0)
+  /// Anki revlog type: 0=learn, 1=review, 2=relearn, 3=filtered/cram, 4+=manual/reschedule
+  reviewType         Int?
 
   @@unique([ankiReviewId, ankiCardId])
   @@index([mappingId, reviewedAt])
@@ -904,6 +981,89 @@ model AnkiSyncRun {
   error        String?
 
   @@index([startedAt])
+}
+
+model AnkiAdaptiveBudgetState {
+  id               String   @id @default(cuid())
+  userId           String   @unique
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activatedAt      DateTime
+  currentBudget    Int
+  reliableDataDays Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model AnkiAdaptiveEvidenceDay {
+  id                    String   @id @default(cuid())
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ankiDay               String
+  reviewObservations    Int      @default(0)
+  reviewedCardCount     Int      @default(0)
+  reviewedCardIds       Json     @default("[]")
+  lapsedCardIds         Json     @default("[]")
+  reviewMinutes         Float?
+  validTimeObservations Int      @default(0)
+  reviewsDue            Int?
+  reviewsCompleted      Int      @default(0)
+  completionRate        Float?
+  retention             Float?
+  reliable              Boolean  @default(false)
+  dataAvailable         Boolean  @default(true)
+  finalizedAt           DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([userId, ankiDay])
+  @@index([userId, reliable, ankiDay])
+}
+
+model AnkiAdaptiveBudgetDecision {
+  id                   String    @id @default(cuid())
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ankiDay              String
+  previousBudget       Int
+  performanceTarget    Int
+  confidenceCeiling    Int
+  finalBudget          Int
+  windowRetention      Float?
+  retentionAdjustment  Int       @default(0)
+  medianReviewMinutes  Float?
+  reviewTimeAdjustment Int       @default(0)
+  repeatLapseRate      Float?
+  lapseAdjustment      Int       @default(0)
+  completionRate       Float?
+  overdueCount         Int       @default(0)
+  backlogRatio         Float?
+  reliableDataDays     Int       @default(0)
+  reliableWindowDays   Int       @default(0)
+  dueAtCalculation     Int       @default(0)
+  reasons              Json      @default("[]")
+  allocation           Json      @default("[]")
+  applyStatus          String    @default("pending")
+  applyError           String?
+  calculatedAt         DateTime  @default(now())
+  lastApplyAt          DateTime?
+
+  @@unique([userId, ankiDay])
+  @@index([userId, calculatedAt])
+}
+
+model AnkiAdaptiveDeckState {
+  id                String          @id @default(cuid())
+  mappingId         String          @unique
+  mapping           AnkiDeckMapping @relation(fields: [mappingId], references: [id], onDelete: Cascade)
+  originalConfigId  String
+  managedConfigId   String
+  managedConfigName String
+  lastAppliedBudget Int?
+  lastAppliedAt     DateTime?
+  restorePending    Boolean         @default(false)
+  lastError         String?
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
 }
 
 // ---------------------------------------------------------------------------

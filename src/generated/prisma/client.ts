@@ -163,6 +163,16 @@ export type BookNote = Prisma.BookNoteModel
  */
 export type BookReadingSession = Prisma.BookReadingSessionModel
 /**
+ * Model YouTubePlaylist
+ * 
+ */
+export type YouTubePlaylist = Prisma.YouTubePlaylistModel
+/**
+ * Model YouTubePlaylistItem
+ * 
+ */
+export type YouTubePlaylistItem = Prisma.YouTubePlaylistItemModel
+/**
  * Model GrammarProgress
  * 
  */
@@ -172,6 +182,11 @@ export type GrammarProgress = Prisma.GrammarProgressModel
  * 
  */
 export type GrammarLesson = Prisma.GrammarLessonModel
+/**
+ * Model KanjiRepairState
+ * 
+ */
+export type KanjiRepairState = Prisma.KanjiRepairStateModel
 /**
  * Model CodeforcesProfile
  * 
@@ -227,6 +242,26 @@ export type AnkiReviewLog = Prisma.AnkiReviewLogModel
  * 
  */
 export type AnkiSyncRun = Prisma.AnkiSyncRunModel
+/**
+ * Model AnkiAdaptiveBudgetState
+ * 
+ */
+export type AnkiAdaptiveBudgetState = Prisma.AnkiAdaptiveBudgetStateModel
+/**
+ * Model AnkiAdaptiveEvidenceDay
+ * 
+ */
+export type AnkiAdaptiveEvidenceDay = Prisma.AnkiAdaptiveEvidenceDayModel
+/**
+ * Model AnkiAdaptiveBudgetDecision
+ * 
+ */
+export type AnkiAdaptiveBudgetDecision = Prisma.AnkiAdaptiveBudgetDecisionModel
+/**
+ * Model AnkiAdaptiveDeckState
+ * 
+ */
+export type AnkiAdaptiveDeckState = Prisma.AnkiAdaptiveDeckStateModel
 /**
  * Model KnownWord
  * 

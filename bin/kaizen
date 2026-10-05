@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source_path="${BASH_SOURCE[0]}"
+while [[ -L "$source_path" ]]; do
+  source_directory="$(cd -P "$(dirname "$source_path")" && pwd)"
+  source_path="$(readlink "$source_path")"
+  [[ "$source_path" != /* ]] && source_path="$source_directory/$source_path"
+done
+
+app_directory="$(cd -P "$(dirname "$source_path")/.." && pwd)"
+cd "$app_directory"
+
+port_pids="$(lsof -tiTCP:3000 -sTCP:LISTEN 2>/dev/null || true)"
+if [[ -n "$port_pids" ]]; then
+  while IFS= read -r port_pid; do
+    process_directory="$(lsof -a -p "$port_pid" -d cwd -Fn 2>/dev/null | sed -n 's/^n//p')"
+    if [[ "$process_directory" == "$app_directory" ]]; then
+      echo "Kaizen is already running at http://localhost:3000"
+      exit 0
+    fi
+  done <<< "$port_pids"
+  echo "Kaizen could not start because port 3000 is already used by another application." >&2
+  exit 1
+fi
+
+if command -v pg_isready >/dev/null 2>&1 && ! pg_isready -q; then
+  if ! command -v brew >/dev/null 2>&1; then
+    echo "PostgreSQL is not running, and Homebrew is unavailable to start it." >&2
+    exit 1
+  fi
+  echo "Starting PostgreSQL…"
+  brew services start postgresql@17 >/dev/null
+  for _ in {1..20}; do
+    pg_isready -q && break
+    sleep 0.5
+  done
+  if ! pg_isready -q; then
+    echo "PostgreSQL did not become ready. Check the postgresql@17 Homebrew service." >&2
+    exit 1
+  fi
+fi
+
+if [[ ! -f .env ]]; then
+  echo "Kaizen needs $app_directory/.env with DATABASE_URL configured." >&2
+  exit 1
+fi
+
+if [[ ! -x node_modules/.bin/next ]]; then
+  echo "Installing Kaizen dependencies…"
+  npm install
+fi
+
+echo "Applying any pending database migrations…"
+npx prisma migrate deploy
+
+echo "Starting Kaizen at http://localhost:3000"
+exec npm run dev

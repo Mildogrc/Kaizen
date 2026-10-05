@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import { NATO_CODE_WORDS, natoIntervalDays } from '@/lib/nato';
 
@@ -35,8 +34,5 @@ export async function saveNatoSessionAction(payload: string) {
       stats: JSON.parse(JSON.stringify({ word, attempts, accuracy, averageRecallMs, totalTimeMs, nextIntervalDays })),
     },
   });
-  revalidatePath('/nato');
-  revalidatePath('/daily');
-  revalidatePath('/analytics');
   return { ok: true };
 }

@@ -5,7 +5,7 @@ import { prisma } from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 export default async function SkillsPage() {
-  const [courses, codeforcesProfiles, readingSessions, natoSessions] = await Promise.all([
+  const [courses, codeforcesProfiles, readingSessions, natoSessions, youtubePlaylists] = await Promise.all([
     prisma.course.findMany({
       where: { tab: 'SKILLS' },
       include: { _count: { select: { learningItems: true } } },
@@ -13,6 +13,7 @@ export default async function SkillsPage() {
     prisma.codeforcesProfile.count(),
     prisma.speedReadingSession.count(),
     prisma.studySession.count({ where: { mode: 'nato' } }),
+    prisma.youTubePlaylist.count(),
   ]);
   const courseBySlug = new Map(courses.map((course) => [course.slug, course]));
   const courseCard = (slug: string, label: string, href: string, detail: string) => {
@@ -25,6 +26,7 @@ export default async function SkillsPage() {
     courseCard('typing', 'Typing', 'https://monkeytype.com/', 'Open Monkeytype for typing practice'),
     { label: 'Reading', href: '/speed-reading', detail: 'RSVP, paced, chunking, benchmark, and retention', count: readingSessions, unit: 'sessions' },
     { label: 'Codeforces', href: '/codeforces', detail: 'Problem ratings, contests, and activity heatmaps', count: codeforcesProfiles, unit: 'profiles' },
+    { label: 'YouTube', href: '/youtube', detail: 'Lecture playlists with in-app playback and saved progress', count: youtubePlaylists, unit: 'playlists' },
   ];
 
   return <>
@@ -34,7 +36,7 @@ export default async function SkillsPage() {
       <StatCard label="Learning items" value={courses.reduce((sum, course) => sum + course._count.learningItems, 0)} />
       <StatCard label="Reading sessions" value={readingSessions} />
     </div>
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
+    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
       {skills.map((skill) => {
         const external = skill.href.startsWith('https://');
         return <Link key={skill.label} href={skill.href} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}><Card className="flex h-full min-h-36 flex-col hover:border-accent/50"><div className="flex items-center justify-between gap-2"><span className="text-[15px] font-semibold">{skill.label}</span><Badge>{skill.count} {skill.unit}</Badge></div><p className="mt-2 text-[12px] text-muted">{skill.detail}</p><span className="mt-auto pt-4 text-[12px] text-accent">Open →</span></Card></Link>;

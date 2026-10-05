@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import { parseJsonText } from '@/lib/grammar-coach';
 import {
@@ -47,7 +46,6 @@ export async function importSpeedReadingPassageAction(input: string) {
         source: 'llm',
       },
     });
-    revalidatePath('/speed-reading');
     return { ok: true as const, passageId: created.id, title: created.title };
   } catch (error) {
     return { ok: false as const, error: error instanceof Error ? error.message : 'Could not import the passage.' };
@@ -105,7 +103,6 @@ export async function completeSpeedReadingSessionAction(rawInput: unknown) {
         retentionDueAt,
       },
     });
-    revalidatePath('/speed-reading');
     return { ok: true as const, correct, total: questions.length, accuracy, recommendedNextWpm, explanations };
   } catch (error) {
     return { ok: false as const, error: error instanceof Error ? error.message : 'Could not save the reading session.' };
@@ -130,7 +127,6 @@ export async function completeRetentionCheckAction(sessionId: string, answers: R
       where: { id: session.id },
       data: { retentionCompletedAt: new Date(), retentionAccuracy: accuracy, retentionAnswers: answers },
     });
-    revalidatePath('/speed-reading');
     return { ok: true as const, correct, total: questions.length, accuracy };
   } catch (error) {
     return { ok: false as const, error: error instanceof Error ? error.message : 'Could not save the retention check.' };

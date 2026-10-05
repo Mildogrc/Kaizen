@@ -12,6 +12,7 @@ export interface ParsedWord {
   word: string;
   reading?: string;
   status?: string;
+  language?: string;
 }
 
 export interface ParseResult {
@@ -23,6 +24,7 @@ export interface ParseResult {
 const WORD_KEYS = ['word', 'term', 'text', 'front', 'vocab', 'expression'];
 const STATUS_KEYS = ['status', 'state', 'knownstatus'];
 const READING_KEYS = ['reading', 'kana', 'pronunciation'];
+const LANGUAGE_KEYS = ['language', 'lang'];
 
 function keepStatus(status: string | undefined, includeLearning: boolean): boolean {
   if (!status) return true;
@@ -30,6 +32,22 @@ function keepStatus(status: string | undefined, includeLearning: boolean): boole
   if (s === '' || s === 'known') return true;
   if (includeLearning && s === 'learning') return true;
   return false;
+}
+
+function normalizedLanguage(language: string | undefined): string | undefined {
+  const value = language?.trim().toLowerCase().replace('_', '-');
+  if (!value) return undefined;
+  if (value === 'ja' || value === 'jp' || value === 'japanese') return 'ja';
+  if (value === 'zh' || value === 'cn' || value === 'chinese' || value.startsWith('zh-')) return 'zh';
+  return value;
+}
+
+function keepLanguage(language: string | undefined, targetLanguage: 'ja' | 'zh' | undefined): boolean {
+  return !targetLanguage || !language || normalizedLanguage(language) === targetLanguage;
+}
+
+function filterWords(words: ParsedWord[], includeLearning: boolean, targetLanguage: 'ja' | 'zh' | undefined): ParsedWord[] {
+  return words.filter((word) => keepStatus(word.status, includeLearning) && keepLanguage(word.language, targetLanguage));
 }
 
 /** Minimal CSV line split honoring double-quoted fields. */
@@ -64,7 +82,7 @@ function pick(obj: Record<string, unknown>, keys: string[]): string | undefined 
  * (one word per line, optional tab-separated status). Keeps status=Known
  * (+Learning when requested); entries without a status are kept.
  */
-export function parseMigakuExport(text: string, includeLearning = false): ParseResult {
+export function parseMigakuExport(text: string, includeLearning = false, targetLanguage?: 'ja' | 'zh'): ParseResult {
   const trimmed = text.trim();
   if (!trimmed) return { format: 'txt', words: [], filteredOut: 0 };
 
@@ -84,10 +102,15 @@ export function parseMigakuExport(text: string, includeLearning = false): ParseR
         } else if (entry && typeof entry === 'object') {
           const obj = entry as Record<string, unknown>;
           const word = pick(obj, WORD_KEYS);
-          if (word) all.push({ word, reading: pick(obj, READING_KEYS), status: pick(obj, STATUS_KEYS) });
+          if (word) all.push({
+            word,
+            reading: pick(obj, READING_KEYS),
+            status: pick(obj, STATUS_KEYS),
+            language: pick(obj, LANGUAGE_KEYS),
+          });
         }
       }
-      const kept = all.filter((w) => keepStatus(w.status, includeLearning));
+      const kept = filterWords(all, includeLearning, targetLanguage);
       return { format: 'json', words: kept, filteredOut: all.length - kept.length };
     } catch {
       // fall through to line-based parsing
@@ -102,6 +125,7 @@ export function parseMigakuExport(text: string, includeLearning = false): ParseR
   if (lines[0]?.includes(',') && wordCol !== -1) {
     const statusCol = header.findIndex((h) => STATUS_KEYS.includes(h));
     const readingCol = header.findIndex((h) => READING_KEYS.includes(h));
+    const languageCol = header.findIndex((h) => LANGUAGE_KEYS.includes(h));
     const all: ParsedWord[] = [];
     for (const line of lines.slice(1)) {
       const cells = splitCsvLine(line);
@@ -111,9 +135,10 @@ export function parseMigakuExport(text: string, includeLearning = false): ParseR
         word,
         reading: readingCol !== -1 ? cells[readingCol] || undefined : undefined,
         status: statusCol !== -1 ? cells[statusCol] || undefined : undefined,
+        language: languageCol !== -1 ? cells[languageCol] || undefined : undefined,
       });
     }
-    const kept = all.filter((w) => keepStatus(w.status, includeLearning));
+    const kept = filterWords(all, includeLearning, targetLanguage);
     return { format: 'csv', words: kept, filteredOut: all.length - kept.length };
   }
 
@@ -122,7 +147,7 @@ export function parseMigakuExport(text: string, includeLearning = false): ParseR
     const [word, maybeStatus] = line.split(/[\t,]/).map((s) => s.trim());
     return { word, status: maybeStatus || undefined };
   });
-  const kept = all.filter((w) => w.word && keepStatus(w.status, includeLearning));
+  const kept = filterWords(all.filter((word) => word.word), includeLearning, targetLanguage);
   return { format: 'txt', words: kept, filteredOut: all.length - kept.length };
 }
 

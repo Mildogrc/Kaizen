@@ -75,8 +75,11 @@ export const ModelName = {
   Book: 'Book',
   BookNote: 'BookNote',
   BookReadingSession: 'BookReadingSession',
+  YouTubePlaylist: 'YouTubePlaylist',
+  YouTubePlaylistItem: 'YouTubePlaylistItem',
   GrammarProgress: 'GrammarProgress',
   GrammarLesson: 'GrammarLesson',
+  KanjiRepairState: 'KanjiRepairState',
   CodeforcesProfile: 'CodeforcesProfile',
   CodeforcesSubmission: 'CodeforcesSubmission',
   CodeforcesRatingChange: 'CodeforcesRatingChange',
@@ -88,6 +91,10 @@ export const ModelName = {
   AnkiCardSnapshot: 'AnkiCardSnapshot',
   AnkiReviewLog: 'AnkiReviewLog',
   AnkiSyncRun: 'AnkiSyncRun',
+  AnkiAdaptiveBudgetState: 'AnkiAdaptiveBudgetState',
+  AnkiAdaptiveEvidenceDay: 'AnkiAdaptiveEvidenceDay',
+  AnkiAdaptiveBudgetDecision: 'AnkiAdaptiveBudgetDecision',
+  AnkiAdaptiveDeckState: 'AnkiAdaptiveDeckState',
   KnownWord: 'KnownWord',
   KnownWordStat: 'KnownWordStat',
   Exam: 'Exam',
@@ -471,6 +478,49 @@ export const BookReadingSessionScalarFieldEnum = {
 export type BookReadingSessionScalarFieldEnum = (typeof BookReadingSessionScalarFieldEnum)[keyof typeof BookReadingSessionScalarFieldEnum]
 
 
+export const YouTubePlaylistScalarFieldEnum = {
+  id: 'id',
+  youtubePlaylistId: 'youtubePlaylistId',
+  sourceUrl: 'sourceUrl',
+  title: 'title',
+  description: 'description',
+  channelTitle: 'channelTitle',
+  thumbnailUrl: 'thumbnailUrl',
+  customImageUrl: 'customImageUrl',
+  imagePrompt: 'imagePrompt',
+  currentVideoId: 'currentVideoId',
+  currentPosition: 'currentPosition',
+  currentSeconds: 'currentSeconds',
+  status: 'status',
+  totalItems: 'totalItems',
+  metadataSource: 'metadataSource',
+  lastFetchedAt: 'lastFetchedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type YouTubePlaylistScalarFieldEnum = (typeof YouTubePlaylistScalarFieldEnum)[keyof typeof YouTubePlaylistScalarFieldEnum]
+
+
+export const YouTubePlaylistItemScalarFieldEnum = {
+  id: 'id',
+  playlistId: 'playlistId',
+  youtubeVideoId: 'youtubeVideoId',
+  position: 'position',
+  title: 'title',
+  description: 'description',
+  thumbnailUrl: 'thumbnailUrl',
+  durationSeconds: 'durationSeconds',
+  completed: 'completed',
+  watchedSeconds: 'watchedSeconds',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type YouTubePlaylistItemScalarFieldEnum = (typeof YouTubePlaylistItemScalarFieldEnum)[keyof typeof YouTubePlaylistItemScalarFieldEnum]
+
+
 export const GrammarProgressScalarFieldEnum = {
   id: 'id',
   learningItemId: 'learningItemId',
@@ -508,6 +558,22 @@ export const GrammarLessonScalarFieldEnum = {
 } as const
 
 export type GrammarLessonScalarFieldEnum = (typeof GrammarLessonScalarFieldEnum)[keyof typeof GrammarLessonScalarFieldEnum]
+
+
+export const KanjiRepairStateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  kanji: 'kanji',
+  lastRepairedAt: 'lastRepairedAt',
+  cooldownUntil: 'cooldownUntil',
+  repairCount: 'repairCount',
+  lastRepairScore: 'lastRepairScore',
+  performanceAtRepair: 'performanceAtRepair',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KanjiRepairStateScalarFieldEnum = (typeof KanjiRepairStateScalarFieldEnum)[keyof typeof KanjiRepairStateScalarFieldEnum]
 
 
 export const CodeforcesProfileScalarFieldEnum = {
@@ -653,6 +719,7 @@ export const AnkiDeckMappingScalarFieldEnum = {
   courseId: 'courseId',
   schemaId: 'schemaId',
   countsKnownWords: 'countsKnownWords',
+  adaptiveNewCards: 'adaptiveNewCards',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt'
 } as const
@@ -688,7 +755,8 @@ export const AnkiReviewLogScalarFieldEnum = {
   rating: 'rating',
   intervalAfterDays: 'intervalAfterDays',
   intervalBeforeDays: 'intervalBeforeDays',
-  timeMs: 'timeMs'
+  timeMs: 'timeMs',
+  reviewType: 'reviewType'
 } as const
 
 export type AnkiReviewLogScalarFieldEnum = (typeof AnkiReviewLogScalarFieldEnum)[keyof typeof AnkiReviewLogScalarFieldEnum]
@@ -706,6 +774,91 @@ export const AnkiSyncRunScalarFieldEnum = {
 } as const
 
 export type AnkiSyncRunScalarFieldEnum = (typeof AnkiSyncRunScalarFieldEnum)[keyof typeof AnkiSyncRunScalarFieldEnum]
+
+
+export const AnkiAdaptiveBudgetStateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  activatedAt: 'activatedAt',
+  currentBudget: 'currentBudget',
+  reliableDataDays: 'reliableDataDays',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveBudgetStateScalarFieldEnum = (typeof AnkiAdaptiveBudgetStateScalarFieldEnum)[keyof typeof AnkiAdaptiveBudgetStateScalarFieldEnum]
+
+
+export const AnkiAdaptiveEvidenceDayScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ankiDay: 'ankiDay',
+  reviewObservations: 'reviewObservations',
+  reviewedCardCount: 'reviewedCardCount',
+  reviewedCardIds: 'reviewedCardIds',
+  lapsedCardIds: 'lapsedCardIds',
+  reviewMinutes: 'reviewMinutes',
+  validTimeObservations: 'validTimeObservations',
+  reviewsDue: 'reviewsDue',
+  reviewsCompleted: 'reviewsCompleted',
+  completionRate: 'completionRate',
+  retention: 'retention',
+  reliable: 'reliable',
+  dataAvailable: 'dataAvailable',
+  finalizedAt: 'finalizedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveEvidenceDayScalarFieldEnum = (typeof AnkiAdaptiveEvidenceDayScalarFieldEnum)[keyof typeof AnkiAdaptiveEvidenceDayScalarFieldEnum]
+
+
+export const AnkiAdaptiveBudgetDecisionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ankiDay: 'ankiDay',
+  previousBudget: 'previousBudget',
+  performanceTarget: 'performanceTarget',
+  confidenceCeiling: 'confidenceCeiling',
+  finalBudget: 'finalBudget',
+  windowRetention: 'windowRetention',
+  retentionAdjustment: 'retentionAdjustment',
+  medianReviewMinutes: 'medianReviewMinutes',
+  reviewTimeAdjustment: 'reviewTimeAdjustment',
+  repeatLapseRate: 'repeatLapseRate',
+  lapseAdjustment: 'lapseAdjustment',
+  completionRate: 'completionRate',
+  overdueCount: 'overdueCount',
+  backlogRatio: 'backlogRatio',
+  reliableDataDays: 'reliableDataDays',
+  reliableWindowDays: 'reliableWindowDays',
+  dueAtCalculation: 'dueAtCalculation',
+  reasons: 'reasons',
+  allocation: 'allocation',
+  applyStatus: 'applyStatus',
+  applyError: 'applyError',
+  calculatedAt: 'calculatedAt',
+  lastApplyAt: 'lastApplyAt'
+} as const
+
+export type AnkiAdaptiveBudgetDecisionScalarFieldEnum = (typeof AnkiAdaptiveBudgetDecisionScalarFieldEnum)[keyof typeof AnkiAdaptiveBudgetDecisionScalarFieldEnum]
+
+
+export const AnkiAdaptiveDeckStateScalarFieldEnum = {
+  id: 'id',
+  mappingId: 'mappingId',
+  originalConfigId: 'originalConfigId',
+  managedConfigId: 'managedConfigId',
+  managedConfigName: 'managedConfigName',
+  lastAppliedBudget: 'lastAppliedBudget',
+  lastAppliedAt: 'lastAppliedAt',
+  restorePending: 'restorePending',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveDeckStateScalarFieldEnum = (typeof AnkiAdaptiveDeckStateScalarFieldEnum)[keyof typeof AnkiAdaptiveDeckStateScalarFieldEnum]
 
 
 export const KnownWordScalarFieldEnum = {

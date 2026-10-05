@@ -12,6 +12,8 @@ import { rate, type Rating } from './srs';
 import type { FlashcardRule } from './schema-types';
 import { validateItems } from './schema-zod';
 import { fieldRowToDef } from './schema-serialize';
+import { reconcileAdaptiveAnkiAfterSync } from './adaptive-anki-service';
+import { restoreAdaptiveDeckPreset } from './adaptive-anki-application';
 import type { FieldDef } from './schema-types';
 
 // ----------------------------------------------------------------- Books
@@ -133,7 +135,6 @@ export async function cycleNodeStatus(nodeId: string) {
   const next =
     NODE_STATUS_CYCLE[(NODE_STATUS_CYCLE.indexOf(node.status as never) + 1) % NODE_STATUS_CYCLE.length];
   await prisma.roadmapNode.update({ where: { id: nodeId }, data: { status: next } });
-  revalidatePath('/math');
 }
 
 // ------------------------------------------------------------------ Goals
@@ -299,9 +300,22 @@ export async function saveDeckMapping(input: { deckName: string; courseId: strin
 }
 
 export async function removeDeckMapping(mappingId: string) {
+  const mapping = await prisma.ankiDeckMapping.findUnique({
+    where: { id: mappingId },
+    include: { adaptiveDeckState: true },
+  });
+  if (!mapping) return { ok: true };
+  if (mapping.adaptiveDeckState) {
+    const restored = await restoreAdaptiveDeckPreset({
+      deckName: mapping.deckName,
+      state: mapping.adaptiveDeckState,
+    });
+    if (!restored.ok) return { ok: false, error: restored.error };
+  }
   await prisma.ankiDeckMapping.delete({ where: { id: mappingId } });
   revalidatePath('/anki');
   revalidatePath('/analytics');
+  return { ok: true };
 }
 
 export async function runAnkiSync() {
@@ -359,6 +373,21 @@ export async function toggleMappingWordCount(mappingId: string) {
   await refreshAnkiKnownWords();
   revalidatePath('/anki');
   revalidatePath('/words');
+}
+
+export async function toggleMappingAdaptiveNewCards(mappingId: string) {
+  const mapping = await prisma.ankiDeckMapping.findUniqueOrThrow({
+    where: { id: mappingId },
+    include: { course: true },
+  });
+  if (mapping.course.slug !== 'japanese') return;
+  await prisma.ankiDeckMapping.update({
+    where: { id: mappingId },
+    data: { adaptiveNewCards: !mapping.adaptiveNewCards },
+  });
+  await reconcileAdaptiveAnkiAfterSync().catch(() => {});
+  revalidatePath('/anki');
+  revalidatePath('/configurations');
 }
 
 // --------------------------------------------------------------- Mistakes

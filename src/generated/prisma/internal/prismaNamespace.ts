@@ -408,8 +408,11 @@ export const ModelName = {
   Book: 'Book',
   BookNote: 'BookNote',
   BookReadingSession: 'BookReadingSession',
+  YouTubePlaylist: 'YouTubePlaylist',
+  YouTubePlaylistItem: 'YouTubePlaylistItem',
   GrammarProgress: 'GrammarProgress',
   GrammarLesson: 'GrammarLesson',
+  KanjiRepairState: 'KanjiRepairState',
   CodeforcesProfile: 'CodeforcesProfile',
   CodeforcesSubmission: 'CodeforcesSubmission',
   CodeforcesRatingChange: 'CodeforcesRatingChange',
@@ -421,6 +424,10 @@ export const ModelName = {
   AnkiCardSnapshot: 'AnkiCardSnapshot',
   AnkiReviewLog: 'AnkiReviewLog',
   AnkiSyncRun: 'AnkiSyncRun',
+  AnkiAdaptiveBudgetState: 'AnkiAdaptiveBudgetState',
+  AnkiAdaptiveEvidenceDay: 'AnkiAdaptiveEvidenceDay',
+  AnkiAdaptiveBudgetDecision: 'AnkiAdaptiveBudgetDecision',
+  AnkiAdaptiveDeckState: 'AnkiAdaptiveDeckState',
   KnownWord: 'KnownWord',
   KnownWordStat: 'KnownWordStat',
   Exam: 'Exam',
@@ -441,7 +448,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "course" | "courseGoal" | "coursePlan" | "courseMilestone" | "contentSchema" | "contentSchemaVersion" | "contentSchemaField" | "learningItem" | "practiceItem" | "flashcard" | "reviewRecord" | "attempt" | "mistake" | "studySession" | "tag" | "source" | "importBatch" | "roadmap" | "roadmapNode" | "roadmapEdge" | "book" | "bookNote" | "bookReadingSession" | "grammarProgress" | "grammarLesson" | "codeforcesProfile" | "codeforcesSubmission" | "codeforcesRatingChange" | "speedReadingPassage" | "speedReadingSession" | "mandarinBlueprintLevel" | "mandarinDictionaryEntry" | "ankiDeckMapping" | "ankiCardSnapshot" | "ankiReviewLog" | "ankiSyncRun" | "knownWord" | "knownWordStat" | "exam" | "examLevel" | "examObjective"
+    modelProps: "user" | "course" | "courseGoal" | "coursePlan" | "courseMilestone" | "contentSchema" | "contentSchemaVersion" | "contentSchemaField" | "learningItem" | "practiceItem" | "flashcard" | "reviewRecord" | "attempt" | "mistake" | "studySession" | "tag" | "source" | "importBatch" | "roadmap" | "roadmapNode" | "roadmapEdge" | "book" | "bookNote" | "bookReadingSession" | "youTubePlaylist" | "youTubePlaylistItem" | "grammarProgress" | "grammarLesson" | "kanjiRepairState" | "codeforcesProfile" | "codeforcesSubmission" | "codeforcesRatingChange" | "speedReadingPassage" | "speedReadingSession" | "mandarinBlueprintLevel" | "mandarinDictionaryEntry" | "ankiDeckMapping" | "ankiCardSnapshot" | "ankiReviewLog" | "ankiSyncRun" | "ankiAdaptiveBudgetState" | "ankiAdaptiveEvidenceDay" | "ankiAdaptiveBudgetDecision" | "ankiAdaptiveDeckState" | "knownWord" | "knownWordStat" | "exam" | "examLevel" | "examObjective"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2221,6 +2228,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    YouTubePlaylist: {
+      payload: Prisma.$YouTubePlaylistPayload<ExtArgs>
+      fields: Prisma.YouTubePlaylistFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.YouTubePlaylistFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.YouTubePlaylistFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        findFirst: {
+          args: Prisma.YouTubePlaylistFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.YouTubePlaylistFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        findMany: {
+          args: Prisma.YouTubePlaylistFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>[]
+        }
+        create: {
+          args: Prisma.YouTubePlaylistCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        createMany: {
+          args: Prisma.YouTubePlaylistCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.YouTubePlaylistCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>[]
+        }
+        delete: {
+          args: Prisma.YouTubePlaylistDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        update: {
+          args: Prisma.YouTubePlaylistUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        deleteMany: {
+          args: Prisma.YouTubePlaylistDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.YouTubePlaylistUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.YouTubePlaylistUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>[]
+        }
+        upsert: {
+          args: Prisma.YouTubePlaylistUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistPayload>
+        }
+        aggregate: {
+          args: Prisma.YouTubePlaylistAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateYouTubePlaylist>
+        }
+        groupBy: {
+          args: Prisma.YouTubePlaylistGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YouTubePlaylistGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.YouTubePlaylistCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YouTubePlaylistCountAggregateOutputType> | number
+        }
+      }
+    }
+    YouTubePlaylistItem: {
+      payload: Prisma.$YouTubePlaylistItemPayload<ExtArgs>
+      fields: Prisma.YouTubePlaylistItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.YouTubePlaylistItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.YouTubePlaylistItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        findFirst: {
+          args: Prisma.YouTubePlaylistItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.YouTubePlaylistItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        findMany: {
+          args: Prisma.YouTubePlaylistItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>[]
+        }
+        create: {
+          args: Prisma.YouTubePlaylistItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        createMany: {
+          args: Prisma.YouTubePlaylistItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.YouTubePlaylistItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>[]
+        }
+        delete: {
+          args: Prisma.YouTubePlaylistItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        update: {
+          args: Prisma.YouTubePlaylistItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.YouTubePlaylistItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.YouTubePlaylistItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.YouTubePlaylistItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.YouTubePlaylistItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$YouTubePlaylistItemPayload>
+        }
+        aggregate: {
+          args: Prisma.YouTubePlaylistItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateYouTubePlaylistItem>
+        }
+        groupBy: {
+          args: Prisma.YouTubePlaylistItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YouTubePlaylistItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.YouTubePlaylistItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.YouTubePlaylistItemCountAggregateOutputType> | number
+        }
+      }
+    }
     GrammarProgress: {
       payload: Prisma.$GrammarProgressPayload<ExtArgs>
       fields: Prisma.GrammarProgressFieldRefs
@@ -2366,6 +2521,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.GrammarLessonCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.GrammarLessonCountAggregateOutputType> | number
+        }
+      }
+    }
+    KanjiRepairState: {
+      payload: Prisma.$KanjiRepairStatePayload<ExtArgs>
+      fields: Prisma.KanjiRepairStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.KanjiRepairStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.KanjiRepairStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        findFirst: {
+          args: Prisma.KanjiRepairStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.KanjiRepairStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        findMany: {
+          args: Prisma.KanjiRepairStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>[]
+        }
+        create: {
+          args: Prisma.KanjiRepairStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        createMany: {
+          args: Prisma.KanjiRepairStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.KanjiRepairStateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>[]
+        }
+        delete: {
+          args: Prisma.KanjiRepairStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        update: {
+          args: Prisma.KanjiRepairStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.KanjiRepairStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.KanjiRepairStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.KanjiRepairStateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>[]
+        }
+        upsert: {
+          args: Prisma.KanjiRepairStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$KanjiRepairStatePayload>
+        }
+        aggregate: {
+          args: Prisma.KanjiRepairStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateKanjiRepairState>
+        }
+        groupBy: {
+          args: Prisma.KanjiRepairStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KanjiRepairStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.KanjiRepairStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.KanjiRepairStateCountAggregateOutputType> | number
         }
       }
     }
@@ -3183,6 +3412,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AnkiAdaptiveBudgetState: {
+      payload: Prisma.$AnkiAdaptiveBudgetStatePayload<ExtArgs>
+      fields: Prisma.AnkiAdaptiveBudgetStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiAdaptiveBudgetStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiAdaptiveBudgetStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiAdaptiveBudgetStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiAdaptiveBudgetStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        findMany: {
+          args: Prisma.AnkiAdaptiveBudgetStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>[]
+        }
+        create: {
+          args: Prisma.AnkiAdaptiveBudgetStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        createMany: {
+          args: Prisma.AnkiAdaptiveBudgetStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiAdaptiveBudgetStateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiAdaptiveBudgetStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        update: {
+          args: Prisma.AnkiAdaptiveBudgetStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiAdaptiveBudgetStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiAdaptiveBudgetStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiAdaptiveBudgetStateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiAdaptiveBudgetStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetStatePayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiAdaptiveBudgetStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiAdaptiveBudgetState>
+        }
+        groupBy: {
+          args: Prisma.AnkiAdaptiveBudgetStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveBudgetStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiAdaptiveBudgetStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveBudgetStateCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiAdaptiveEvidenceDay: {
+      payload: Prisma.$AnkiAdaptiveEvidenceDayPayload<ExtArgs>
+      fields: Prisma.AnkiAdaptiveEvidenceDayFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiAdaptiveEvidenceDayFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiAdaptiveEvidenceDayFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiAdaptiveEvidenceDayFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiAdaptiveEvidenceDayFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiAdaptiveEvidenceDayFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiAdaptiveEvidenceDayCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiAdaptiveEvidenceDayCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiAdaptiveEvidenceDayCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiAdaptiveEvidenceDayDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        update: {
+          args: Prisma.AnkiAdaptiveEvidenceDayUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiAdaptiveEvidenceDayDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiAdaptiveEvidenceDayUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiAdaptiveEvidenceDayUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiAdaptiveEvidenceDayUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveEvidenceDayPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiAdaptiveEvidenceDayAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiAdaptiveEvidenceDay>
+        }
+        groupBy: {
+          args: Prisma.AnkiAdaptiveEvidenceDayGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveEvidenceDayGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiAdaptiveEvidenceDayCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveEvidenceDayCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiAdaptiveBudgetDecision: {
+      payload: Prisma.$AnkiAdaptiveBudgetDecisionPayload<ExtArgs>
+      fields: Prisma.AnkiAdaptiveBudgetDecisionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        findMany: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>[]
+        }
+        create: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        createMany: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        update: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveBudgetDecisionPayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiAdaptiveBudgetDecision>
+        }
+        groupBy: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveBudgetDecisionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiAdaptiveBudgetDecisionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveBudgetDecisionCountAggregateOutputType> | number
+        }
+      }
+    }
+    AnkiAdaptiveDeckState: {
+      payload: Prisma.$AnkiAdaptiveDeckStatePayload<ExtArgs>
+      fields: Prisma.AnkiAdaptiveDeckStateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AnkiAdaptiveDeckStateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AnkiAdaptiveDeckStateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        findFirst: {
+          args: Prisma.AnkiAdaptiveDeckStateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AnkiAdaptiveDeckStateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        findMany: {
+          args: Prisma.AnkiAdaptiveDeckStateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>[]
+        }
+        create: {
+          args: Prisma.AnkiAdaptiveDeckStateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        createMany: {
+          args: Prisma.AnkiAdaptiveDeckStateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AnkiAdaptiveDeckStateCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>[]
+        }
+        delete: {
+          args: Prisma.AnkiAdaptiveDeckStateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        update: {
+          args: Prisma.AnkiAdaptiveDeckStateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        deleteMany: {
+          args: Prisma.AnkiAdaptiveDeckStateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AnkiAdaptiveDeckStateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AnkiAdaptiveDeckStateUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>[]
+        }
+        upsert: {
+          args: Prisma.AnkiAdaptiveDeckStateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AnkiAdaptiveDeckStatePayload>
+        }
+        aggregate: {
+          args: Prisma.AnkiAdaptiveDeckStateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAnkiAdaptiveDeckState>
+        }
+        groupBy: {
+          args: Prisma.AnkiAdaptiveDeckStateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveDeckStateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AnkiAdaptiveDeckStateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AnkiAdaptiveDeckStateCountAggregateOutputType> | number
+        }
+      }
+    }
     KnownWord: {
       payload: Prisma.$KnownWordPayload<ExtArgs>
       fields: Prisma.KnownWordFieldRefs
@@ -3952,6 +4477,49 @@ export const BookReadingSessionScalarFieldEnum = {
 export type BookReadingSessionScalarFieldEnum = (typeof BookReadingSessionScalarFieldEnum)[keyof typeof BookReadingSessionScalarFieldEnum]
 
 
+export const YouTubePlaylistScalarFieldEnum = {
+  id: 'id',
+  youtubePlaylistId: 'youtubePlaylistId',
+  sourceUrl: 'sourceUrl',
+  title: 'title',
+  description: 'description',
+  channelTitle: 'channelTitle',
+  thumbnailUrl: 'thumbnailUrl',
+  customImageUrl: 'customImageUrl',
+  imagePrompt: 'imagePrompt',
+  currentVideoId: 'currentVideoId',
+  currentPosition: 'currentPosition',
+  currentSeconds: 'currentSeconds',
+  status: 'status',
+  totalItems: 'totalItems',
+  metadataSource: 'metadataSource',
+  lastFetchedAt: 'lastFetchedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type YouTubePlaylistScalarFieldEnum = (typeof YouTubePlaylistScalarFieldEnum)[keyof typeof YouTubePlaylistScalarFieldEnum]
+
+
+export const YouTubePlaylistItemScalarFieldEnum = {
+  id: 'id',
+  playlistId: 'playlistId',
+  youtubeVideoId: 'youtubeVideoId',
+  position: 'position',
+  title: 'title',
+  description: 'description',
+  thumbnailUrl: 'thumbnailUrl',
+  durationSeconds: 'durationSeconds',
+  completed: 'completed',
+  watchedSeconds: 'watchedSeconds',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type YouTubePlaylistItemScalarFieldEnum = (typeof YouTubePlaylistItemScalarFieldEnum)[keyof typeof YouTubePlaylistItemScalarFieldEnum]
+
+
 export const GrammarProgressScalarFieldEnum = {
   id: 'id',
   learningItemId: 'learningItemId',
@@ -3989,6 +4557,22 @@ export const GrammarLessonScalarFieldEnum = {
 } as const
 
 export type GrammarLessonScalarFieldEnum = (typeof GrammarLessonScalarFieldEnum)[keyof typeof GrammarLessonScalarFieldEnum]
+
+
+export const KanjiRepairStateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  kanji: 'kanji',
+  lastRepairedAt: 'lastRepairedAt',
+  cooldownUntil: 'cooldownUntil',
+  repairCount: 'repairCount',
+  lastRepairScore: 'lastRepairScore',
+  performanceAtRepair: 'performanceAtRepair',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type KanjiRepairStateScalarFieldEnum = (typeof KanjiRepairStateScalarFieldEnum)[keyof typeof KanjiRepairStateScalarFieldEnum]
 
 
 export const CodeforcesProfileScalarFieldEnum = {
@@ -4134,6 +4718,7 @@ export const AnkiDeckMappingScalarFieldEnum = {
   courseId: 'courseId',
   schemaId: 'schemaId',
   countsKnownWords: 'countsKnownWords',
+  adaptiveNewCards: 'adaptiveNewCards',
   lastSyncedAt: 'lastSyncedAt',
   createdAt: 'createdAt'
 } as const
@@ -4169,7 +4754,8 @@ export const AnkiReviewLogScalarFieldEnum = {
   rating: 'rating',
   intervalAfterDays: 'intervalAfterDays',
   intervalBeforeDays: 'intervalBeforeDays',
-  timeMs: 'timeMs'
+  timeMs: 'timeMs',
+  reviewType: 'reviewType'
 } as const
 
 export type AnkiReviewLogScalarFieldEnum = (typeof AnkiReviewLogScalarFieldEnum)[keyof typeof AnkiReviewLogScalarFieldEnum]
@@ -4187,6 +4773,91 @@ export const AnkiSyncRunScalarFieldEnum = {
 } as const
 
 export type AnkiSyncRunScalarFieldEnum = (typeof AnkiSyncRunScalarFieldEnum)[keyof typeof AnkiSyncRunScalarFieldEnum]
+
+
+export const AnkiAdaptiveBudgetStateScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  activatedAt: 'activatedAt',
+  currentBudget: 'currentBudget',
+  reliableDataDays: 'reliableDataDays',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveBudgetStateScalarFieldEnum = (typeof AnkiAdaptiveBudgetStateScalarFieldEnum)[keyof typeof AnkiAdaptiveBudgetStateScalarFieldEnum]
+
+
+export const AnkiAdaptiveEvidenceDayScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ankiDay: 'ankiDay',
+  reviewObservations: 'reviewObservations',
+  reviewedCardCount: 'reviewedCardCount',
+  reviewedCardIds: 'reviewedCardIds',
+  lapsedCardIds: 'lapsedCardIds',
+  reviewMinutes: 'reviewMinutes',
+  validTimeObservations: 'validTimeObservations',
+  reviewsDue: 'reviewsDue',
+  reviewsCompleted: 'reviewsCompleted',
+  completionRate: 'completionRate',
+  retention: 'retention',
+  reliable: 'reliable',
+  dataAvailable: 'dataAvailable',
+  finalizedAt: 'finalizedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveEvidenceDayScalarFieldEnum = (typeof AnkiAdaptiveEvidenceDayScalarFieldEnum)[keyof typeof AnkiAdaptiveEvidenceDayScalarFieldEnum]
+
+
+export const AnkiAdaptiveBudgetDecisionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ankiDay: 'ankiDay',
+  previousBudget: 'previousBudget',
+  performanceTarget: 'performanceTarget',
+  confidenceCeiling: 'confidenceCeiling',
+  finalBudget: 'finalBudget',
+  windowRetention: 'windowRetention',
+  retentionAdjustment: 'retentionAdjustment',
+  medianReviewMinutes: 'medianReviewMinutes',
+  reviewTimeAdjustment: 'reviewTimeAdjustment',
+  repeatLapseRate: 'repeatLapseRate',
+  lapseAdjustment: 'lapseAdjustment',
+  completionRate: 'completionRate',
+  overdueCount: 'overdueCount',
+  backlogRatio: 'backlogRatio',
+  reliableDataDays: 'reliableDataDays',
+  reliableWindowDays: 'reliableWindowDays',
+  dueAtCalculation: 'dueAtCalculation',
+  reasons: 'reasons',
+  allocation: 'allocation',
+  applyStatus: 'applyStatus',
+  applyError: 'applyError',
+  calculatedAt: 'calculatedAt',
+  lastApplyAt: 'lastApplyAt'
+} as const
+
+export type AnkiAdaptiveBudgetDecisionScalarFieldEnum = (typeof AnkiAdaptiveBudgetDecisionScalarFieldEnum)[keyof typeof AnkiAdaptiveBudgetDecisionScalarFieldEnum]
+
+
+export const AnkiAdaptiveDeckStateScalarFieldEnum = {
+  id: 'id',
+  mappingId: 'mappingId',
+  originalConfigId: 'originalConfigId',
+  managedConfigId: 'managedConfigId',
+  managedConfigName: 'managedConfigName',
+  lastAppliedBudget: 'lastAppliedBudget',
+  lastAppliedAt: 'lastAppliedAt',
+  restorePending: 'restorePending',
+  lastError: 'lastError',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AnkiAdaptiveDeckStateScalarFieldEnum = (typeof AnkiAdaptiveDeckStateScalarFieldEnum)[keyof typeof AnkiAdaptiveDeckStateScalarFieldEnum]
 
 
 export const KnownWordScalarFieldEnum = {
@@ -4799,8 +5470,11 @@ export type GlobalOmitConfig = {
   book?: Prisma.BookOmit
   bookNote?: Prisma.BookNoteOmit
   bookReadingSession?: Prisma.BookReadingSessionOmit
+  youTubePlaylist?: Prisma.YouTubePlaylistOmit
+  youTubePlaylistItem?: Prisma.YouTubePlaylistItemOmit
   grammarProgress?: Prisma.GrammarProgressOmit
   grammarLesson?: Prisma.GrammarLessonOmit
+  kanjiRepairState?: Prisma.KanjiRepairStateOmit
   codeforcesProfile?: Prisma.CodeforcesProfileOmit
   codeforcesSubmission?: Prisma.CodeforcesSubmissionOmit
   codeforcesRatingChange?: Prisma.CodeforcesRatingChangeOmit
@@ -4812,6 +5486,10 @@ export type GlobalOmitConfig = {
   ankiCardSnapshot?: Prisma.AnkiCardSnapshotOmit
   ankiReviewLog?: Prisma.AnkiReviewLogOmit
   ankiSyncRun?: Prisma.AnkiSyncRunOmit
+  ankiAdaptiveBudgetState?: Prisma.AnkiAdaptiveBudgetStateOmit
+  ankiAdaptiveEvidenceDay?: Prisma.AnkiAdaptiveEvidenceDayOmit
+  ankiAdaptiveBudgetDecision?: Prisma.AnkiAdaptiveBudgetDecisionOmit
+  ankiAdaptiveDeckState?: Prisma.AnkiAdaptiveDeckStateOmit
   knownWord?: Prisma.KnownWordOmit
   knownWordStat?: Prisma.KnownWordStatOmit
   exam?: Prisma.ExamOmit

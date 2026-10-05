@@ -33,6 +33,7 @@ export type AnkiReviewLogAvgAggregateOutputType = {
   intervalAfterDays: number | null
   intervalBeforeDays: number | null
   timeMs: number | null
+  reviewType: number | null
 }
 
 export type AnkiReviewLogSumAggregateOutputType = {
@@ -42,6 +43,7 @@ export type AnkiReviewLogSumAggregateOutputType = {
   intervalAfterDays: number | null
   intervalBeforeDays: number | null
   timeMs: number | null
+  reviewType: number | null
 }
 
 export type AnkiReviewLogMinAggregateOutputType = {
@@ -54,6 +56,7 @@ export type AnkiReviewLogMinAggregateOutputType = {
   intervalAfterDays: number | null
   intervalBeforeDays: number | null
   timeMs: number | null
+  reviewType: number | null
 }
 
 export type AnkiReviewLogMaxAggregateOutputType = {
@@ -66,6 +69,7 @@ export type AnkiReviewLogMaxAggregateOutputType = {
   intervalAfterDays: number | null
   intervalBeforeDays: number | null
   timeMs: number | null
+  reviewType: number | null
 }
 
 export type AnkiReviewLogCountAggregateOutputType = {
@@ -78,6 +82,7 @@ export type AnkiReviewLogCountAggregateOutputType = {
   intervalAfterDays: number
   intervalBeforeDays: number
   timeMs: number
+  reviewType: number
   _all: number
 }
 
@@ -89,6 +94,7 @@ export type AnkiReviewLogAvgAggregateInputType = {
   intervalAfterDays?: true
   intervalBeforeDays?: true
   timeMs?: true
+  reviewType?: true
 }
 
 export type AnkiReviewLogSumAggregateInputType = {
@@ -98,6 +104,7 @@ export type AnkiReviewLogSumAggregateInputType = {
   intervalAfterDays?: true
   intervalBeforeDays?: true
   timeMs?: true
+  reviewType?: true
 }
 
 export type AnkiReviewLogMinAggregateInputType = {
@@ -110,6 +117,7 @@ export type AnkiReviewLogMinAggregateInputType = {
   intervalAfterDays?: true
   intervalBeforeDays?: true
   timeMs?: true
+  reviewType?: true
 }
 
 export type AnkiReviewLogMaxAggregateInputType = {
@@ -122,6 +130,7 @@ export type AnkiReviewLogMaxAggregateInputType = {
   intervalAfterDays?: true
   intervalBeforeDays?: true
   timeMs?: true
+  reviewType?: true
 }
 
 export type AnkiReviewLogCountAggregateInputType = {
@@ -134,6 +143,7 @@ export type AnkiReviewLogCountAggregateInputType = {
   intervalAfterDays?: true
   intervalBeforeDays?: true
   timeMs?: true
+  reviewType?: true
   _all?: true
 }
 
@@ -233,6 +243,7 @@ export type AnkiReviewLogGroupByOutputType = {
   intervalAfterDays: number
   intervalBeforeDays: number
   timeMs: number
+  reviewType: number | null
   _count: AnkiReviewLogCountAggregateOutputType | null
   _avg: AnkiReviewLogAvgAggregateOutputType | null
   _sum: AnkiReviewLogSumAggregateOutputType | null
@@ -268,6 +279,7 @@ export type AnkiReviewLogWhereInput = {
   intervalAfterDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   intervalBeforeDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   timeMs?: Prisma.IntFilter<"AnkiReviewLog"> | number
+  reviewType?: Prisma.IntNullableFilter<"AnkiReviewLog"> | number | null
   mapping?: Prisma.XOR<Prisma.AnkiDeckMappingScalarRelationFilter, Prisma.AnkiDeckMappingWhereInput>
 }
 
@@ -281,6 +293,7 @@ export type AnkiReviewLogOrderByWithRelationInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrderInput | Prisma.SortOrder
   mapping?: Prisma.AnkiDeckMappingOrderByWithRelationInput
 }
 
@@ -298,6 +311,7 @@ export type AnkiReviewLogWhereUniqueInput = Prisma.AtLeast<{
   intervalAfterDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   intervalBeforeDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   timeMs?: Prisma.IntFilter<"AnkiReviewLog"> | number
+  reviewType?: Prisma.IntNullableFilter<"AnkiReviewLog"> | number | null
   mapping?: Prisma.XOR<Prisma.AnkiDeckMappingScalarRelationFilter, Prisma.AnkiDeckMappingWhereInput>
 }, "id" | "ankiReviewId_ankiCardId">
 
@@ -311,6 +325,7 @@ export type AnkiReviewLogOrderByWithAggregationInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AnkiReviewLogCountOrderByAggregateInput
   _avg?: Prisma.AnkiReviewLogAvgOrderByAggregateInput
   _max?: Prisma.AnkiReviewLogMaxOrderByAggregateInput
@@ -331,6 +346,7 @@ export type AnkiReviewLogScalarWhereWithAggregatesInput = {
   intervalAfterDays?: Prisma.IntWithAggregatesFilter<"AnkiReviewLog"> | number
   intervalBeforeDays?: Prisma.IntWithAggregatesFilter<"AnkiReviewLog"> | number
   timeMs?: Prisma.IntWithAggregatesFilter<"AnkiReviewLog"> | number
+  reviewType?: Prisma.IntNullableWithAggregatesFilter<"AnkiReviewLog"> | number | null
 }
 
 export type AnkiReviewLogCreateInput = {
@@ -342,6 +358,7 @@ export type AnkiReviewLogCreateInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
   mapping: Prisma.AnkiDeckMappingCreateNestedOneWithoutReviewLogsInput
 }
 
@@ -355,6 +372,7 @@ export type AnkiReviewLogUncheckedCreateInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
 }
 
 export type AnkiReviewLogUpdateInput = {
@@ -366,6 +384,7 @@ export type AnkiReviewLogUpdateInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   mapping?: Prisma.AnkiDeckMappingUpdateOneRequiredWithoutReviewLogsNestedInput
 }
 
@@ -379,6 +398,7 @@ export type AnkiReviewLogUncheckedUpdateInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type AnkiReviewLogCreateManyInput = {
@@ -391,6 +411,7 @@ export type AnkiReviewLogCreateManyInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
 }
 
 export type AnkiReviewLogUpdateManyMutationInput = {
@@ -402,6 +423,7 @@ export type AnkiReviewLogUpdateManyMutationInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type AnkiReviewLogUncheckedUpdateManyInput = {
@@ -414,6 +436,7 @@ export type AnkiReviewLogUncheckedUpdateManyInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type AnkiReviewLogListRelationFilter = {
@@ -441,6 +464,7 @@ export type AnkiReviewLogCountOrderByAggregateInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrder
 }
 
 export type AnkiReviewLogAvgOrderByAggregateInput = {
@@ -450,6 +474,7 @@ export type AnkiReviewLogAvgOrderByAggregateInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrder
 }
 
 export type AnkiReviewLogMaxOrderByAggregateInput = {
@@ -462,6 +487,7 @@ export type AnkiReviewLogMaxOrderByAggregateInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrder
 }
 
 export type AnkiReviewLogMinOrderByAggregateInput = {
@@ -474,6 +500,7 @@ export type AnkiReviewLogMinOrderByAggregateInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrder
 }
 
 export type AnkiReviewLogSumOrderByAggregateInput = {
@@ -483,6 +510,7 @@ export type AnkiReviewLogSumOrderByAggregateInput = {
   intervalAfterDays?: Prisma.SortOrder
   intervalBeforeDays?: Prisma.SortOrder
   timeMs?: Prisma.SortOrder
+  reviewType?: Prisma.SortOrder
 }
 
 export type AnkiReviewLogCreateNestedManyWithoutMappingInput = {
@@ -536,6 +564,7 @@ export type AnkiReviewLogCreateWithoutMappingInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
 }
 
 export type AnkiReviewLogUncheckedCreateWithoutMappingInput = {
@@ -547,6 +576,7 @@ export type AnkiReviewLogUncheckedCreateWithoutMappingInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
 }
 
 export type AnkiReviewLogCreateOrConnectWithoutMappingInput = {
@@ -588,6 +618,7 @@ export type AnkiReviewLogScalarWhereInput = {
   intervalAfterDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   intervalBeforeDays?: Prisma.IntFilter<"AnkiReviewLog"> | number
   timeMs?: Prisma.IntFilter<"AnkiReviewLog"> | number
+  reviewType?: Prisma.IntNullableFilter<"AnkiReviewLog"> | number | null
 }
 
 export type AnkiReviewLogCreateManyMappingInput = {
@@ -599,6 +630,7 @@ export type AnkiReviewLogCreateManyMappingInput = {
   intervalAfterDays?: number
   intervalBeforeDays?: number
   timeMs?: number
+  reviewType?: number | null
 }
 
 export type AnkiReviewLogUpdateWithoutMappingInput = {
@@ -610,6 +642,7 @@ export type AnkiReviewLogUpdateWithoutMappingInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type AnkiReviewLogUncheckedUpdateWithoutMappingInput = {
@@ -621,6 +654,7 @@ export type AnkiReviewLogUncheckedUpdateWithoutMappingInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type AnkiReviewLogUncheckedUpdateManyWithoutMappingInput = {
@@ -632,6 +666,7 @@ export type AnkiReviewLogUncheckedUpdateManyWithoutMappingInput = {
   intervalAfterDays?: Prisma.IntFieldUpdateOperationsInput | number
   intervalBeforeDays?: Prisma.IntFieldUpdateOperationsInput | number
   timeMs?: Prisma.IntFieldUpdateOperationsInput | number
+  reviewType?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -646,6 +681,7 @@ export type AnkiReviewLogSelect<ExtArgs extends runtime.Types.Extensions.Interna
   intervalAfterDays?: boolean
   intervalBeforeDays?: boolean
   timeMs?: boolean
+  reviewType?: boolean
   mapping?: boolean | Prisma.AnkiDeckMappingDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ankiReviewLog"]>
 
@@ -659,6 +695,7 @@ export type AnkiReviewLogSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   intervalAfterDays?: boolean
   intervalBeforeDays?: boolean
   timeMs?: boolean
+  reviewType?: boolean
   mapping?: boolean | Prisma.AnkiDeckMappingDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ankiReviewLog"]>
 
@@ -672,6 +709,7 @@ export type AnkiReviewLogSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   intervalAfterDays?: boolean
   intervalBeforeDays?: boolean
   timeMs?: boolean
+  reviewType?: boolean
   mapping?: boolean | Prisma.AnkiDeckMappingDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["ankiReviewLog"]>
 
@@ -685,9 +723,10 @@ export type AnkiReviewLogSelectScalar = {
   intervalAfterDays?: boolean
   intervalBeforeDays?: boolean
   timeMs?: boolean
+  reviewType?: boolean
 }
 
-export type AnkiReviewLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ankiReviewId" | "mappingId" | "ankiCardId" | "reviewedAt" | "rating" | "intervalAfterDays" | "intervalBeforeDays" | "timeMs", ExtArgs["result"]["ankiReviewLog"]>
+export type AnkiReviewLogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "ankiReviewId" | "mappingId" | "ankiCardId" | "reviewedAt" | "rating" | "intervalAfterDays" | "intervalBeforeDays" | "timeMs" | "reviewType", ExtArgs["result"]["ankiReviewLog"]>
 export type AnkiReviewLogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mapping?: boolean | Prisma.AnkiDeckMappingDefaultArgs<ExtArgs>
 }
@@ -719,6 +758,10 @@ export type $AnkiReviewLogPayload<ExtArgs extends runtime.Types.Extensions.Inter
     intervalAfterDays: number
     intervalBeforeDays: number
     timeMs: number
+    /**
+     * Anki revlog type: 0=learn, 1=review, 2=relearn, 3=filtered/cram, 4+=manual/reschedule
+     */
+    reviewType: number | null
   }, ExtArgs["result"]["ankiReviewLog"]>
   composites: {}
 }
@@ -1152,6 +1195,7 @@ export interface AnkiReviewLogFieldRefs {
   readonly intervalAfterDays: Prisma.FieldRef<"AnkiReviewLog", 'Int'>
   readonly intervalBeforeDays: Prisma.FieldRef<"AnkiReviewLog", 'Int'>
   readonly timeMs: Prisma.FieldRef<"AnkiReviewLog", 'Int'>
+  readonly reviewType: Prisma.FieldRef<"AnkiReviewLog", 'Int'>
 }
     
 

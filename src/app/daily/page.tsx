@@ -4,7 +4,7 @@ import { ankiDueTodayCount } from '@/lib/anki-data';
 import { prisma } from '@/lib/db';
 import { buildDailyQueue } from '@/lib/daily';
 import { newGrammarDueToday } from '@/lib/grammar-coach';
-import { meditationConfiguration } from '@/lib/app-settings';
+import { japaneseGrammarConfiguration, meditationConfiguration } from '@/lib/app-settings';
 import { parseNatoSessionStats, weekendSkills } from '@/lib/nato';
 import { MeditationCheck } from './meditation-check';
 
@@ -26,8 +26,9 @@ export default async function DailyPage() {
     prisma.user.findFirst({ select: { settings: true } }),
   ]);
   const meditationDefaults = meditationConfiguration(user?.settings);
+  const grammarDefaults = japaneseGrammarConfiguration(user?.settings);
   const grammarReviews = grammarProgress.filter((item) => item.status !== 'NEW' && item.dueAt <= now).length;
-  const grammarNew = newGrammarDueToday(grammarProgress, now);
+  const grammarNew = newGrammarDueToday(grammarProgress, now, grammarDefaults);
   const lastNatoStats = lastNatoSession ? parseNatoSessionStats(lastNatoSession.stats) : null;
   const nextNatoDueAt = lastNatoSession && lastNatoStats
     ? new Date(lastNatoSession.date.getTime() + lastNatoStats.nextIntervalDays * 86_400_000)

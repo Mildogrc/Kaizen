@@ -6,8 +6,8 @@
 
 import { useEffect, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchAnkiDecks, removeDeckMapping, runAnkiSync, saveDeckMapping, toggleMappingWordCount } from '@/lib/actions';
-import { Badge, Card, Section, btnCls, btnPrimaryCls, inputCls } from '@/components/ui';
+import { fetchAnkiDecks, removeDeckMapping, runAnkiSync, saveDeckMapping, toggleMappingAdaptiveNewCards, toggleMappingWordCount } from '@/lib/actions';
+import { Badge, Card, Section, btnPrimaryCls, inputCls } from '@/components/ui';
 
 interface CourseOpt {
   id: string;
@@ -20,9 +20,11 @@ interface MappingRow {
   deckName: string;
   courseId: string;
   courseName: string;
+  courseSlug: string;
   schemaId: string | null;
   schemaName: string | null;
   countsKnownWords: boolean;
+  adaptiveNewCards: boolean;
   cards: number;
   reviews: number;
   lastSyncedAt: string | null;
@@ -122,12 +124,27 @@ export function AnkiConfig({ connected, courses, mappings }: { connected: boolea
                   >
                     {m.countsKnownWords ? '✓ counts words' : 'counts words: off'}
                   </button>
+                  {m.courseSlug === 'japanese' && <button
+                    onClick={() => startTransition(async () => { await toggleMappingAdaptiveNewCards(m.id); router.refresh(); })}
+                    className={`rounded border px-1.5 py-0.5 text-[10px] cursor-pointer transition-colors ${
+                      m.adaptiveNewCards
+                        ? 'border-violet-700 bg-violet-950/40 text-violet-300'
+                        : 'border-line text-muted hover:text-foreground'
+                    }`}
+                    title="Use this Japanese vocabulary deck for the adaptive daily new-card budget"
+                  >
+                    {m.adaptiveNewCards ? '✓ adaptive vocab' : 'adaptive vocab: off'}
+                  </button>}
                   <span>{m.cards} cards · {m.reviews} reviews</span>
                   <Badge tone={m.lastSyncedAt ? 'green' : 'neutral'}>
                     {m.lastSyncedAt ? `synced ${m.lastSyncedAt.slice(0, 10)}` : 'never synced'}
                   </Badge>
                   <button
-                    onClick={() => startTransition(async () => { await removeDeckMapping(m.id); router.refresh(); })}
+                    onClick={() => startTransition(async () => {
+                      const result = await removeDeckMapping(m.id);
+                      if (!result?.ok) setSyncMessage(`✗ ${result?.error ?? 'The adaptive Anki preset could not be restored.'}`);
+                      router.refresh();
+                    })}
                     className="text-muted hover:text-red-400 cursor-pointer"
                     title="Remove mapping (snapshots and history for this deck are deleted)"
                   >

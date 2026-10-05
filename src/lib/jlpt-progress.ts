@@ -11,7 +11,19 @@ export interface CurrentJlptProgress extends JlptLevelState {
   grammarRemaining: number;
   wordProgress: number;
   grammarProgress: number;
-  overallProgress: number;
+}
+
+export function cumulativeJlptLevels(levels: JlptLevelState[]): JlptLevelState[] {
+  let grammarTotal = 0;
+  let grammarMastered = 0;
+
+  return [...levels]
+    .sort((left, right) => left.rank - right.rank)
+    .map((level) => {
+      grammarTotal += level.grammarTotal;
+      grammarMastered += level.grammarMastered;
+      return { ...level, grammarTotal, grammarMastered };
+    });
 }
 
 export function currentJlptProgress(levels: JlptLevelState[], knownWords: number): CurrentJlptProgress | null {
@@ -28,7 +40,6 @@ export function currentJlptProgress(levels: JlptLevelState[], knownWords: number
       grammarRemaining,
       wordProgress,
       grammarProgress,
-      overallProgress: (wordProgress + grammarProgress) / 2,
     };
   }
   return null;

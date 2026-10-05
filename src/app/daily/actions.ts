@@ -1,6 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/db';
 import { meditationConfiguration } from '@/lib/app-settings';
 
@@ -26,6 +25,4 @@ export async function setMeditationComplete(complete: boolean) {
   } else {
     await prisma.studySession.deleteMany({ where: { mode: 'meditation', date: { gte: start, lt: end } } });
   }
-  revalidatePath('/daily');
-  revalidatePath('/analytics');
 }

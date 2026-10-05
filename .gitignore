@@ -40,3 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 /public/anki-media/
+/public/uploads/youtube-playlists/
+/exports/anki-reviewed-sentence-media/

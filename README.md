@@ -37,7 +37,12 @@ npm run dev                     # http://localhost:3000
 npm test                        # vitest suite
 ```
 
+On this machine, the global `kaizen` command starts PostgreSQL when needed,
+applies pending migrations, and launches the app at `http://localhost:3000`.
+
 Useful scripts: `db:migrate`, `db:seed`, `db:studio`, `test`.
+
+YouTube playlist imports work from public playlist pages. For complete, reliable metadata on large playlists, add an optional `YOUTUBE_API_KEY` to `.env`; the key only needs access to the YouTube Data API v3.
 One-off utilities live in `scripts/` (Anki .apkg import, cleanup).
 
 ## What it does

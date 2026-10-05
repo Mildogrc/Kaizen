@@ -30,7 +30,7 @@ export async function importMigakuWords(
   text: string,
   includeLearning: boolean,
 ): Promise<MigakuImportSummary> {
-  const result = parseMigakuExport(text, includeLearning);
+  const result = parseMigakuExport(text, includeLearning, language);
   const label = `migaku import ${new Date().toISOString().slice(0, 10)}`;
 
   const rows = new Map<string, { surface: string; lemma: string; reading: string | null; strictKey: string; looseKey: string }>();
