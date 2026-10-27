@@ -1,0 +1,2576 @@
+[
+ {
+  "pattern": "つもりです",
+  "relatedKanji": "積もり",
+  "meaning": "Expresses intention",
+  "exampleJapanese": "日本に行くつもりです。",
+  "exampleEnglish": "I intend to go to Japan.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:つもりです"
+ },
+ {
+  "pattern": "～んです",
+  "relatedKanji": null,
+  "meaning": "Explains reason/emphasis",
+  "exampleJapanese": "雨が降っているんです。",
+  "exampleEnglish": "It's because it's raining.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~んです"
+ },
+ {
+  "pattern": "ので",
+  "relatedKanji": null,
+  "meaning": "Because (polite)",
+  "exampleJapanese": "疲れたので、早く寝ます。",
+  "exampleEnglish": "Because I’m tired, I’ll sleep early.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:ので"
+ },
+ {
+  "pattern": "は",
+  "relatedKanji": null,
+  "meaning": "Topic marker",
+  "exampleJapanese": "これはペンです。",
+  "exampleEnglish": "As for this, it's a pen.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:は"
+ },
+ {
+  "pattern": "～ましょう",
+  "relatedKanji": null,
+  "meaning": "Let’s do (suggestion)",
+  "exampleJapanese": "映画を見ましょう。",
+  "exampleEnglish": "Let's watch a movie.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~ましょう"
+ },
+ {
+  "pattern": "～のがじょうずです",
+  "relatedKanji": "上手",
+  "meaning": "Good at doing",
+  "exampleJapanese": "彼は歌うのがじょうずです。",
+  "exampleEnglish": "He is good at singing.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~のがじょうずです"
+ },
+ {
+  "pattern": "～まえに",
+  "relatedKanji": "前",
+  "meaning": "Before doing",
+  "exampleJapanese": "寝るまえに歯をみがきます。",
+  "exampleEnglish": "I brush my teeth before sleeping.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~まえに"
+ },
+ {
+  "pattern": "～のほうが～より",
+  "relatedKanji": "方・より",
+  "meaning": "Comparative preference",
+  "exampleJapanese": "犬のほうが猫より好きです。",
+  "exampleEnglish": "I like dogs more than cats.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~のほうが~より"
+ },
+ {
+  "pattern": "～にいく",
+  "relatedKanji": "行く",
+  "meaning": "Go to do something",
+  "exampleJapanese": "本を買いに行く。",
+  "exampleEnglish": "I go to buy a book.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~にいく"
+ },
+ {
+  "pattern": "～がいます",
+  "relatedKanji": "居ます",
+  "meaning": "There is (animate)",
+  "exampleJapanese": "猫がいます。",
+  "exampleEnglish": "There is a cat.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~がいます"
+ },
+ {
+  "pattern": "～く/ ～になる",
+  "relatedKanji": null,
+  "meaning": "Become (adjective)",
+  "exampleJapanese": "寒くなりました。",
+  "exampleEnglish": "It became cold.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~く/ ~になる"
+ },
+ {
+  "pattern": "～のがへたです",
+  "relatedKanji": "下手",
+  "meaning": "Bad at doing",
+  "exampleJapanese": "彼は料理するのがへたです。",
+  "exampleEnglish": "He is bad at cooking.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~のがへたです"
+ },
+ {
+  "pattern": "～てください",
+  "relatedKanji": "下さい",
+  "meaning": "Please do",
+  "exampleJapanese": "ドアを開けてください。",
+  "exampleEnglish": "Please open the door.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~てください"
+ },
+ {
+  "pattern": "～たり …～たりする",
+  "relatedKanji": null,
+  "meaning": "Do things like ~ and ~",
+  "exampleJapanese": "映画を見たり、本を読んだりする。",
+  "exampleEnglish": "I do things like watch movies and read books.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~たり ...~たりする"
+ },
+ {
+  "pattern": "～てもいいです",
+  "relatedKanji": null,
+  "meaning": "You may do",
+  "exampleJapanese": "ここに座ってもいいですか。",
+  "exampleEnglish": "May I sit here?",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~てもいいです"
+ },
+ {
+  "pattern": "～があります",
+  "relatedKanji": "有ります",
+  "meaning": "There is (inanimate)",
+  "exampleJapanese": "山があります。",
+  "exampleEnglish": "There is a mountain.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~があります"
+ },
+ {
+  "pattern": "です",
+  "relatedKanji": null,
+  "meaning": "Polite copula",
+  "exampleJapanese": "学生です。",
+  "exampleEnglish": "I am a student.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:です"
+ },
+ {
+  "pattern": "～なくちゃいけない",
+  "relatedKanji": "無くてはいけない",
+  "meaning": "Must do",
+  "exampleJapanese": "勉強しなくちゃいけない。",
+  "exampleEnglish": "I must study.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~なくちゃいけない"
+ },
+ {
+  "pattern": "～のがすきです",
+  "relatedKanji": "好き",
+  "meaning": "Like doing",
+  "exampleJapanese": "泳ぐのがすきです。",
+  "exampleEnglish": "I like swimming.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~のがすきです"
+ },
+ {
+  "pattern": "～ている",
+  "relatedKanji": null,
+  "meaning": "Ongoing state",
+  "exampleJapanese": "雨が降っている。",
+  "exampleEnglish": "It is raining.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~ている"
+ },
+ {
+  "pattern": "や",
+  "relatedKanji": null,
+  "meaning": "Listing (non-exhaustive)",
+  "exampleJapanese": "りんごやバナナを食べます。",
+  "exampleEnglish": "I eat apples and bananas (among other things).",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:や"
+ },
+ {
+  "pattern": "を",
+  "relatedKanji": null,
+  "meaning": "Object marker",
+  "exampleJapanese": "パンを食べます。",
+  "exampleEnglish": "I eat bread.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:を"
+ },
+ {
+  "pattern": "～てはいけません",
+  "relatedKanji": null,
+  "meaning": "Must not do",
+  "exampleJapanese": "ここでタバコを吸ってはいけません。",
+  "exampleEnglish": "You must not smoke here.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~てはいけません"
+ },
+ {
+  "pattern": "stem +たいです",
+  "relatedKanji": null,
+  "meaning": "Want to do",
+  "exampleJapanese": "日本に行きたいです。",
+  "exampleEnglish": "I want to go to Japan.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:stem +たいです"
+ },
+ {
+  "pattern": "ないでください",
+  "relatedKanji": null,
+  "meaning": "Please don’t do",
+  "exampleJapanese": "ここで寝ないでください。",
+  "exampleEnglish": "Please don’t sleep here.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:ないでください"
+ },
+ {
+  "pattern": "でしょう",
+  "relatedKanji": null,
+  "meaning": "Probably",
+  "exampleJapanese": "明日は雨でしょう。",
+  "exampleEnglish": "It will probably rain tomorrow.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:でしょう"
+ },
+ {
+  "pattern": "～ませんか",
+  "relatedKanji": null,
+  "meaning": "Invitation (won’t you?)",
+  "exampleJapanese": "一緒に行きませんか。",
+  "exampleEnglish": "Won’t you go with me?",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~ませんか"
+ },
+ {
+  "pattern": "まだ～ていません",
+  "relatedKanji": null,
+  "meaning": "Have not yet done",
+  "exampleJapanese": "まだ宿題をしていません。",
+  "exampleEnglish": "I haven’t done my homework yet.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:まだ~ていません"
+ },
+ {
+  "pattern": "で",
+  "relatedKanji": null,
+  "meaning": "Means or location marker",
+  "exampleJapanese": "電車で行きます。",
+  "exampleEnglish": "I go by train.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:で"
+ },
+ {
+  "pattern": "～から",
+  "relatedKanji": null,
+  "meaning": "Because; from",
+  "exampleJapanese": "雨だから行きません。",
+  "exampleEnglish": "I won’t go because it’s raining.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~から"
+ },
+ {
+  "pattern": "も",
+  "relatedKanji": null,
+  "meaning": "Also; even",
+  "exampleJapanese": "私も行きます。",
+  "exampleEnglish": "I’ll go too.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:も"
+ },
+ {
+  "pattern": "と",
+  "relatedKanji": null,
+  "meaning": "And/with",
+  "exampleJapanese": "友達と話します。",
+  "exampleEnglish": "I talk with my friend.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:と"
+ },
+ {
+  "pattern": "～すぎる",
+  "relatedKanji": "過ぎる",
+  "meaning": "Too much",
+  "exampleJapanese": "食べすぎました。",
+  "exampleEnglish": "I ate too much.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~すぎる"
+ },
+ {
+  "pattern": "～ほうがいい",
+  "relatedKanji": "方",
+  "meaning": "Had better",
+  "exampleJapanese": "薬を飲んだほうがいい。",
+  "exampleEnglish": "You’d better take medicine.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~ほうがいい"
+ },
+ {
+  "pattern": "に",
+  "relatedKanji": null,
+  "meaning": "Direction/time/target marker",
+  "exampleJapanese": "日本に行きます。",
+  "exampleEnglish": "I’m going to Japan.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:に"
+ },
+ {
+  "pattern": "～のなかで～がいちばん～",
+  "relatedKanji": "中・一番",
+  "meaning": "Best among",
+  "exampleJapanese": "この中で彼がいちばん強い。",
+  "exampleEnglish": "He is the strongest among them.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~のなかで~がいちばん~"
+ },
+ {
+  "pattern": "～ましょうか",
+  "relatedKanji": null,
+  "meaning": "Shall I/we?",
+  "exampleJapanese": "手伝いましょうか。",
+  "exampleEnglish": "Shall I help?",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~ましょうか"
+ },
+ {
+  "pattern": "～てから",
+  "relatedKanji": null,
+  "meaning": "After doing",
+  "exampleJapanese": "食べてから寝ます。",
+  "exampleEnglish": "I sleep after eating.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~てから"
+ },
+ {
+  "pattern": "～たことがある",
+  "relatedKanji": "事",
+  "meaning": "Have done before",
+  "exampleJapanese": "日本に行ったことがある。",
+  "exampleEnglish": "I have been to Japan.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:~たことがある"
+ },
+ {
+  "pattern": "に/へ",
+  "relatedKanji": null,
+  "meaning": "Direction particle",
+  "exampleJapanese": "学校に行く。",
+  "exampleEnglish": "I go to school.",
+  "jlptLevel": "N5",
+  "sourceKey": "jlpt:N5:に/へ"
+ },
+ {
+  "pattern": "～おう",
+  "relatedKanji": null,
+  "meaning": "Volitional form (let’s/I shall)",
+  "exampleJapanese": "行こう！",
+  "exampleEnglish": "Let’s go!",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~おう"
+ },
+ {
+  "pattern": "～という～",
+  "relatedKanji": null,
+  "meaning": "Called/named",
+  "exampleJapanese": "東京という町",
+  "exampleEnglish": "A town called Tokyo",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~という~"
+ },
+ {
+  "pattern": "～かどうか",
+  "relatedKanji": null,
+  "meaning": "Whether or not",
+  "exampleJapanese": "雨が降るかどうかわかりません。",
+  "exampleEnglish": "I don't know whether it will rain.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~かどうか"
+ },
+ {
+  "pattern": "～のようにしてほしい",
+  "relatedKanji": null,
+  "meaning": "Want someone to do like~",
+  "exampleJapanese": "彼のように話してほしい。",
+  "exampleEnglish": "I want you to speak like him.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~のようにしてほしい"
+ },
+ {
+  "pattern": "～はずです",
+  "relatedKanji": "筈",
+  "meaning": "Should/expected to",
+  "exampleJapanese": "彼は来るはずです。",
+  "exampleEnglish": "He is supposed to come.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~はずです"
+ },
+ {
+  "pattern": "～てある",
+  "relatedKanji": null,
+  "meaning": "Has been done (result state)",
+  "exampleJapanese": "ドアが開けてあります。",
+  "exampleEnglish": "The door has been opened (and remains so).",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てある"
+ },
+ {
+  "pattern": "Dictionary form+と",
+  "relatedKanji": null,
+  "meaning": "If/when (natural consequence)",
+  "exampleJapanese": "春になると花が咲く。",
+  "exampleEnglish": "When spring comes, flowers bloom.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:Dictionary form+と"
+ },
+ {
+  "pattern": "～がほしい",
+  "relatedKanji": "欲しい",
+  "meaning": "Want (a thing)",
+  "exampleJapanese": "新しい本がほしい。",
+  "exampleEnglish": "I want a new book.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~がほしい"
+ },
+ {
+  "pattern": "～なさい",
+  "relatedKanji": null,
+  "meaning": "Command (polite)",
+  "exampleJapanese": "勉強しなさい。",
+  "exampleEnglish": "Study.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~なさい"
+ },
+ {
+  "pattern": "～てもらう",
+  "relatedKanji": null,
+  "meaning": "Get someone to do",
+  "exampleJapanese": "友達に教えてもらいました。",
+  "exampleEnglish": "I got my friend to teach me.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てもらう"
+ },
+ {
+  "pattern": "しか～ない",
+  "relatedKanji": null,
+  "meaning": "Only~",
+  "exampleJapanese": "水しか飲まない。",
+  "exampleEnglish": "I only drink water.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:しか~ない"
+ },
+ {
+  "pattern": "～よう",
+  "relatedKanji": null,
+  "meaning": "Attempt to do something",
+  "exampleJapanese": "始めよう。",
+  "exampleEnglish": "Let’s begin.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~よう"
+ },
+ {
+  "pattern": "～てあげる",
+  "relatedKanji": null,
+  "meaning": "Do for someone (favor)",
+  "exampleJapanese": "本を貸してあげます。",
+  "exampleEnglish": "I’ll lend you a book.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てあげる"
+ },
+ {
+  "pattern": "(period)に(frequency)",
+  "relatedKanji": null,
+  "meaning": "Frequency per period",
+  "exampleJapanese": "一週間に三回運動します。",
+  "exampleEnglish": "I exercise three times a week.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:(period)に(frequency)"
+ },
+ {
+  "pattern": "そうです",
+  "relatedKanji": null,
+  "meaning": "I heard that~/It looks like",
+  "exampleJapanese": "雨が降るそうです。",
+  "exampleEnglish": "I heard that it will rain.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:そうです"
+ },
+ {
+  "pattern": "～ていただけませんか",
+  "relatedKanji": null,
+  "meaning": "Would you please~?",
+  "exampleJapanese": "手伝っていただけませんか。",
+  "exampleEnglish": "Would you please help me?",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ていただけませんか"
+ },
+ {
+  "pattern": "～やすい",
+  "relatedKanji": "易い",
+  "meaning": "Easy to do",
+  "exampleJapanese": "飲みやすい薬",
+  "exampleEnglish": "Medicine that’s easy to take",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~やすい"
+ },
+ {
+  "pattern": "～かもしれない",
+  "relatedKanji": "かも知れない",
+  "meaning": "Might/maybe",
+  "exampleJapanese": "行かないかもしれない。",
+  "exampleEnglish": "I might not go.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~かもしれない"
+ },
+ {
+  "pattern": "～ば/～れば",
+  "relatedKanji": "ば・れば",
+  "meaning": "If (conditional)",
+  "exampleJapanese": "安ければ買います。",
+  "exampleEnglish": "If it’s cheap, I’ll buy it.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ば/~れば"
+ },
+ {
+  "pattern": "～たらどうですか",
+  "relatedKanji": null,
+  "meaning": "Why don’t you~?",
+  "exampleJapanese": "休んだらどうですか。",
+  "exampleEnglish": "Why don’t you take a break?",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~たらどうですか"
+ },
+ {
+  "pattern": "～く/ ～にする",
+  "relatedKanji": null,
+  "meaning": "Make something a certain way",
+  "exampleJapanese": "部屋をきれいにする。",
+  "exampleEnglish": "Make the room clean.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~く/ ~にする"
+ },
+ {
+  "pattern": "のに",
+  "relatedKanji": null,
+  "meaning": "Although/even though",
+  "exampleJapanese": "雨なのに出かけました。",
+  "exampleEnglish": "Even though it was raining, I went out.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:のに"
+ },
+ {
+  "pattern": "Number+も",
+  "relatedKanji": null,
+  "meaning": "As many as",
+  "exampleJapanese": "三本も飲んだ。",
+  "exampleEnglish": "I drank as many as three bottles.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:Number+も"
+ },
+ {
+  "pattern": "てみる",
+  "relatedKanji": null,
+  "meaning": "Try doing",
+  "exampleJapanese": "やってみる。",
+  "exampleEnglish": "I'll try doing it.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:てみる"
+ },
+ {
+  "pattern": "～ばよかった",
+  "relatedKanji": "ば良かった",
+  "meaning": "I wish I had",
+  "exampleJapanese": "勉強すればよかった。",
+  "exampleEnglish": "I wish I had studied.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ばよかった"
+ },
+ {
+  "pattern": "～てすみません",
+  "relatedKanji": "て済みません",
+  "meaning": "Sorry for doing",
+  "exampleJapanese": "遅れてすみません。",
+  "exampleEnglish": "Sorry for being late.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てすみません"
+ },
+ {
+  "pattern": "～ないで",
+  "relatedKanji": null,
+  "meaning": "Without doing",
+  "exampleJapanese": "朝ごはんを食べないで出かけた。",
+  "exampleEnglish": "I went out without eating breakfast.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ないで"
+ },
+ {
+  "pattern": "～ているあいだに,～",
+  "relatedKanji": "間",
+  "meaning": "While doing~, something happened",
+  "exampleJapanese": "読んでいるあいだに寝てしまった。",
+  "exampleEnglish": "I fell asleep while reading.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ているあいだに,~"
+ },
+ {
+  "pattern": "～といいです",
+  "relatedKanji": null,
+  "meaning": "I hope~",
+  "exampleJapanese": "元気だといいです。",
+  "exampleEnglish": "I hope you are well.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~といいです"
+ },
+ {
+  "pattern": "～てくれる",
+  "relatedKanji": null,
+  "meaning": "Someone does for me",
+  "exampleJapanese": "母が料理してくれた。",
+  "exampleEnglish": "My mom cooked for me.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てくれる"
+ },
+ {
+  "pattern": "～のように",
+  "relatedKanji": "様",
+  "meaning": "Like/as if",
+  "exampleJapanese": "夢のように美しい。",
+  "exampleEnglish": "Beautiful like a dream",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~のように"
+ },
+ {
+  "pattern": "～させる",
+  "relatedKanji": null,
+  "meaning": "Make/let someone do",
+  "exampleJapanese": "子供に勉強させる。",
+  "exampleEnglish": "Make the child study.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~させる"
+ },
+ {
+  "pattern": "～させられる",
+  "relatedKanji": null,
+  "meaning": "Be made to do",
+  "exampleJapanese": "先生に読ませられた。",
+  "exampleEnglish": "I was made to read by the teacher.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~させられる"
+ },
+ {
+  "pattern": "～し",
+  "relatedKanji": null,
+  "meaning": "Giving multiple reasons",
+  "exampleJapanese": "安いし、おいしい。",
+  "exampleEnglish": "It’s cheap, and tasty too.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~し"
+ },
+ {
+  "pattern": "なら",
+  "relatedKanji": null,
+  "meaning": "If it is the case that",
+  "exampleJapanese": "行くなら早くして。",
+  "exampleEnglish": "If you're going, hurry up.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:なら"
+ },
+ {
+  "pattern": "～ことにする",
+  "relatedKanji": "事",
+  "meaning": "Decide to do",
+  "exampleJapanese": "日本に行くことにした。",
+  "exampleEnglish": "I decided to go to Japan.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ことにする"
+ },
+ {
+  "pattern": "～てくれてありがとう",
+  "relatedKanji": null,
+  "meaning": "Thank you for doing",
+  "exampleJapanese": "手伝ってくれてありがとう。",
+  "exampleEnglish": "Thank you for helping me.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てくれてありがとう"
+ },
+ {
+  "pattern": "～ておく",
+  "relatedKanji": "て置く",
+  "meaning": "Do in advance",
+  "exampleJapanese": "メモしておく。",
+  "exampleEnglish": "I'll make a note (for later).",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ておく"
+ },
+ {
+  "pattern": "～てしまう",
+  "relatedKanji": null,
+  "meaning": "Do completely/regret",
+  "exampleJapanese": "忘れてしまった。",
+  "exampleEnglish": "I completely forgot.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てしまう"
+ },
+ {
+  "pattern": "～のような",
+  "relatedKanji": "様",
+  "meaning": "Like/similar to",
+  "exampleJapanese": "猫のような動物",
+  "exampleEnglish": "An animal like a cat",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~のような"
+ },
+ {
+  "pattern": "～ても",
+  "relatedKanji": null,
+  "meaning": "Even if",
+  "exampleJapanese": "高くても買います。",
+  "exampleEnglish": "Even if it’s expensive, I’ll buy it.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ても"
+ },
+ {
+  "pattern": "～みたい",
+  "relatedKanji": null,
+  "meaning": "Looks like/seems",
+  "exampleJapanese": "彼は学生みたい。",
+  "exampleEnglish": "He seems like a student.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~みたい"
+ },
+ {
+  "pattern": "～ながら",
+  "relatedKanji": null,
+  "meaning": "While doing",
+  "exampleJapanese": "音楽を聞きながら勉強する。",
+  "exampleEnglish": "I study while listening to music.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~ながら"
+ },
+ {
+  "pattern": "～なくてもいい",
+  "relatedKanji": null,
+  "meaning": "Don’t have to do",
+  "exampleJapanese": "行かなくてもいい。",
+  "exampleEnglish": "You don’t have to go.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~なくてもいい"
+ },
+ {
+  "pattern": "～てよかった",
+  "relatedKanji": "て良かった",
+  "meaning": "I'm glad that~",
+  "exampleJapanese": "会えてよかった。",
+  "exampleEnglish": "I’m glad I met you.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~てよかった"
+ },
+ {
+  "pattern": "～たら",
+  "relatedKanji": null,
+  "meaning": "If/when (conditional)",
+  "exampleJapanese": "雨が降ったら行かない。",
+  "exampleEnglish": "If it rains, I won’t go.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~たら"
+ },
+ {
+  "pattern": "～にくい",
+  "relatedKanji": "難い",
+  "meaning": "Hard to do",
+  "exampleJapanese": "読みにくい本",
+  "exampleEnglish": "A book that’s hard to read.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~にくい"
+ },
+ {
+  "pattern": "～られる",
+  "relatedKanji": null,
+  "meaning": "Potential/passive",
+  "exampleJapanese": "漢字が読めます。",
+  "exampleEnglish": "I can read kanji.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~られる"
+ },
+ {
+  "pattern": "～そうです",
+  "relatedKanji": null,
+  "meaning": "Looks like/appears",
+  "exampleJapanese": "美味しそうです。",
+  "exampleEnglish": "It looks delicious.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~そうです"
+ },
+ {
+  "pattern": "～たがる",
+  "relatedKanji": null,
+  "meaning": "Appears to want to",
+  "exampleJapanese": "彼は行きたがっている。",
+  "exampleEnglish": "He seems to want to go.",
+  "jlptLevel": "N4",
+  "sourceKey": "jlpt:N4:~たがる"
+ },
+ {
+  "pattern": "～たび～",
+  "relatedKanji": "度",
+  "meaning": "Every time",
+  "exampleJapanese": "会うたびに嬉しい。",
+  "exampleEnglish": "I'm happy every time we meet.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~たび~"
+ },
+ {
+  "pattern": "ようにする",
+  "relatedKanji": null,
+  "meaning": "Try to make an effort to",
+  "exampleJapanese": "早く寝るようにする。",
+  "exampleEnglish": "I try to sleep early.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:ようにする"
+ },
+ {
+  "pattern": "まさか",
+  "relatedKanji": null,
+  "meaning": "No way/unexpected",
+  "exampleJapanese": "まさか彼が来るとは！",
+  "exampleEnglish": "No way he's coming!",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:まさか"
+ },
+ {
+  "pattern": "～げ",
+  "relatedKanji": null,
+  "meaning": "Looks like (emotion)",
+  "exampleJapanese": "寂しげな顔",
+  "exampleEnglish": "A lonely-looking face",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~げ"
+ },
+ {
+  "pattern": "～始める",
+  "relatedKanji": null,
+  "meaning": "Start doing",
+  "exampleJapanese": "笑い始めた。",
+  "exampleEnglish": "Started laughing.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~始める"
+ },
+ {
+  "pattern": "～らしい",
+  "relatedKanji": null,
+  "meaning": "Seems like/typical",
+  "exampleJapanese": "彼は学生らしい。",
+  "exampleEnglish": "He seems like a student.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~らしい"
+ },
+ {
+  "pattern": "～ぐらい",
+  "relatedKanji": null,
+  "meaning": "About/approximate",
+  "exampleJapanese": "一時間ぐらい待った。",
+  "exampleEnglish": "I waited about an hour.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ぐらい"
+ },
+ {
+  "pattern": "～には～の～がある",
+  "relatedKanji": null,
+  "meaning": "Has own characteristic",
+  "exampleJapanese": "彼には彼の考えがある。",
+  "exampleEnglish": "He has his own ideas.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~には~の~がある"
+ },
+ {
+  "pattern": "～ても",
+  "relatedKanji": null,
+  "meaning": "Even if",
+  "exampleJapanese": "寒くても出かける。",
+  "exampleEnglish": "Even if it's cold, I'll go out.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ても"
+ },
+ {
+  "pattern": "～によると",
+  "relatedKanji": null,
+  "meaning": "According to",
+  "exampleJapanese": "天気予報によると雨です。",
+  "exampleEnglish": "According to the forecast, it will rain.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~によると"
+ },
+ {
+  "pattern": "むしろ",
+  "relatedKanji": "寧ろ",
+  "meaning": "Rather",
+  "exampleJapanese": "むしろ帰りたい。",
+  "exampleEnglish": "I’d rather go home.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:むしろ"
+ },
+ {
+  "pattern": "～として",
+  "relatedKanji": null,
+  "meaning": "As a~",
+  "exampleJapanese": "先生として働く。",
+  "exampleEnglish": "Work as a teacher.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~として"
+ },
+ {
+  "pattern": "N+ばかり",
+  "relatedKanji": null,
+  "meaning": "Only/just",
+  "exampleJapanese": "ゲームばかりしている。",
+  "exampleEnglish": "Just playing games.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:N+ばかり"
+ },
+ {
+  "pattern": "すぎない（過ぎない）",
+  "relatedKanji": "過ぎない",
+  "meaning": "No more than",
+  "exampleJapanese": "噂にすぎない。",
+  "exampleEnglish": "Just a rumor.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:すぎない(過ぎない)"
+ },
+ {
+  "pattern": "～っぽい",
+  "relatedKanji": null,
+  "meaning": "Tends to/seems",
+  "exampleJapanese": "子供っぽい",
+  "exampleEnglish": "Childish",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~っぽい"
+ },
+ {
+  "pattern": "すでに（既に）",
+  "relatedKanji": "既に",
+  "meaning": "Already",
+  "exampleJapanese": "すでに知っている。",
+  "exampleEnglish": "I already know.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:すでに(既に)"
+ },
+ {
+  "pattern": "おいて（於いて）",
+  "relatedKanji": "於いて",
+  "meaning": "At/in (formal)",
+  "exampleJapanese": "会議において話す。",
+  "exampleEnglish": "Speak at the meeting.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:おいて(於いて)"
+ },
+ {
+  "pattern": "ほど",
+  "relatedKanji": "程",
+  "meaning": "To the extent",
+  "exampleJapanese": "死ぬほど疲れた。",
+  "exampleEnglish": "So tired I could die.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:ほど"
+ },
+ {
+  "pattern": "～ないで",
+  "relatedKanji": null,
+  "meaning": "Without doing",
+  "exampleJapanese": "朝ごはんを食べないで出た。",
+  "exampleEnglish": "Left without eating breakfast.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ないで"
+ },
+ {
+  "pattern": "つい",
+  "relatedKanji": null,
+  "meaning": "Accidentally",
+  "exampleJapanese": "つい寝てしまった。",
+  "exampleEnglish": "I accidentally fell asleep.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:つい"
+ },
+ {
+  "pattern": "ふり",
+  "relatedKanji": "振り",
+  "meaning": "Pretending",
+  "exampleJapanese": "知らないふりをした。",
+  "exampleEnglish": "Pretended not to know.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:ふり"
+ },
+ {
+  "pattern": "まま",
+  "relatedKanji": null,
+  "meaning": "As it is",
+  "exampleJapanese": "靴をはいたまま入った。",
+  "exampleEnglish": "Entered with shoes on.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:まま"
+ },
+ {
+  "pattern": "～ために",
+  "relatedKanji": "為に",
+  "meaning": "For the sake of/to",
+  "exampleJapanese": "健康のために運動する。",
+  "exampleEnglish": "Exercise for health.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ために"
+ },
+ {
+  "pattern": "～ないうちに",
+  "relatedKanji": "内に",
+  "meaning": "Before doing",
+  "exampleJapanese": "忘れないうちに書く。",
+  "exampleEnglish": "Write it down before I forget.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ないうちに"
+ },
+ {
+  "pattern": "～としたら",
+  "relatedKanji": null,
+  "meaning": "If one were to",
+  "exampleJapanese": "行くとしたらバスだ。",
+  "exampleEnglish": "If I go, I’ll take the bus.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~としたら"
+ },
+ {
+  "pattern": "つもりで",
+  "relatedKanji": "積もりで",
+  "meaning": "As if one intended",
+  "exampleJapanese": "死ぬつもりで頑張る。",
+  "exampleEnglish": "I'll work as if my life depended on it.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:つもりで"
+ },
+ {
+  "pattern": "～に関する",
+  "relatedKanji": "関する",
+  "meaning": "Related to",
+  "exampleJapanese": "環境に関する本",
+  "exampleEnglish": "A book about the environment",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~に関する"
+ },
+ {
+  "pattern": "～とても～ない",
+  "relatedKanji": null,
+  "meaning": "Cannot possibly",
+  "exampleJapanese": "とても食べきれない。",
+  "exampleEnglish": "I can't possibly finish eating.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~とても~ない"
+ },
+ {
+  "pattern": "どうしても",
+  "relatedKanji": null,
+  "meaning": "No matter what",
+  "exampleJapanese": "どうしても行きたい。",
+  "exampleEnglish": "I want to go no matter what.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:どうしても"
+ },
+ {
+  "pattern": "～とともに～",
+  "relatedKanji": "共に",
+  "meaning": "Together with/as",
+  "exampleJapanese": "時代とともに変わる。",
+  "exampleEnglish": "Changes with time.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~とともに~"
+ },
+ {
+  "pattern": "きり",
+  "relatedKanji": "切り",
+  "meaning": "Only/just",
+  "exampleJapanese": "一度きりの人生",
+  "exampleEnglish": "A once-in-a-lifetime life.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:きり"
+ },
+ {
+  "pattern": "～によって",
+  "relatedKanji": null,
+  "meaning": "Due to/by means of",
+  "exampleJapanese": "地震によって壊れた。",
+  "exampleEnglish": "Destroyed by the earthquake.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~によって"
+ },
+ {
+  "pattern": "ように",
+  "relatedKanji": null,
+  "meaning": "So that/in order to",
+  "exampleJapanese": "忘れないように書く。",
+  "exampleEnglish": "Write so I don't forget.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:ように"
+ },
+ {
+  "pattern": "～て初めて",
+  "relatedKanji": "初めて",
+  "meaning": "Not until",
+  "exampleJapanese": "会って初めて分かった。",
+  "exampleEnglish": "I understood only after meeting.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~て初めて"
+ },
+ {
+  "pattern": "～がち",
+  "relatedKanji": null,
+  "meaning": "Tend to",
+  "exampleJapanese": "忘れがち",
+  "exampleEnglish": "Tend to forget",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~がち"
+ },
+ {
+  "pattern": "～ず",
+  "relatedKanji": null,
+  "meaning": "Without doing (formal)",
+  "exampleJapanese": "言わずに去った。",
+  "exampleEnglish": "Left without saying anything.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ず"
+ },
+ {
+  "pattern": "～ようになる",
+  "relatedKanji": null,
+  "meaning": "Come to be able to",
+  "exampleJapanese": "話せるようになる。",
+  "exampleEnglish": "Come to be able to speak.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ようになる"
+ },
+ {
+  "pattern": "せいぜい",
+  "relatedKanji": "精々",
+  "meaning": "At most",
+  "exampleJapanese": "せいぜい三人",
+  "exampleEnglish": "At most three people.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:せいぜい"
+ },
+ {
+  "pattern": "N+を始め",
+  "relatedKanji": "始め",
+  "meaning": "Starting with~",
+  "exampleJapanese": "先生を始め皆が来た。",
+  "exampleEnglish": "Everyone came, starting with the teacher.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:N+を始め"
+ },
+ {
+  "pattern": "～ば～ほど",
+  "relatedKanji": null,
+  "meaning": "The more... the more...",
+  "exampleJapanese": "食べれば食べるほど太る。",
+  "exampleEnglish": "The more you eat, the fatter you get.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ば~ほど"
+ },
+ {
+  "pattern": "～たて",
+  "relatedKanji": null,
+  "meaning": "Just done",
+  "exampleJapanese": "焼きたてパン",
+  "exampleEnglish": "Freshly baked bread.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~たて"
+ },
+ {
+  "pattern": "～は～くらいです",
+  "relatedKanji": null,
+  "meaning": "To the extent that",
+  "exampleJapanese": "死ぬくらい忙しい。",
+  "exampleEnglish": "So busy I could die.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~は~くらいです"
+ },
+ {
+  "pattern": "どうやら",
+  "relatedKanji": null,
+  "meaning": "Apparently",
+  "exampleJapanese": "どうやら雨らしい。",
+  "exampleEnglish": "Apparently it’s raining.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:どうやら"
+ },
+ {
+  "pattern": "～は～で有名",
+  "relatedKanji": "有名",
+  "meaning": "Famous for",
+  "exampleJapanese": "京都は寺で有名だ。",
+  "exampleEnglish": "Kyoto is famous for temples.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~は~で有名"
+ },
+ {
+  "pattern": "～かえって",
+  "relatedKanji": "却って",
+  "meaning": "On the contrary",
+  "exampleJapanese": "急いでかえって遅れた。",
+  "exampleEnglish": "I hurried and was late instead.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~かえって"
+ },
+ {
+  "pattern": "～さえ～ば",
+  "relatedKanji": null,
+  "meaning": "If only",
+  "exampleJapanese": "君さえいればいい。",
+  "exampleEnglish": "If only you're here, it's enough.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~さえ~ば"
+ },
+ {
+  "pattern": "こそ",
+  "relatedKanji": null,
+  "meaning": "Emphasis (indeed/precisely)",
+  "exampleJapanese": "これこそ本当だ。",
+  "exampleEnglish": "This is exactly the truth.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:こそ"
+ },
+ {
+  "pattern": "～に慣れる",
+  "relatedKanji": "慣れる",
+  "meaning": "Get used to",
+  "exampleJapanese": "生活になれる。",
+  "exampleEnglish": "Get used to the lifestyle.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~に慣れる"
+ },
+ {
+  "pattern": "さらに（更に）",
+  "relatedKanji": "更に",
+  "meaning": "Furthermore/even more",
+  "exampleJapanese": "さらに努力する。",
+  "exampleEnglish": "Make even more effort.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:さらに(更に)"
+ },
+ {
+  "pattern": "～代わり",
+  "relatedKanji": "代わり",
+  "meaning": "Instead of/in exchange for",
+  "exampleJapanese": "行く代わりに電話する。",
+  "exampleEnglish": "Call instead of going.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~代わり"
+ },
+ {
+  "pattern": "まい",
+  "relatedKanji": null,
+  "meaning": "Will not (intentional)",
+  "exampleJapanese": "二度と行くまい。",
+  "exampleEnglish": "I shall never go again.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:まい"
+ },
+ {
+  "pattern": "わざわざ",
+  "relatedKanji": "態々",
+  "meaning": "Taking the trouble to",
+  "exampleJapanese": "わざわざ来てくれた。",
+  "exampleEnglish": "They came all the way (just for me).",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:わざわざ"
+ },
+ {
+  "pattern": "限る",
+  "relatedKanji": "限る",
+  "meaning": "Only/nothing better than",
+  "exampleJapanese": "冬は鍋に限る。",
+  "exampleEnglish": "Nothing beats hotpot in winter.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:限る"
+ },
+ {
+  "pattern": "おかげで",
+  "relatedKanji": "お蔭で",
+  "meaning": "Thanks to",
+  "exampleJapanese": "先生のおかげで合格した。",
+  "exampleEnglish": "I passed thanks to the teacher.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:おかげで"
+ },
+ {
+  "pattern": "さえ",
+  "relatedKanji": null,
+  "meaning": "Even",
+  "exampleJapanese": "水さえない。",
+  "exampleEnglish": "There’s not even water.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:さえ"
+ },
+ {
+  "pattern": "～たものだ",
+  "relatedKanji": null,
+  "meaning": "Used to (nostalgia)",
+  "exampleJapanese": "よく遊んだものだ。",
+  "exampleEnglish": "I used to play a lot.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~たものだ"
+ },
+ {
+  "pattern": "～のような",
+  "relatedKanji": "様",
+  "meaning": "Like/similar to",
+  "exampleJapanese": "鳥のような声",
+  "exampleEnglish": "A voice like a bird",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~のような"
+ },
+ {
+  "pattern": "的",
+  "relatedKanji": "的",
+  "meaning": "Adjective-like suffix",
+  "exampleJapanese": "教育的な話",
+  "exampleEnglish": "An educational story.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:的"
+ },
+ {
+  "pattern": "いったい（一体）",
+  "relatedKanji": "一体",
+  "meaning": "What on earth?",
+  "exampleJapanese": "一体どうしたの？",
+  "exampleEnglish": "What on earth happened?",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:いったい(一体)"
+ },
+ {
+  "pattern": "～ことになる",
+  "relatedKanji": null,
+  "meaning": "End up doing",
+  "exampleJapanese": "行くことになった。",
+  "exampleEnglish": "It’s been decided I’ll go.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~ことになる"
+ },
+ {
+  "pattern": "～に違いない",
+  "relatedKanji": "違いない",
+  "meaning": "Must be (certainty)",
+  "exampleJapanese": "彼が犯人に違いない。",
+  "exampleEnglish": "He must be the culprit.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~に違いない"
+ },
+ {
+  "pattern": "なかなか",
+  "relatedKanji": "中々",
+  "meaning": "Quite/not easily",
+  "exampleJapanese": "なかなかいいね。",
+  "exampleEnglish": "Quite good.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:なかなか"
+ },
+ {
+  "pattern": "～たばかり",
+  "relatedKanji": null,
+  "meaning": "Just did",
+  "exampleJapanese": "食べたばかりです。",
+  "exampleEnglish": "I just ate.",
+  "jlptLevel": "N3",
+  "sourceKey": "jlpt:N3:~たばかり"
+ },
+ {
+  "pattern": "～ばいいのに",
+  "relatedKanji": null,
+  "meaning": "I wish/You should",
+  "exampleJapanese": "行けばいいのに。",
+  "exampleEnglish": "You should go.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ばいいのに"
+ },
+ {
+  "pattern": "～わけです",
+  "relatedKanji": "訳",
+  "meaning": "That's why/It means that",
+  "exampleJapanese": "疲れたわけです。",
+  "exampleEnglish": "That’s why I’m tired.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~わけです"
+ },
+ {
+  "pattern": "何といっても",
+  "relatedKanji": "何と言っても",
+  "meaning": "Above all",
+  "exampleJapanese": "何といっても健康が大事だ。",
+  "exampleEnglish": "Above all, health is important.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:何といっても"
+ },
+ {
+  "pattern": "～ような気がする",
+  "relatedKanji": "気",
+  "meaning": "Feels like/seems like",
+  "exampleJapanese": "彼は来ないような気がする。",
+  "exampleEnglish": "I feel like he won’t come.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ような気がする"
+ },
+ {
+  "pattern": "～ことにする",
+  "relatedKanji": "事にする",
+  "meaning": "Decide to do",
+  "exampleJapanese": "旅行に行くことにした。",
+  "exampleEnglish": "I decided to go on a trip.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ことにする"
+ },
+ {
+  "pattern": "以外の",
+  "relatedKanji": "以外",
+  "meaning": "Other than",
+  "exampleJapanese": "彼以外の人",
+  "exampleEnglish": "People other than him",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:以外の"
+ },
+ {
+  "pattern": "～に気をつける",
+  "relatedKanji": "気をつける",
+  "meaning": "Be careful about",
+  "exampleJapanese": "運転に気をつけて。",
+  "exampleEnglish": "Be careful driving.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~に気をつける"
+ },
+ {
+  "pattern": "別に～ない",
+  "relatedKanji": "別に",
+  "meaning": "Not particularly",
+  "exampleJapanese": "別に困っていない。",
+  "exampleEnglish": "I'm not particularly troubled.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:別に~ない"
+ },
+ {
+  "pattern": "～しか～ない",
+  "relatedKanji": null,
+  "meaning": "Only; nothing but",
+  "exampleJapanese": "水しかない。",
+  "exampleEnglish": "There’s only water.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~しか~ない"
+ },
+ {
+  "pattern": "～にあたる",
+  "relatedKanji": "当たる",
+  "meaning": "Correspond to",
+  "exampleJapanese": "月曜日は週の初めにあたる。",
+  "exampleEnglish": "Monday corresponds to the start of the week.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~にあたる"
+ },
+ {
+  "pattern": "とうてい",
+  "relatedKanji": "到底",
+  "meaning": "Absolutely not",
+  "exampleJapanese": "とうてい無理だ。",
+  "exampleEnglish": "Absolutely impossible.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:とうてい"
+ },
+ {
+  "pattern": "のぼる",
+  "relatedKanji": "登る",
+  "meaning": "Climb",
+  "exampleJapanese": "山にのぼる。",
+  "exampleEnglish": "Climb a mountain.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:のぼる"
+ },
+ {
+  "pattern": "～ないで済む",
+  "relatedKanji": "済む",
+  "meaning": "Get by without doing",
+  "exampleJapanese": "行かないで済んだ。",
+  "exampleEnglish": "Got by without going.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ないで済む"
+ },
+ {
+  "pattern": "がてら",
+  "relatedKanji": null,
+  "meaning": "While doing",
+  "exampleJapanese": "散歩がてら買い物する。",
+  "exampleEnglish": "Shop while taking a walk.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:がてら"
+ },
+ {
+  "pattern": "および",
+  "relatedKanji": "及び",
+  "meaning": "And (formal)",
+  "exampleJapanese": "氏名および住所",
+  "exampleEnglish": "Name and address",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:および"
+ },
+ {
+  "pattern": "いったん～ば",
+  "relatedKanji": "一旦～ば",
+  "meaning": "Once~ then",
+  "exampleJapanese": "いったん始めれば終わるまでやる。",
+  "exampleEnglish": "Once I start, I go until the end.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:いったん~ば"
+ },
+ {
+  "pattern": "よっぽど",
+  "relatedKanji": "余程",
+  "meaning": "Very/quite",
+  "exampleJapanese": "よっぽど疲れた。",
+  "exampleEnglish": "I was really tired.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:よっぽど"
+ },
+ {
+  "pattern": "つうじて（通じて）",
+  "relatedKanji": "通じて",
+  "meaning": "Through",
+  "exampleJapanese": "一年を通じて暑い。",
+  "exampleEnglish": "Hot throughout the year.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:つうじて(通じて)"
+ },
+ {
+  "pattern": "思うように",
+  "relatedKanji": "思うように",
+  "meaning": "As one hopes",
+  "exampleJapanese": "思うように話せない。",
+  "exampleEnglish": "Can’t speak as I hope.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:思うように"
+ },
+ {
+  "pattern": "いよいよ",
+  "relatedKanji": "愈々",
+  "meaning": "Finally",
+  "exampleJapanese": "いよいよ始まる。",
+  "exampleEnglish": "It finally begins.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:いよいよ"
+ },
+ {
+  "pattern": "～からなる(成る)",
+  "relatedKanji": "成る",
+  "meaning": "Consists of",
+  "exampleJapanese": "日本は島から成る。",
+  "exampleEnglish": "Japan consists of islands.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~からなる(成る)"
+ },
+ {
+  "pattern": "～より仕方がない",
+  "relatedKanji": "仕方がない",
+  "meaning": "Have no choice but to",
+  "exampleJapanese": "行くより仕方がない。",
+  "exampleEnglish": "No choice but to go.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~より仕方がない"
+ },
+ {
+  "pattern": "～ものですから",
+  "relatedKanji": null,
+  "meaning": "Because (personal reason)",
+  "exampleJapanese": "病気なものですから。",
+  "exampleEnglish": "Because I was sick.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ものですから"
+ },
+ {
+  "pattern": "～なかなか～ない",
+  "relatedKanji": "中々",
+  "meaning": "Not easily",
+  "exampleJapanese": "なかなか寝られない。",
+  "exampleEnglish": "I can't sleep easily.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~なかなか~ない"
+ },
+ {
+  "pattern": "せっかく",
+  "relatedKanji": "折角",
+  "meaning": "With effort",
+  "exampleJapanese": "せっかく来たのに。",
+  "exampleEnglish": "Even though I came all this way.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:せっかく"
+ },
+ {
+  "pattern": "やむをえず",
+  "relatedKanji": "止むを得ず",
+  "meaning": "Unavoidably",
+  "exampleJapanese": "やむをえず辞めた。",
+  "exampleEnglish": "I had to quit unavoidably.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:やむをえず"
+ },
+ {
+  "pattern": "やっぱり",
+  "relatedKanji": null,
+  "meaning": "As expected",
+  "exampleJapanese": "やっぱり彼が来た。",
+  "exampleEnglish": "As expected, he came.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:やっぱり"
+ },
+ {
+  "pattern": "かたわら（傍ら）",
+  "relatedKanji": "傍ら",
+  "meaning": "Besides doing",
+  "exampleJapanese": "教師の傍ら作家でもある。",
+  "exampleEnglish": "Besides being a teacher, he’s also a writer.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:かたわら(傍ら)"
+ },
+ {
+  "pattern": "ろくに",
+  "relatedKanji": "碌に",
+  "meaning": "Properly",
+  "exampleJapanese": "ろくに寝ていない。",
+  "exampleEnglish": "I haven't slept properly.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:ろくに"
+ },
+ {
+  "pattern": "なるべく",
+  "relatedKanji": "成る可く",
+  "meaning": "As much as possible",
+  "exampleJapanese": "なるべく早く来て。",
+  "exampleEnglish": "Come as soon as possible.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:なるべく"
+ },
+ {
+  "pattern": "かねる",
+  "relatedKanji": "兼ねる",
+  "meaning": "Unable to (formal)",
+  "exampleJapanese": "判断しかねる。",
+  "exampleEnglish": "I’m unable to judge.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:かねる"
+ },
+ {
+  "pattern": "せいか",
+  "relatedKanji": "所為か",
+  "meaning": "Maybe because",
+  "exampleJapanese": "疲れたせいか眠い。",
+  "exampleEnglish": "Maybe because I’m tired, I’m sleepy.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:せいか"
+ },
+ {
+  "pattern": "たしか",
+  "relatedKanji": "確か",
+  "meaning": "If I remember correctly",
+  "exampleJapanese": "たしか彼は学生だ。",
+  "exampleEnglish": "If I remember, he’s a student.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:たしか"
+ },
+ {
+  "pattern": "～ではないだろうか",
+  "relatedKanji": null,
+  "meaning": "Might it not be?",
+  "exampleJapanese": "彼が犯人ではないだろうか。",
+  "exampleEnglish": "Might he be the culprit?",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ではないだろうか"
+ },
+ {
+  "pattern": "～わけにはいかない",
+  "relatedKanji": "訳にはいかない",
+  "meaning": "Cannot afford to",
+  "exampleJapanese": "行くわけにはいかない。",
+  "exampleEnglish": "I can't afford to go.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~わけにはいかない"
+ },
+ {
+  "pattern": "まんいち（万一）",
+  "relatedKanji": "万一",
+  "meaning": "Just in case",
+  "exampleJapanese": "万一雨が降れば中止。",
+  "exampleEnglish": "In case it rains, it's canceled.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:まんいち(万一)"
+ },
+ {
+  "pattern": "～は～に限る",
+  "relatedKanji": "限る",
+  "meaning": "Nothing better than",
+  "exampleJapanese": "夏は海に限る。",
+  "exampleEnglish": "Nothing better than the beach in summer.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~は~に限る"
+ },
+ {
+  "pattern": "ゆえに",
+  "relatedKanji": "故に",
+  "meaning": "Therefore (formal)",
+  "exampleJapanese": "努力した、ゆえに成功した。",
+  "exampleEnglish": "I worked hard, therefore I succeeded.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:ゆえに"
+ },
+ {
+  "pattern": "一方では",
+  "relatedKanji": "一方では",
+  "meaning": "On one hand",
+  "exampleJapanese": "一方では賛成だ。",
+  "exampleEnglish": "On one hand, I agree.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:一方では"
+ },
+ {
+  "pattern": "なにしろ（何しろ）",
+  "relatedKanji": "何しろ",
+  "meaning": "At any rate",
+  "exampleJapanese": "なにしろ忙しい。",
+  "exampleEnglish": "At any rate, I'm busy.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:なにしろ(何しろ)"
+ },
+ {
+  "pattern": "それにしても",
+  "relatedKanji": null,
+  "meaning": "Even so",
+  "exampleJapanese": "それにしても寒い。",
+  "exampleEnglish": "Even so, it's cold.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:それにしても"
+ },
+ {
+  "pattern": "～を～にまかせる",
+  "relatedKanji": "任せる",
+  "meaning": "Leave to",
+  "exampleJapanese": "運転を彼にまかせた。",
+  "exampleEnglish": "I left the driving to him.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~を~にまかせる"
+ },
+ {
+  "pattern": "～というわけではない",
+  "relatedKanji": "という訳ではない",
+  "meaning": "Doesn’t mean that",
+  "exampleJapanese": "嫌いというわけではない。",
+  "exampleEnglish": "It’s not that I dislike it.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~というわけではない"
+ },
+ {
+  "pattern": "かけては",
+  "relatedKanji": null,
+  "meaning": "When it comes to",
+  "exampleJapanese": "将棋にかけては強い。",
+  "exampleEnglish": "He's strong when it comes to shogi.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:かけては"
+ },
+ {
+  "pattern": "たちまち",
+  "relatedKanji": "忽ち",
+  "meaning": "Suddenly",
+  "exampleJapanese": "たちまち消えた。",
+  "exampleEnglish": "It disappeared suddenly.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:たちまち"
+ },
+ {
+  "pattern": "さすがに",
+  "relatedKanji": "流石に",
+  "meaning": "Indeed/as expected",
+  "exampleJapanese": "さすがに疲れた。",
+  "exampleEnglish": "I was tired, as expected.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:さすがに"
+ },
+ {
+  "pattern": "～に越したことはない",
+  "relatedKanji": "越したことはない",
+  "meaning": "Nothing better than",
+  "exampleJapanese": "早いに越したことはない。",
+  "exampleEnglish": "The earlier, the better.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~に越したことはない"
+ },
+ {
+  "pattern": "ものの",
+  "relatedKanji": null,
+  "meaning": "Although",
+  "exampleJapanese": "高いものの美味しい。",
+  "exampleEnglish": "Although it’s expensive, it’s tasty.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:ものの"
+ },
+ {
+  "pattern": "いつのまにか",
+  "relatedKanji": "何時の間にか",
+  "meaning": "Before I knew it",
+  "exampleJapanese": "いつのまにか寝ていた。",
+  "exampleEnglish": "I fell asleep before I knew it.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:いつのまにか"
+ },
+ {
+  "pattern": "さしつかえない",
+  "relatedKanji": "差し支えない",
+  "meaning": "No problem",
+  "exampleJapanese": "質問してもさしつかえない。",
+  "exampleEnglish": "It’s okay to ask questions.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:さしつかえない"
+ },
+ {
+  "pattern": "あえて",
+  "relatedKanji": "敢えて",
+  "meaning": "Dare to",
+  "exampleJapanese": "あえて言うなら…",
+  "exampleEnglish": "If I dare say...",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:あえて"
+ },
+ {
+  "pattern": "たまらない",
+  "relatedKanji": "堪らない",
+  "meaning": "Unbearable",
+  "exampleJapanese": "暑くてたまらない。",
+  "exampleEnglish": "It’s unbearably hot.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:たまらない"
+ },
+ {
+  "pattern": "～た上で",
+  "relatedKanji": "上で",
+  "meaning": "After doing",
+  "exampleJapanese": "確認した上で連絡します。",
+  "exampleEnglish": "I’ll contact you after confirming.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~た上で"
+ },
+ {
+  "pattern": "～ないわけにはいかない",
+  "relatedKanji": "訳にはいかない",
+  "meaning": "Cannot help but",
+  "exampleJapanese": "行かないわけにはいかない。",
+  "exampleEnglish": "I can’t not go.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~ないわけにはいかない"
+ },
+ {
+  "pattern": "ごとし（如し）",
+  "relatedKanji": "如し",
+  "meaning": "As if",
+  "exampleJapanese": "夢の如し",
+  "exampleEnglish": "Like a dream",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:ごとし(如し)"
+ },
+ {
+  "pattern": "かねない",
+  "relatedKanji": null,
+  "meaning": "Might happen (negative)",
+  "exampleJapanese": "失敗しかねない。",
+  "exampleEnglish": "It might fail.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:かねない"
+ },
+ {
+  "pattern": "ろくに～ない",
+  "relatedKanji": "碌に",
+  "meaning": "Hardly/properly not",
+  "exampleJapanese": "ろくに食べていない。",
+  "exampleEnglish": "I’ve hardly eaten.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:ろくに~ない"
+ },
+ {
+  "pattern": "～と言っても～",
+  "relatedKanji": "と言っても",
+  "meaning": "Even though I say",
+  "exampleJapanese": "旅行と言っても近所です。",
+  "exampleEnglish": "Though I say travel, it’s nearby.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~と言っても~"
+ },
+ {
+  "pattern": "～が気になる",
+  "relatedKanji": "気になる",
+  "meaning": "Be concerned about",
+  "exampleJapanese": "成績が気になる。",
+  "exampleEnglish": "I’m worried about my grades.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~が気になる"
+ },
+ {
+  "pattern": "せめて",
+  "relatedKanji": null,
+  "meaning": "At least",
+  "exampleJapanese": "せめて一言言って。",
+  "exampleEnglish": "At least say something.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:せめて"
+ },
+ {
+  "pattern": "～でいいです",
+  "relatedKanji": null,
+  "meaning": "It’s fine with~",
+  "exampleJapanese": "水でいいです。",
+  "exampleEnglish": "Water is fine.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:~でいいです"
+ },
+ {
+  "pattern": "くせに",
+  "relatedKanji": "癖に",
+  "meaning": "Even though (blaming)",
+  "exampleJapanese": "子供のくせに生意気だ。",
+  "exampleEnglish": "He’s cheeky for a kid.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:くせに"
+ },
+ {
+  "pattern": "いたるまで（至るまで）",
+  "relatedKanji": "至るまで",
+  "meaning": "Up to even",
+  "exampleJapanese": "足の先に至るまで痛い。",
+  "exampleEnglish": "Even up to my toes, it hurts.",
+  "jlptLevel": "N2",
+  "sourceKey": "jlpt:N2:いたるまで(至るまで)"
+ },
+ {
+  "pattern": "～めく",
+  "relatedKanji": null,
+  "meaning": "To seem like/have the air of",
+  "exampleJapanese": "春めいてきた。",
+  "exampleEnglish": "It’s beginning to feel like spring.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~めく"
+ },
+ {
+  "pattern": "～かたわら",
+  "relatedKanji": "傍ら",
+  "meaning": "Besides doing",
+  "exampleJapanese": "教師のかたわら執筆もする。",
+  "exampleEnglish": "Besides being a teacher, I also write.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~かたわら"
+ },
+ {
+  "pattern": "～と思いきや",
+  "relatedKanji": "と思いきや",
+  "meaning": "Although I thought that...",
+  "exampleJapanese": "勝ったと思いきや負けた。",
+  "exampleEnglish": "I thought we won, but we lost.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~と思いきや"
+ },
+ {
+  "pattern": "～が早いか",
+  "relatedKanji": "が早いか",
+  "meaning": "As soon as",
+  "exampleJapanese": "ベルが鳴るが早いか走り出した。",
+  "exampleEnglish": "As soon as the bell rang, I ran.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~が早いか"
+ },
+ {
+  "pattern": "ただ～のみ",
+  "relatedKanji": null,
+  "meaning": "Only/just",
+  "exampleJapanese": "ただ見守るのみ。",
+  "exampleEnglish": "All I can do is watch.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:ただ~のみ"
+ },
+ {
+  "pattern": "～なり",
+  "relatedKanji": null,
+  "meaning": "As soon as",
+  "exampleJapanese": "家に着くなり寝た。",
+  "exampleEnglish": "As soon as I got home, I slept.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~なり"
+ },
+ {
+  "pattern": "～や否や（いなや）",
+  "relatedKanji": "や否や",
+  "meaning": "As soon as",
+  "exampleJapanese": "空港に着くや否や電話した。",
+  "exampleEnglish": "I called as soon as I arrived at the airport.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~や否や(いなや)"
+ },
+ {
+  "pattern": "～ごとき",
+  "relatedKanji": "如き",
+  "meaning": "Like/such as (humble)",
+  "exampleJapanese": "私ごときが失礼します。",
+  "exampleEnglish": "Someone like me is being rude.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ごとき"
+ },
+ {
+  "pattern": "～がてら",
+  "relatedKanji": null,
+  "meaning": "On the occasion of",
+  "exampleJapanese": "散歩がてら買い物する。",
+  "exampleEnglish": "Shop while taking a walk.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~がてら"
+ },
+ {
+  "pattern": "～を皮切りに",
+  "relatedKanji": "皮切り",
+  "meaning": "Starting with",
+  "exampleJapanese": "東京を皮切りに全国へ広がった。",
+  "exampleEnglish": "It spread nationwide, starting with Tokyo.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~を皮切りに"
+ },
+ {
+  "pattern": "～をもって",
+  "relatedKanji": "を以て",
+  "meaning": "With/by means of (formal)",
+  "exampleJapanese": "本日をもって終了します。",
+  "exampleEnglish": "We conclude as of today.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~をもって"
+ },
+ {
+  "pattern": "～が最後",
+  "relatedKanji": "が最後",
+  "meaning": "Once something happens",
+  "exampleJapanese": "飲み始めたが最後止まらない。",
+  "exampleEnglish": "Once I start drinking, I can’t stop.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~が最後"
+ },
+ {
+  "pattern": "～まみれ",
+  "relatedKanji": null,
+  "meaning": "Covered in",
+  "exampleJapanese": "泥まみれになった。",
+  "exampleEnglish": "I got covered in mud.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~まみれ"
+ },
+ {
+  "pattern": "～とあれば",
+  "relatedKanji": null,
+  "meaning": "If it is for the sake of",
+  "exampleJapanese": "彼のためとあれば協力する。",
+  "exampleEnglish": "If it’s for him, I’ll cooperate.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~とあれば"
+ },
+ {
+  "pattern": "～ともなると",
+  "relatedKanji": null,
+  "meaning": "Once it reaches the point of",
+  "exampleJapanese": "大人ともなると責任がある。",
+  "exampleEnglish": "Adults must take responsibility.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ともなると"
+ },
+ {
+  "pattern": "～なくしては",
+  "relatedKanji": null,
+  "meaning": "Without",
+  "exampleJapanese": "努力なくしては成功しない。",
+  "exampleEnglish": "There’s no success without effort.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~なくしては"
+ },
+ {
+  "pattern": "～なしに",
+  "relatedKanji": null,
+  "meaning": "Without",
+  "exampleJapanese": "許可なしに入れない。",
+  "exampleEnglish": "You can't enter without permission.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~なしに"
+ },
+ {
+  "pattern": "～ならでは",
+  "relatedKanji": null,
+  "meaning": "Only possible with",
+  "exampleJapanese": "これは日本ならではの文化だ。",
+  "exampleEnglish": "This is a culture unique to Japan.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ならでは"
+ },
+ {
+  "pattern": "～に足る",
+  "relatedKanji": "足る",
+  "meaning": "Worthy of",
+  "exampleJapanese": "信頼に足る人物。",
+  "exampleEnglish": "A person worthy of trust.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~に足る"
+ },
+ {
+  "pattern": "～とあって",
+  "relatedKanji": null,
+  "meaning": "Because of (special condition)",
+  "exampleJapanese": "休日とあって混んでいる。",
+  "exampleEnglish": "It’s crowded because it’s a holiday.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~とあって"
+ },
+ {
+  "pattern": "～べく",
+  "relatedKanji": null,
+  "meaning": "In order to",
+  "exampleJapanese": "成功すべく努力する。",
+  "exampleEnglish": "Work hard to succeed.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~べく"
+ },
+ {
+  "pattern": "～かたがた",
+  "relatedKanji": null,
+  "meaning": "At the same time",
+  "exampleJapanese": "挨拶かたがた伺います。",
+  "exampleEnglish": "I’ll visit you to greet you as well.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~かたがた"
+ },
+ {
+  "pattern": "～たところで",
+  "relatedKanji": null,
+  "meaning": "Even if",
+  "exampleJapanese": "行ったところで無駄だ。",
+  "exampleEnglish": "Even if I go, it’s useless.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~たところで"
+ },
+ {
+  "pattern": "～であれ",
+  "relatedKanji": null,
+  "meaning": "Even if/even though",
+  "exampleJapanese": "理由が何であれ許せない。",
+  "exampleEnglish": "Whatever the reason, I can’t forgive it.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~であれ"
+ },
+ {
+  "pattern": "～にたえない",
+  "relatedKanji": "に堪えない",
+  "meaning": "Cannot bear",
+  "exampleJapanese": "見るにたえない光景。",
+  "exampleEnglish": "An unbearable sight.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にたえない"
+ },
+ {
+  "pattern": "～を限りに",
+  "relatedKanji": "を限りに",
+  "meaning": "As of",
+  "exampleJapanese": "今日を限りに辞めます。",
+  "exampleEnglish": "I quit as of today.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~を限りに"
+ },
+ {
+  "pattern": "～ところを",
+  "relatedKanji": null,
+  "meaning": "Despite being (polite)",
+  "exampleJapanese": "お忙しいところをすみません。",
+  "exampleEnglish": "Sorry to bother you when you're busy.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ところを"
+ },
+ {
+  "pattern": "～にそくして",
+  "relatedKanji": "に即して",
+  "meaning": "In accordance with",
+  "exampleJapanese": "法律に即して判断する。",
+  "exampleEnglish": "Judge according to the law.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にそくして"
+ },
+ {
+  "pattern": "～とはいえ",
+  "relatedKanji": null,
+  "meaning": "Though it may be",
+  "exampleJapanese": "学生とはいえ大人だ。",
+  "exampleEnglish": "Though a student, still an adult.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~とはいえ"
+ },
+ {
+  "pattern": "～ものを",
+  "relatedKanji": null,
+  "meaning": "If only",
+  "exampleJapanese": "早く言えばよかったものを。",
+  "exampleEnglish": "If only you had said it earlier.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ものを"
+ },
+ {
+  "pattern": "～ようが",
+  "relatedKanji": null,
+  "meaning": "Even if",
+  "exampleJapanese": "何をしようが関係ない。",
+  "exampleEnglish": "No matter what you do, it doesn’t matter.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ようが"
+ },
+ {
+  "pattern": "～いかん",
+  "relatedKanji": "如何",
+  "meaning": "Depending on",
+  "exampleJapanese": "結果いかんでは中止。",
+  "exampleEnglish": "Depending on the result, it may be canceled.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~いかん"
+ },
+ {
+  "pattern": "～と相まって",
+  "relatedKanji": "相まって",
+  "meaning": "Combined with",
+  "exampleJapanese": "努力と才能が相まって成功した。",
+  "exampleEnglish": "Succeeded through effort combined with talent.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~と相まって"
+ },
+ {
+  "pattern": "～をよそに",
+  "relatedKanji": "を余所に",
+  "meaning": "Ignoring",
+  "exampleJapanese": "危険をよそに進んだ。",
+  "exampleEnglish": "Proceeded ignoring the danger.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~をよそに"
+ },
+ {
+  "pattern": "～ないまでも",
+  "relatedKanji": null,
+  "meaning": "Even if not",
+  "exampleJapanese": "毎日でないまでも週に三回。",
+  "exampleEnglish": "If not daily, at least three times a week.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ないまでも"
+ },
+ {
+  "pattern": "～てもさしつかえない",
+  "relatedKanji": "差し支えない",
+  "meaning": "It’s okay to...",
+  "exampleJapanese": "見てもさしつかえない。",
+  "exampleEnglish": "It’s okay to look.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~てもさしつかえない"
+ },
+ {
+  "pattern": "～たる",
+  "relatedKanji": null,
+  "meaning": "As a (formal)",
+  "exampleJapanese": "教師たる者",
+  "exampleEnglish": "One who is a teacher",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~たる"
+ },
+ {
+  "pattern": "～まじき",
+  "relatedKanji": null,
+  "meaning": "Unworthy of",
+  "exampleJapanese": "許すまじき行為。",
+  "exampleEnglish": "An unforgivable act.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~まじき"
+ },
+ {
+  "pattern": "～極まる",
+  "relatedKanji": "極まる",
+  "meaning": "Extremely",
+  "exampleJapanese": "失礼極まる。",
+  "exampleEnglish": "Extremely rude.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~極まる"
+ },
+ {
+  "pattern": "～にかこつけて",
+  "relatedKanji": "託けて",
+  "meaning": "Using as an excuse",
+  "exampleJapanese": "病気にかこつけて休む。",
+  "exampleEnglish": "Take time off using illness as an excuse.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にかこつけて"
+ },
+ {
+  "pattern": "～に（は）あたらない",
+  "relatedKanji": "当たらない",
+  "meaning": "Not worth",
+  "exampleJapanese": "驚くにはあたらない。",
+  "exampleEnglish": "Not worth being surprised about.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~に(は)あたらない"
+ },
+ {
+  "pattern": "～にかたくない",
+  "relatedKanji": "難くない",
+  "meaning": "Not hard to",
+  "exampleJapanese": "想像にかたくない。",
+  "exampleEnglish": "Not hard to imagine.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にかたくない"
+ },
+ {
+  "pattern": "～べからず",
+  "relatedKanji": null,
+  "meaning": "Must not (written)",
+  "exampleJapanese": "立入るべからず。",
+  "exampleEnglish": "Do not enter.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~べからず"
+ },
+ {
+  "pattern": "～を禁じ得ない",
+  "relatedKanji": "禁じ得ない",
+  "meaning": "Cannot suppress",
+  "exampleJapanese": "涙を禁じ得ない。",
+  "exampleEnglish": "I cannot hold back my tears.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~を禁じ得ない"
+ },
+ {
+  "pattern": "～たりとも",
+  "relatedKanji": null,
+  "meaning": "Not even one",
+  "exampleJapanese": "一日たりとも忘れない。",
+  "exampleEnglish": "I won’t forget even for a day.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~たりとも"
+ },
+ {
+  "pattern": "～きらいがある",
+  "relatedKanji": "嫌い",
+  "meaning": "Tend to (negative)",
+  "exampleJapanese": "考えすぎるきらいがある。",
+  "exampleEnglish": "He tends to overthink.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~きらいがある"
+ },
+ {
+  "pattern": "～しまつだ",
+  "relatedKanji": "始末だ",
+  "meaning": "End up (bad result)",
+  "exampleJapanese": "借金までするしまつだ。",
+  "exampleEnglish": "Ended up in debt.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~しまつだ"
+ },
+ {
+  "pattern": "～を余儀なくされる",
+  "relatedKanji": "余儀なくされる",
+  "meaning": "Be forced to",
+  "exampleJapanese": "退職を余儀なくされた。",
+  "exampleEnglish": "Was forced to retire.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~を余儀なくされる"
+ },
+ {
+  "pattern": "～てやまない",
+  "relatedKanji": "て止まない",
+  "meaning": "Sincerely always",
+  "exampleJapanese": "成功を願ってやまない。",
+  "exampleEnglish": "I sincerely wish for your success.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~てやまない"
+ },
+ {
+  "pattern": "～割りに（は）",
+  "relatedKanji": "割に",
+  "meaning": "Considering",
+  "exampleJapanese": "若い割に落ち着いている。",
+  "exampleEnglish": "Calm for someone so young.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~割りに(は)"
+ },
+ {
+  "pattern": "～かいもなく",
+  "relatedKanji": "甲斐もなく",
+  "meaning": "Despite efforts, no result",
+  "exampleJapanese": "努力のかいもなく失敗した。",
+  "exampleEnglish": "Failed despite the effort.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~かいもなく"
+ },
+ {
+  "pattern": "～だけまし",
+  "relatedKanji": "だけまし",
+  "meaning": "At least",
+  "exampleJapanese": "雨が止んだだけましだ。",
+  "exampleEnglish": "At least the rain stopped.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~だけまし"
+ },
+ {
+  "pattern": "～ないではすまない",
+  "relatedKanji": "ないでは済まない",
+  "meaning": "Cannot avoid doing",
+  "exampleJapanese": "謝らないではすまない。",
+  "exampleEnglish": "I must apologize.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ないではすまない"
+ },
+ {
+  "pattern": "～をふまえて",
+  "relatedKanji": "踏まえて",
+  "meaning": "Based on",
+  "exampleJapanese": "事実をふまえて話す。",
+  "exampleEnglish": "Speak based on the facts.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~をふまえて"
+ },
+ {
+  "pattern": "～をおして",
+  "relatedKanji": "押して",
+  "meaning": "Despite hardship",
+  "exampleJapanese": "病気をおして出席した。",
+  "exampleEnglish": "Attended despite illness.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~をおして"
+ },
+ {
+  "pattern": "～を経て",
+  "relatedKanji": "経て",
+  "meaning": "Through/after",
+  "exampleJapanese": "留学を経て成長した。",
+  "exampleEnglish": "Grew through study abroad.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~を経て"
+ },
+ {
+  "pattern": "～ゆえ",
+  "relatedKanji": "故",
+  "meaning": "Because of (formal)",
+  "exampleJapanese": "失敗ゆえに成功した。",
+  "exampleEnglish": "Succeeded because of failure.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ゆえ"
+ },
+ {
+  "pattern": "～ながらも",
+  "relatedKanji": null,
+  "meaning": "Although",
+  "exampleJapanese": "知っていながらも言わない。",
+  "exampleEnglish": "Though I know, I won’t say.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ながらも"
+ },
+ {
+  "pattern": "～ことなしに",
+  "relatedKanji": "こと無しに",
+  "meaning": "Without doing",
+  "exampleJapanese": "努力することなしに成功はない。",
+  "exampleEnglish": "There is no success without effort.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ことなしに"
+ },
+ {
+  "pattern": "～ではあるまいし",
+  "relatedKanji": null,
+  "meaning": "It’s not like~",
+  "exampleJapanese": "子供ではあるまいし泣くな。",
+  "exampleEnglish": "You’re not a kid, don’t cry.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ではあるまいし"
+ },
+ {
+  "pattern": "～てからというもの",
+  "relatedKanji": null,
+  "meaning": "Ever since",
+  "exampleJapanese": "引っ越してからというもの静かだ。",
+  "exampleEnglish": "It’s been quiet ever since I moved.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~てからというもの"
+ },
+ {
+  "pattern": "～としたところで",
+  "relatedKanji": null,
+  "meaning": "Even if assuming",
+  "exampleJapanese": "私としたところで驚いた。",
+  "exampleEnglish": "Even I was surprised.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~としたところで"
+ },
+ {
+  "pattern": "～（で）すら",
+  "relatedKanji": null,
+  "meaning": "Even",
+  "exampleJapanese": "子供ですらできる。",
+  "exampleEnglish": "Even a child can do it.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~(で)すら"
+ },
+ {
+  "pattern": "～といえども",
+  "relatedKanji": null,
+  "meaning": "Even though (formal)",
+  "exampleJapanese": "彼といえども失敗する。",
+  "exampleEnglish": "Even he can fail.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~といえども"
+ },
+ {
+  "pattern": "～っぱなし",
+  "relatedKanji": null,
+  "meaning": "Left as is",
+  "exampleJapanese": "テレビをつけっぱなし。",
+  "exampleEnglish": "TV left on.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~っぱなし"
+ },
+ {
+  "pattern": "～ずくめ",
+  "relatedKanji": null,
+  "meaning": "Entirely",
+  "exampleJapanese": "黒ずくめの服",
+  "exampleEnglish": "All-black clothes.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ずくめ"
+ },
+ {
+  "pattern": "～ながらに",
+  "relatedKanji": null,
+  "meaning": "While in state",
+  "exampleJapanese": "涙ながらに話す。",
+  "exampleEnglish": "Speak while crying.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~ながらに"
+ },
+ {
+  "pattern": "～にもまして",
+  "relatedKanji": "にも増して",
+  "meaning": "Even more than",
+  "exampleJapanese": "去年にもまして暑い。",
+  "exampleEnglish": "Even hotter than last year.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にもまして"
+ },
+ {
+  "pattern": "～にひきかえ",
+  "relatedKanji": "に引き換え",
+  "meaning": "In contrast to",
+  "exampleJapanese": "兄にひきかえ弟は真面目だ。",
+  "exampleEnglish": "In contrast to his brother, he’s serious.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~にひきかえ"
+ },
+ {
+  "pattern": "～はおろか",
+  "relatedKanji": "はおろか",
+  "meaning": "Let alone",
+  "exampleJapanese": "英語はおろか日本語も話せない。",
+  "exampleEnglish": "Can't speak Japanese, let alone English.",
+  "jlptLevel": "N1",
+  "sourceKey": "jlpt:N1:~はおろか"
+ }
+]

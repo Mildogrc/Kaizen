@@ -1,0 +1,65 @@
+Grammar,Kanji,終,% Done,# Done,Explanation,Example (JP),Translation (EN)
+63,,,0.00%,0,,,
+～たび～,度,FALSE,,,Every time,会うたびに嬉しい。,I'm happy every time we meet.
+ようにする,,FALSE,,,Try to make an effort to,早く寝るようにする。,I try to sleep early.
+まさか,,FALSE,,,No way/unexpected,まさか彼が来るとは！,No way he's coming!
+～げ,,FALSE,,,Looks like (emotion),寂しげな顔,A lonely-looking face
+～始める,,FALSE,,,Start doing,笑い始めた。,Started laughing.
+～らしい,,FALSE,,,Seems like/typical,彼は学生らしい。,He seems like a student.
+～ぐらい,,FALSE,,,About/approximate,一時間ぐらい待った。,I waited about an hour.
+～には～の～がある,,FALSE,,,Has own characteristic,彼には彼の考えがある。,He has his own ideas.
+～ても,,FALSE,,,Even if,寒くても出かける。,"Even if it's cold, I'll go out."
+～によると,,FALSE,,,According to,天気予報によると雨です。,"According to the forecast, it will rain."
+むしろ,寧ろ,FALSE,,,Rather,むしろ帰りたい。,I’d rather go home.
+～として,,FALSE,,,As a~,先生として働く。,Work as a teacher.
+N+ばかり,,FALSE,,,Only/just,ゲームばかりしている。,Just playing games.
+すぎない（過ぎない）,過ぎない,FALSE,,,No more than,噂にすぎない。,Just a rumor.
+～っぽい,,FALSE,,,Tends to/seems,子供っぽい,Childish
+すでに（既に）,既に,FALSE,,,Already,すでに知っている。,I already know.
+おいて（於いて）,於いて,FALSE,,,At/in (formal),会議において話す。,Speak at the meeting.
+ほど,程,FALSE,,,To the extent,死ぬほど疲れた。,So tired I could die.
+～ないで,,FALSE,,,Without doing,朝ごはんを食べないで出た。,Left without eating breakfast.
+つい,,FALSE,,,Accidentally,つい寝てしまった。,I accidentally fell asleep.
+ふり,振り,FALSE,,,Pretending,知らないふりをした。,Pretended not to know.
+まま,,FALSE,,,As it is,靴をはいたまま入った。,Entered with shoes on.
+～ために,為に,FALSE,,,For the sake of/to,健康のために運動する。,Exercise for health.
+～ないうちに,内に,FALSE,,,Before doing,忘れないうちに書く。,Write it down before I forget.
+～としたら,,FALSE,,,If one were to,行くとしたらバスだ。,"If I go, I’ll take the bus."
+つもりで,積もりで,FALSE,,,As if one intended,死ぬつもりで頑張る。,I'll work as if my life depended on it.
+～に関する,関する,FALSE,,,Related to,環境に関する本,A book about the environment
+～とても～ない,,FALSE,,,Cannot possibly,とても食べきれない。,I can't possibly finish eating.
+どうしても,,FALSE,,,No matter what,どうしても行きたい。,I want to go no matter what.
+～とともに～,共に,FALSE,,,Together with/as,時代とともに変わる。,Changes with time.
+きり,切り,FALSE,,,Only/just,一度きりの人生,A once-in-a-lifetime life.
+～によって,,FALSE,,,Due to/by means of,地震によって壊れた。,Destroyed by the earthquake.
+ように,,FALSE,,,So that/in order to,忘れないように書く。,Write so I don't forget.
+～て初めて,初めて,FALSE,,,Not until,会って初めて分かった。,I understood only after meeting.
+～がち,,FALSE,,,Tend to,忘れがち,Tend to forget
+～ず,,FALSE,,,Without doing (formal),言わずに去った。,Left without saying anything.
+～ようになる,,FALSE,,,Come to be able to,話せるようになる。,Come to be able to speak.
+せいぜい,精々,FALSE,,,At most,せいぜい三人,At most three people.
+N+を始め,始め,FALSE,,,Starting with~,先生を始め皆が来た。,"Everyone came, starting with the teacher."
+～ば～ほど,,FALSE,,,The more... the more...,食べれば食べるほど太る。,"The more you eat, the fatter you get."
+～たて,,FALSE,,,Just done,焼きたてパン,Freshly baked bread.
+～は～くらいです,,FALSE,,,To the extent that,死ぬくらい忙しい。,So busy I could die.
+どうやら,,FALSE,,,Apparently,どうやら雨らしい。,Apparently it’s raining.
+～は～で有名,有名,FALSE,,,Famous for,京都は寺で有名だ。,Kyoto is famous for temples.
+～かえって,却って,FALSE,,,On the contrary,急いでかえって遅れた。,I hurried and was late instead.
+～さえ～ば,,FALSE,,,If only,君さえいればいい。,"If only you're here, it's enough."
+こそ,,FALSE,,,Emphasis (indeed/precisely),これこそ本当だ。,This is exactly the truth.
+～になれる,慣れる,FALSE,,,Get used to,生活になれる。,Get used to the lifestyle.
+さらに（更に）,更に,FALSE,,,Furthermore/even more,さらに努力する。,Make even more effort.
+～代わり,代わり,FALSE,,,Instead of/in exchange for,行く代わりに電話する。,Call instead of going.
+まい,,FALSE,,,Will not (intentional),二度と行くまい。,I shall never go again.
+わざわざ,態々,FALSE,,,Taking the trouble to,わざわざ来てくれた。,They came all the way (just for me).
+限る,限る,FALSE,,,Only/nothing better than,冬は鍋に限る。,Nothing beats hotpot in winter.
+おかげで,お蔭で,FALSE,,,Thanks to,先生のおかげで合格した。,I passed thanks to the teacher.
+さえ,,FALSE,,,Even,水さえない。,There’s not even water.
+～たものだ,,FALSE,,,Used to (nostalgia),よく遊んだものだ。,I used to play a lot.
+～のような,様,FALSE,,,Like/similar to,鳥のような声,A voice like a bird
+的,的,FALSE,,,Adjective-like suffix,教育的な話,An educational story.
+いったい（一体）,一体,FALSE,,,What on earth?,一体どうしたの？,What on earth happened?
+～ことになる,,FALSE,,,End up doing,行くことになった。,It’s been decided I’ll go.
+～に違いない,違いない,FALSE,,,Must be (certainty),彼が犯人に違いない。,He must be the culprit.
+なかなか,中々,FALSE,,,Quite/not easily,なかなかいいね。,Quite good.
+～たばかり,,FALSE,,,Just did,食べたばかりです。,I just ate.

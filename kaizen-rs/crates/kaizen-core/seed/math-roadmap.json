@@ -1,0 +1,992 @@
+{
+ "nodes": [
+  {
+   "slug": "algebra-1",
+   "title": "Algebra 1",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "algebra-2",
+   "title": "Algebra 2",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "geometry",
+   "title": "Geometry",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "trigonometry",
+   "title": "Trigonometry",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "precalculus",
+   "title": "Precalculus",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "calculus-1",
+   "title": "Calculus 1",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "calculus-2",
+   "title": "Calculus 2",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "calculus-3",
+   "title": "Calculus 3",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "linear-algebra",
+   "title": "Linear Algebra",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "differential-equations",
+   "title": "Differential Equations",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "intro-proofs",
+   "title": "Introduction to Proofs",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "discrete-mathematics",
+   "title": "Discrete Mathematics",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "probability",
+   "title": "Probability",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "statistics",
+   "title": "Statistics",
+   "branch": "Foundations",
+   "level": "FOUNDATION"
+  },
+  {
+   "slug": "real-analysis",
+   "title": "Real Analysis",
+   "branch": "Analysis",
+   "level": "CORE"
+  },
+  {
+   "slug": "complex-analysis",
+   "title": "Complex Analysis",
+   "branch": "Analysis",
+   "level": "CORE"
+  },
+  {
+   "slug": "measure-theory",
+   "title": "Measure Theory",
+   "branch": "Analysis",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "functional-analysis",
+   "title": "Functional Analysis",
+   "branch": "Analysis",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "fourier-analysis",
+   "title": "Fourier Analysis",
+   "branch": "Analysis",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "harmonic-analysis",
+   "title": "Harmonic Analysis",
+   "branch": "Analysis",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "abstract-algebra",
+   "title": "Abstract Algebra",
+   "branch": "Algebra",
+   "level": "CORE"
+  },
+  {
+   "slug": "group-theory",
+   "title": "Group Theory",
+   "branch": "Algebra",
+   "level": "CORE"
+  },
+  {
+   "slug": "ring-theory",
+   "title": "Ring Theory",
+   "branch": "Algebra",
+   "level": "CORE"
+  },
+  {
+   "slug": "field-theory",
+   "title": "Field Theory",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "galois-theory",
+   "title": "Galois Theory",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "commutative-algebra",
+   "title": "Commutative Algebra",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "category-theory",
+   "title": "Category Theory",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "representation-theory",
+   "title": "Representation Theory",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "lie-groups",
+   "title": "Lie Groups",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "lie-algebras",
+   "title": "Lie Algebras",
+   "branch": "Algebra",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "algebraic-number-theory",
+   "title": "Algebraic Number Theory",
+   "branch": "Number Theory",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "analytic-number-theory",
+   "title": "Analytic Number Theory",
+   "branch": "Number Theory",
+   "level": "TARGET",
+   "isTarget": true,
+   "description": "Target field: L-functions, prime distribution, sieve methods."
+  },
+  {
+   "slug": "geometric-number-theory",
+   "title": "Geometric Number Theory",
+   "branch": "Number Theory",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "iwasawa-theory",
+   "title": "Iwasawa Theory",
+   "branch": "Number Theory",
+   "level": "TARGET",
+   "isTarget": true,
+   "description": "Target field: Z_p-extensions, class groups, p-adic L-functions."
+  },
+  {
+   "slug": "point-set-topology",
+   "title": "Point-Set Topology",
+   "branch": "Topology & Geometry",
+   "level": "CORE"
+  },
+  {
+   "slug": "algebraic-topology",
+   "title": "Algebraic Topology",
+   "branch": "Topology & Geometry",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "differential-geometry",
+   "title": "Differential Geometry",
+   "branch": "Topology & Geometry",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "riemannian-geometry",
+   "title": "Riemannian Geometry",
+   "branch": "Topology & Geometry",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "symplectic-geometry",
+   "title": "Symplectic Geometry",
+   "branch": "Topology & Geometry",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "ode",
+   "title": "Ordinary Differential Equations",
+   "branch": "DE & Dynamics",
+   "level": "CORE"
+  },
+  {
+   "slug": "pde",
+   "title": "Partial Differential Equations",
+   "branch": "DE & Dynamics",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "dynamical-systems",
+   "title": "Dynamical Systems",
+   "branch": "DE & Dynamics",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "ergodic-theory",
+   "title": "Ergodic Theory",
+   "branch": "DE & Dynamics",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "probability-theory",
+   "title": "Probability Theory",
+   "branch": "Probability & Statistics",
+   "level": "ADVANCED",
+   "description": "Measure-theoretic probability."
+  },
+  {
+   "slug": "stochastic-processes",
+   "title": "Stochastic Processes",
+   "branch": "Probability & Statistics",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "mathematical-statistics",
+   "title": "Mathematical Statistics",
+   "branch": "Probability & Statistics",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "optimization-theory",
+   "title": "Optimization Theory",
+   "branch": "Applied",
+   "level": "CORE"
+  },
+  {
+   "slug": "game-theory",
+   "title": "Game Theory",
+   "branch": "Applied",
+   "level": "CORE"
+  },
+  {
+   "slug": "voting-theory",
+   "title": "Voting Theory",
+   "branch": "Applied",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "numerical-analysis",
+   "title": "Numerical Analysis",
+   "branch": "Applied",
+   "level": "CORE"
+  },
+  {
+   "slug": "cryptography",
+   "title": "Cryptography",
+   "branch": "Applied",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "coding-theory",
+   "title": "Coding Theory",
+   "branch": "Applied",
+   "level": "ADVANCED"
+  },
+  {
+   "slug": "quantum-field-theory",
+   "title": "Quantum Field Theory",
+   "branch": "Targets",
+   "level": "TARGET",
+   "isTarget": true,
+   "description": "Target field: QFT for mathematicians/physicists."
+  },
+  {
+   "slug": "physics-phenomenology",
+   "title": "Physics Phenomenology",
+   "branch": "Targets",
+   "level": "TARGET",
+   "isTarget": true,
+   "description": "Target field: particle phenomenology, model building, collider observables."
+  },
+  {
+   "slug": "quantitative-finance",
+   "title": "Quantitative Finance",
+   "branch": "Targets",
+   "level": "TARGET",
+   "isTarget": true,
+   "description": "Target field: derivatives pricing, stochastic calculus, risk."
+  }
+ ],
+ "edges": [
+  {
+   "from": "algebra-1",
+   "to": "algebra-2",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "algebra-2",
+   "to": "precalculus",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "geometry",
+   "to": "trigonometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "trigonometry",
+   "to": "precalculus",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "precalculus",
+   "to": "calculus-1",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-1",
+   "to": "calculus-2",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "calculus-3",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "algebra-2",
+   "to": "linear-algebra",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "linear-algebra",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "differential-equations",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "differential-equations",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "algebra-2",
+   "to": "intro-proofs",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "intro-proofs",
+   "to": "discrete-mathematics",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "probability",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability",
+   "to": "statistics",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "real-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "intro-proofs",
+   "to": "real-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "real-analysis",
+   "to": "complex-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "real-analysis",
+   "to": "measure-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "measure-theory",
+   "to": "functional-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "functional-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "real-analysis",
+   "to": "fourier-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "fourier-analysis",
+   "to": "harmonic-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "measure-theory",
+   "to": "harmonic-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "intro-proofs",
+   "to": "abstract-algebra",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "abstract-algebra",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "group-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "ring-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "ring-theory",
+   "to": "field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "field-theory",
+   "to": "galois-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "group-theory",
+   "to": "galois-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "ring-theory",
+   "to": "commutative-algebra",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "category-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "group-theory",
+   "to": "representation-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "representation-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "group-theory",
+   "to": "lie-groups",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-geometry",
+   "to": "lie-groups",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "lie-algebras",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "group-theory",
+   "to": "lie-algebras",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "galois-theory",
+   "to": "algebraic-number-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "commutative-algebra",
+   "to": "algebraic-number-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "complex-analysis",
+   "to": "analytic-number-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "algebraic-number-theory",
+   "to": "geometric-number-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "geometric-number-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "intro-proofs",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "group-theory",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "ring-theory",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "field-theory",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "galois-theory",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "commutative-algebra",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "algebraic-number-theory",
+   "to": "iwasawa-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "intro-proofs",
+   "to": "point-set-topology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "real-analysis",
+   "to": "point-set-topology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "point-set-topology",
+   "to": "algebraic-topology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "algebraic-topology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "differential-geometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "differential-geometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "point-set-topology",
+   "to": "differential-geometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-geometry",
+   "to": "riemannian-geometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-geometry",
+   "to": "symplectic-geometry",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-equations",
+   "to": "ode",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "real-analysis",
+   "to": "ode",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "ode",
+   "to": "pde",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "pde",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "ode",
+   "to": "dynamical-systems",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "measure-theory",
+   "to": "ergodic-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "dynamical-systems",
+   "to": "ergodic-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability",
+   "to": "probability-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "measure-theory",
+   "to": "probability-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability-theory",
+   "to": "stochastic-processes",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability-theory",
+   "to": "mathematical-statistics",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "statistics",
+   "to": "mathematical-statistics",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "optimization-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "optimization-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability",
+   "to": "game-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "optimization-theory",
+   "to": "game-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "discrete-mathematics",
+   "to": "voting-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "game-theory",
+   "to": "voting-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "numerical-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "numerical-analysis",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "cryptography",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "discrete-mathematics",
+   "to": "cryptography",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "coding-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "abstract-algebra",
+   "to": "coding-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-equations",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "pde",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "complex-analysis",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "fourier-analysis",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "functional-analysis",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "lie-groups",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "lie-algebras",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "representation-theory",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-geometry",
+   "to": "quantum-field-theory",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-3",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-equations",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "pde",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "statistics",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "numerical-analysis",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "lie-groups",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "lie-algebras",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "representation-theory",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "quantum-field-theory",
+   "to": "physics-phenomenology",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-1",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "calculus-2",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "linear-algebra",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "probability",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "statistics",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "stochastic-processes",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "optimization-theory",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "numerical-analysis",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "differential-equations",
+   "to": "quantitative-finance",
+   "kind": "PREREQUISITE"
+  },
+  {
+   "from": "galois-theory",
+   "to": "cryptography",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "analytic-number-theory",
+   "to": "cryptography",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "ergodic-theory",
+   "to": "analytic-number-theory",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "category-theory",
+   "to": "algebraic-topology",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "category-theory",
+   "to": "representation-theory",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "coding-theory",
+   "to": "cryptography",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "harmonic-analysis",
+   "to": "analytic-number-theory",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "representation-theory",
+   "to": "harmonic-analysis",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "symplectic-geometry",
+   "to": "quantum-field-theory",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "algebraic-topology",
+   "to": "quantum-field-theory",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "pde",
+   "to": "quantitative-finance",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "measure-theory",
+   "to": "quantitative-finance",
+   "kind": "APPLICATION"
+  },
+  {
+   "from": "game-theory",
+   "to": "quantitative-finance",
+   "kind": "APPLICATION"
+  }
+ ]
+}

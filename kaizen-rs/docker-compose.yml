@@ -1,0 +1,33 @@
+# Local "production-like" stack: Postgres + Kaizen.
+#   cp .env.example .env   # then fill in at least KAIZEN_SECRET_KEY
+#   docker compose up --build
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: kaizen
+      POSTGRES_PASSWORD: kaizen
+      POSTGRES_DB: kaizen
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kaizen"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  kaizen:
+    build: .
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql://kaizen:kaizen@db:5432/kaizen
+      KAIZEN_PUBLIC_URL: ${KAIZEN_PUBLIC_URL:-http://localhost:8080}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:

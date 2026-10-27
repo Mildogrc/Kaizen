@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Local development.
+#   bin/dev          API + built web app on http://127.0.0.1:8787 (rebuilds web/dist first)
+#   bin/dev api      API only (pair with `bin/dev web` for hot reload)
+#   bin/dev web      Vite dev server on http://127.0.0.1:5173, proxying /api and /auth to :8787
+#   bin/dev release  optimized build of everything (what the Docker image runs)
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+case "${1:-all}" in
+  api)
+    exec cargo run -p kaizen-server --bin kaizen
+    ;;
+  web)
+    cd web
+    [ -d node_modules ] || npm install
+    exec npm run dev
+    ;;
+  all)
+    (cd web && { [ -d node_modules ] || npm install; } && npm run build)
+    exec cargo run -p kaizen-server --bin kaizen
+    ;;
+  release)
+    (cd web && { [ -d node_modules ] || npm install; } && npm run build)
+    exec cargo run --release -p kaizen-server --bin kaizen
+    ;;
+  *)
+    echo "usage: bin/dev [all|api|web|release]" >&2
+    exit 2
+    ;;
+esac

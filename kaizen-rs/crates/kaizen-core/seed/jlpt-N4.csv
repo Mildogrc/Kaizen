@@ -1,0 +1,52 @@
+Grammar,Kanji,終,% Done,# Done,Explanation,Example (JP),Translation (EN)
+50,,,10.00%,5,,,
+～おう,,TRUE,,,Volitional form (let’s/I shall),行こう！,Let’s go!
+～という～,,FALSE,,,Called/named,東京という町,A town called Tokyo
+～かどうか,,FALSE,,,Whether or not,雨が降るかどうかわかりません。,I don't know whether it will rain.
+～のようてほしい,,FALSE,,,Want someone to do like~,彼のように話してほしい。,I want you to speak like him.
+～はずです,筈,FALSE,,,Should/expected to,彼は来るはずです。,He is supposed to come.
+～てある,,FALSE,,,Has been done (result state),ドアが開けてあります。,The door has been opened (and remains so).
+Dictionary form+と,,FALSE,,,If/when (natural consequence),春になると花が咲く。,"When spring comes, flowers bloom."
+～がほしい,欲しい,TRUE,,,Want (a thing),新しい本がほしい。,I want a new book.
+～なさい,,FALSE,,,Command (polite),勉強しなさい。,Study.
+～てもらう,,FALSE,,,Get someone to do,友達に教えてもらいました。,I got my friend to teach me.
+しか～ない,,FALSE,,,Only~,水しか飲まない。,I only drink water.
+～よう,,FALSE,,,Attempt to do something,始めよう。,Let’s begin.
+～てあげる,,FALSE,,,Do for someone (favor),本を貸してあげます。,I’ll lend you a book.
+(period)に(frequency),,TRUE,,,Frequency per period,一週間に三回運動します。,I exercise three times a week.
+そうです,,FALSE,,,I heard that~/It looks like,雨が降るそうです。,I heard that it will rain.
+～ていただけませんか,,FALSE,,,Would you please~?,手伝っていただけませんか。,Would you please help me?
+～やすい,易い,FALSE,,,Easy to do,飲みやすい薬,Medicine that’s easy to take
+～かもしれない,かも知れない,FALSE,,,Might/maybe,行かないかもしれない。,I might not go.
+～ば/～れば,ば・れば,FALSE,,,If (conditional),安ければ買います。,"If it’s cheap, I’ll buy it."
+～たらどうですか,,FALSE,,,Why don’t you~?,休んだらどうですか。,Why don’t you take a break?
+～く/ ～にする,,FALSE,,,Make something a certain way,部屋をきれいにする。,Make the room clean.
+のに,,FALSE,,,Although/even though,雨なのに出かけました。,"Even though it was raining, I went out."
+Number+も,,FALSE,,,As many as,三本も飲んだ。,I drank as many as three bottles.
+てみる,,FALSE,,,Try doing,やってみる。,I'll try doing it.
+～ばよかった,ば良かった,FALSE,,,I wish I had,勉強すればよかった。,I wish I had studied.
+～てすみません,て済みません,FALSE,,,Sorry for doing,遅れてすみません。,Sorry for being late.
+～ないで,,FALSE,,,Without doing,朝ごはんを食べないで出かけた。,I went out without eating breakfast.
+"～ているあいだに,～",間,FALSE,,,"While doing~, something happened",読んでいるあいだに寝てしまった。,I fell asleep while reading.
+～といいです,,FALSE,,,I hope~,元気だといいです。,I hope you are well.
+～てくれる,,FALSE,,,Someone does for me,母が料理してくれた。,My mom cooked for me.
+～のように,様,FALSE,,,Like/as if,夢のように美しい。,Beautiful like a dream
+～させる,,FALSE,,,Make/let someone do,子供に勉強させる。,Make the child study.
+～させられる,,FALSE,,,Be made to do,先生に読まさせられた。,I was made to read by the teacher.
+～し,,FALSE,,,Giving multiple reasons,安いし、おいしい。,"It’s cheap, and tasty too."
+なら,,FALSE,,,If it is the case that,行くなら早くして。,"If you're going, hurry up."
+～ことにする,事,FALSE,,,Decide to do,日本に行くことにした。,I decided to go to Japan.
+～てくれてありがとう,,FALSE,,,Thank you for doing,手伝ってくれてありがとう。,Thank you for helping me.
+～ておく,て置く,FALSE,,,Do in advance,メモしておく。,I'll make a note (for later).
+～てしまう,,FALSE,,,Do completely/regret,忘れてしまった。,I completely forgot.
+～のような,様,FALSE,,,Like/similar to,猫のような動物,An animal like a cat
+～ても,,FALSE,,,Even if,高くても買います。,"Even if it’s expensive, I’ll buy it."
+～みたい,,FALSE,,,Looks like/seems,彼は学生みたい。,He seems like a student.
+～ながら,,FALSE,,,While doing,音楽を聞きながら勉強する。,I study while listening to music.
+～なくてもいい,,FALSE,,,Don’t have to do,行かなくてもいい。,You don’t have to go.
+～てよかった,て良かった,FALSE,,,I'm glad that~,会えてよかった。,I’m glad I met you.
+～たら,,FALSE,,,If/when (conditional),雨が降ったら行かない。,"If it rains, I won’t go."
+～にくい,難い,FALSE,,,Hard to do,読みにくい本,A book that’s hard to read.
+～られる,,TRUE,,,Potential/passive,漢字が読められる。,I can read kanji.
+～そうです,,TRUE,,,Looks like/appears,美味しそうです。,It looks delicious.
+～たがる,,FALSE,,,Appears to want to,彼は行きたがっている。,He seems to want to go.

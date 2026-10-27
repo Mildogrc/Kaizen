@@ -1,0 +1,21 @@
+[package]
+name = "kaizen-core"
+description = "Kaizen domain logic: scheduling, analytics, language processing, prompts. Pure functions, no I/O."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[dependencies]
+chrono.workspace = true
+chrono-tz.workspace = true
+regex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+url.workspace = true
+lindera = { version = "6.2.0", default-features = false, features = ["embed-ipadic"] }
+unicode-segmentation = "1.13.3"
+unicode-normalization = "0.1"
+zhconv = "0.4.2"
