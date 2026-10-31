@@ -3,6 +3,7 @@ import { For, Show, createSignal } from 'solid-js';
 import { del, patch, post, useApi } from '../lib/api';
 import { date, num, titleCase } from '../lib/format';
 import { attempt } from '../lib/store';
+import { ConceptChip, LinkSourceModal, roleLabel, useConceptLinks } from '../components/concepts';
 import { Icon } from '../components/icons';
 import { Badge, Card, Empty, Field, Load, Page, Pills, Progress, Section, Stat, StatGrid } from '../components/ui';
 import { BOOK_STATUSES } from './Books';
@@ -63,6 +64,8 @@ export default function BookDetail() {
     <Load q={q}>
       {(d) => {
         const update = (body) => attempt(() => patch(`/books/${d.book.id}`, body));
+        const [explaining, setExplaining] = createSignal(false);
+        const links = useConceptLinks(() => `bookId=${d.book.id}`);
         const remove = async () => {
           if (!confirm(`Delete “${d.book.title}” with its notes and sessions?`)) return;
           await attempt(() => del(`/books/${d.book.id}`));
@@ -112,6 +115,25 @@ export default function BookDetail() {
                 </Section>
               </div>
               <div>
+                <Section title="Concepts it teaches" actions={<button class="btn btn-sm" onClick={() => setExplaining(true)}><Icon name="plus" size={13} /> Link a concept</button>}>
+                  <Show when={links.data()?.links?.length} fallback={<p class="text-[13px] text-muted">Link a chapter or page range to the concept it explains, and it shows up on that concept’s page.</p>}>
+                    <Card pad={false}>
+                      <div class="divide-y divide-line">
+                        <For each={links.data().links}>
+                          {(l) => (
+                            <div class="flex flex-wrap items-center gap-2 px-4 py-2 text-[12.5px]">
+                              <ConceptChip id={l.conceptId} title={l.title} finished={l.finished} />
+                              <span>{l.label}</span>
+                              <Show when={l.range && l.range !== l.label}><span class="tnum text-muted">{l.range}</span></Show>
+                              <span class="text-muted">· {roleLabel(l.role)}</span>
+                              <Show when={l.status === 'SUGGESTED'}><span class="text-muted">· suggested</span></Show>
+                            </div>
+                          )}
+                        </For>
+                      </div>
+                    </Card>
+                  </Show>
+                </Section>
                 <Section title="Add a note"><Card><AddNote bookId={d.book.id} /></Card></Section>
                 <Section title={`Notes (${d.notes.length})`}>
                   <Show when={d.notes.length} fallback={<Empty>No notes yet.</Empty>}>
@@ -136,6 +158,10 @@ export default function BookDetail() {
                 </Section>
               </div>
             </div>
+            <Show when={explaining()}>
+              <LinkSourceModal title="Which concept does this book explain?" role="RIGOROUS" onClose={() => setExplaining(false)}
+                preset={{ kind: 'book', bookId: d.book.id, label: d.book.title }} />
+            </Show>
           </Page>
         );
       }}

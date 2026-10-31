@@ -14,6 +14,7 @@ export const NAV = [
       { href: '/japanese', label: 'Japanese', glyph: '日', api: '/courses/japanese' },
       { href: '/chinese', label: 'Chinese', glyph: '中', api: '/courses/chinese' },
       { href: '/math', label: 'Math', glyph: '∑', api: '/math' },
+      { href: '/concepts', label: 'Concepts', glyph: '◇', api: '/concepts' },
       { href: '/skills', label: 'Skills', glyph: '⌨', api: '/skills' },
       { href: '/books', label: 'Books', glyph: '❦', api: '/books' },
     ],

@@ -3,6 +3,7 @@ import { For, Show, createSignal, onCleanup, onMount } from 'solid-js';
 import { api, del, invalidate, post, useApi } from '../lib/api';
 import { clock, duration, relative } from '../lib/format';
 import { attempt, toast } from '../lib/store';
+import { ConceptChip, LinkSourceModal, useConceptLinks } from '../components/concepts';
 import { Icon } from '../components/icons';
 import { Card, CopyButton, Disclosure, Field, Load, Page, Progress, Section, Stat, StatGrid } from '../components/ui';
 
@@ -82,6 +83,9 @@ export default function YouTubeDetail() {
     <Load q={q}>
       {(d) => {
         const [itemId, setItemId] = createSignal(d.current?.id);
+        const [explaining, setExplaining] = createSignal(null);
+        const links = useConceptLinks(() => `playlistId=${d.playlist.id}`);
+        const chips = (videoId) => links.data()?.videos?.[videoId] ?? [];
         const [minutes, setMinutes] = createSignal(Math.floor(d.playlist.currentSeconds / 60));
         const [seconds, setSeconds] = createSignal(d.playlist.currentSeconds % 60);
         const refresh = async () => {
@@ -120,7 +124,17 @@ export default function YouTubeDetail() {
                   <Card>
                     <Show when={d.current} fallback={<p class="text-[13px] text-muted">This playlist has no lectures yet. Try Refresh.</p>}>
                       <Player playlistId={d.playlist.id} youtubePlaylistId={d.playlist.youtubePlaylistId} videoId={d.current.videoId} position={d.current.position} seconds={d.playlist.currentSeconds} />
-                      <div class="mt-2 text-[13px] font-medium">{d.current.position + 1}. {d.current.title}</div>
+                      <div class="mt-2 flex flex-wrap items-start justify-between gap-2">
+                        <div class="min-w-0">
+                          <div class="text-[13px] font-medium">{d.current.position + 1}. {d.current.title}</div>
+                          <Show when={chips(d.current.videoId).length}>
+                            <div class="mt-1.5 flex flex-wrap gap-1">
+                              <For each={chips(d.current.videoId)}>{(c) => <ConceptChip id={c.conceptId} title={c.title} finished={c.finished} hint={[c.title, c.range].filter(Boolean).join(' · ')} />}</For>
+                            </div>
+                          </Show>
+                        </div>
+                        <button class="btn btn-sm shrink-0" onClick={() => setExplaining(d.current)}>This explains…</button>
+                      </div>
                     </Show>
                   </Card>
                 </Section>
@@ -147,7 +161,14 @@ export default function YouTubeDetail() {
                       {(i) => (
                         <div class={`flex items-center gap-2.5 px-3 py-2 text-[12.5px] ${d.current?.id === i.id ? 'bg-accent-soft' : ''}`}>
                           <span class={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${i.completed ? 'bg-good text-white' : 'bg-surface-3 text-muted'}`}>{i.completed ? '✓' : i.position + 1}</span>
-                          <span class="min-w-0 flex-1 truncate" title={i.title}>{i.title}</span>
+                          <span class="min-w-0 flex-1">
+                            <span class="block truncate" title={i.title}>{i.title}</span>
+                            <Show when={chips(i.videoId).length}>
+                              <span class="mt-1 flex flex-wrap gap-1">
+                                <For each={chips(i.videoId)}>{(c) => <ConceptChip id={c.conceptId} title={c.title} finished={c.finished} hint={[c.title, c.range].filter(Boolean).join(' · ')} />}</For>
+                              </span>
+                            </Show>
+                          </span>
                           <span class="tnum shrink-0 text-[11px] text-faint">{i.durationSeconds ? duration(i.durationSeconds) : ''}</span>
                         </div>
                       )}
@@ -170,6 +191,12 @@ export default function YouTubeDetail() {
                 </div>
               </Disclosure>
             </div>
+            <Show when={explaining()}>
+              {(item) => (
+                <LinkSourceModal title="Which concept does this lecture explain?" role="LECTURE" onClose={() => setExplaining(null)}
+                  preset={{ kind: 'video', playlistId: d.playlist.id, videoId: item().videoId, label: `${item().position + 1}. ${item().title}` }} />
+              )}
+            </Show>
             <p class="mt-4 text-[11.5px] text-faint">Metadata from {d.playlist.metadataSource} · fetched {relative(d.playlist.lastFetchedAt)}</p>
           </Page>
         );

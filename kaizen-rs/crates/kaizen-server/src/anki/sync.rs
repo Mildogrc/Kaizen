@@ -182,17 +182,19 @@ async fn sync_inner(app: &App, user: &User, summary: &mut SyncSummary) -> anyhow
                         "id": new_id(), "cardId": card.card_id, "front": front, "back": back, "state": state_for(card).as_str(),
                         "interval": card.interval.max(0), "ease": if card.factor > 0 { card.factor as f64 / 1000.0 } else { 2.5 },
                         "dueAt": due_at(card, today_day, today_start), "reps": card.reps, "lapses": card.lapses, "leech": leech,
+                        "tags": tags.get(&card.note).cloned().unwrap_or_default(),
                     })
                 })
                 .collect();
             sqlx::query(
-                "INSERT INTO anki_card_snapshots (id, user_id, mapping_id, anki_card_id, front, back, state, interval_days, ease, due_at, reps, lapses, is_leech, synced_at)
+                "INSERT INTO anki_card_snapshots (id, user_id, mapping_id, anki_card_id, front, back, state, interval_days, ease, due_at, reps, lapses, is_leech, tags, synced_at)
                  SELECT x->>'id', $1, $2, (x->>'cardId')::bigint, x->>'front', x->>'back', x->>'state', (x->>'interval')::int,
-                   (x->>'ease')::float8, (x->>'dueAt')::timestamptz, (x->>'reps')::int, (x->>'lapses')::int, (x->>'leech')::boolean, now()
+                   (x->>'ease')::float8, (x->>'dueAt')::timestamptz, (x->>'reps')::int, (x->>'lapses')::int, (x->>'leech')::boolean,
+                   ARRAY(SELECT jsonb_array_elements_text(x->'tags')), now()
                  FROM jsonb_array_elements($3::jsonb) x
                  ON CONFLICT (user_id, anki_card_id) DO UPDATE SET mapping_id = EXCLUDED.mapping_id, front = EXCLUDED.front, back = EXCLUDED.back,
                    state = EXCLUDED.state, interval_days = EXCLUDED.interval_days, ease = EXCLUDED.ease, due_at = EXCLUDED.due_at,
-                   reps = EXCLUDED.reps, lapses = EXCLUDED.lapses, is_leech = EXCLUDED.is_leech, synced_at = now()",
+                   reps = EXCLUDED.reps, lapses = EXCLUDED.lapses, is_leech = EXCLUDED.is_leech, tags = EXCLUDED.tags, synced_at = now()",
             )
             .bind(&user.id)
             .bind(&mapping.id)

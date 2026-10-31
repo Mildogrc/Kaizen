@@ -208,6 +208,9 @@ export function Load(props) {
   );
 }
 
+/** Focus an element once it is in the document (autofocus does not fire inside portals). */
+export const focusOnMount = (el) => queueMicrotask(() => el.isConnected && el.focus());
+
 export function Field(props) {
   return (
     <label class={cx('block', props.class)}>

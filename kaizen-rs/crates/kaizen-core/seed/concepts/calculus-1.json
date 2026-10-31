@@ -1,0 +1,42 @@
+{
+  "key": "calculus-1",
+  "subject": "calc",
+  "title": "Single-variable calculus",
+  "description": "Limits, derivatives and integrals, ending at the fundamental theorem.",
+  "roadmapNode": "calculus-1",
+  "concepts": [
+    { "slug": "functions", "title": "Functions and graphs", "summary": "Inputs, outputs, and reading behaviour off a graph." },
+    { "slug": "limits", "title": "Limits", "summary": "The value a function approaches, whether or not it gets there." },
+    { "slug": "continuity", "title": "Continuity", "summary": "No jumps or holes: the limit equals the value." },
+    { "slug": "derivative", "title": "The derivative", "summary": "Instantaneous rate of change, as a limit of slopes." },
+    { "slug": "differentiation-rules", "title": "Differentiation rules", "summary": "Power, product and quotient rules." },
+    { "slug": "chain-rule", "title": "Chain rule", "summary": "Differentiating a composition: rates multiply." },
+    { "slug": "implicit-differentiation", "title": "Implicit differentiation and related rates", "summary": "Derivatives of curves not written as y = f(x), and linked rates." },
+    { "slug": "mean-value-theorem", "title": "Mean value theorem", "summary": "Somewhere the instantaneous rate equals the average rate." },
+    { "slug": "optimization", "title": "Extrema and optimization", "summary": "Finding largest and smallest values with critical points." },
+    { "slug": "curve-sketching", "title": "Curve sketching", "summary": "Using first and second derivatives to draw a graph." },
+    { "slug": "riemann-sums", "title": "Riemann sums", "summary": "Area as a limit of rectangles." },
+    { "slug": "definite-integral", "title": "The definite integral", "summary": "Accumulated change over an interval." },
+    { "slug": "fundamental-theorem", "title": "Fundamental theorem of calculus", "summary": "Differentiation and integration undo each other." },
+    { "slug": "substitution", "title": "Integration by substitution", "summary": "The chain rule run backwards." }
+  ],
+  "edges": [
+    ["functions", "limits"],
+    ["limits", "continuity"],
+    ["limits", "derivative"],
+    ["derivative", "differentiation-rules"],
+    ["differentiation-rules", "chain-rule"],
+    ["chain-rule", "implicit-differentiation"],
+    ["continuity", "mean-value-theorem"],
+    ["derivative", "mean-value-theorem"],
+    ["mean-value-theorem", "optimization"],
+    ["differentiation-rules", "optimization"],
+    ["optimization", "curve-sketching"],
+    ["limits", "riemann-sums"],
+    ["riemann-sums", "definite-integral"],
+    ["definite-integral", "fundamental-theorem"],
+    ["mean-value-theorem", "fundamental-theorem"],
+    ["fundamental-theorem", "substitution"],
+    ["chain-rule", "substitution"]
+  ]
+}

@@ -9,6 +9,8 @@ pub const SCHEMAS_JSON: &str = include_str!("../seed/schemas.json");
 pub const MATH_ROADMAP_JSON: &str = include_str!("../seed/math-roadmap.json");
 pub const KANJI_EXTRACT_JSON: &str = include_str!("../seed/kanji-extract.json");
 pub const JLPT_GOLDEN_JSON: &str = include_str!("../seed/jlpt-grammar.golden.json");
+pub const STARTER_CONCEPT_MAPS: [&str; 2] =
+    [include_str!("../seed/concepts/linear-algebra.json"), include_str!("../seed/concepts/calculus-1.json")];
 
 pub fn jlpt_csv(level: &str) -> &'static str {
     match level {

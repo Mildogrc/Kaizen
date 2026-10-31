@@ -5,6 +5,7 @@ mod analytics;
 mod anki;
 mod books;
 mod codeforces;
+mod concepts;
 mod config;
 mod courses;
 mod dashboard;
@@ -54,6 +55,15 @@ pub fn api() -> Router<App> {
         .route("/goals/{id}/complete", post(courses::complete_goal))
         .route("/math", get(math::page))
         .route("/roadmap/nodes/{id}/cycle", post(math::cycle_node))
+        // concepts
+        .route("/concepts", get(concepts::list).post(concepts::create))
+        .route("/concepts/starters/{key}", post(concepts::install_starter))
+        .route("/concepts/{id}", get(concepts::detail).patch(concepts::update).delete(concepts::remove))
+        .route("/concepts/{id}/prerequisites", post(concepts::add_prerequisite))
+        .route("/concepts/{id}/prerequisites/{prerequisite_id}", delete(concepts::remove_prerequisite))
+        .route("/concepts/{id}/sources", post(concepts::add_source))
+        .route("/concept-sources/{id}", axum::routing::patch(concepts::update_source).delete(concepts::remove_source))
+        .route("/concept-links", get(concepts::links))
         // books and mistakes
         .route("/books", get(books::list).post(books::create))
         .route("/books/{id}", get(books::detail).patch(books::update).delete(books::remove))

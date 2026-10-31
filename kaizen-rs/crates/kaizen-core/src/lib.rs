@@ -9,6 +9,7 @@ pub mod anki_analytics;
 pub mod anki_html;
 pub mod book_analytics;
 pub mod codeforces;
+pub mod concepts;
 pub mod daily;
 pub mod grammar;
 pub mod jlpt;
