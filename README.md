@@ -1,108 +1,112 @@
-# Hyperlearning
+# Kaizen
 
-A personal, single-user, local-first learning system: long-term training plans,
-schema-driven content, Anki-powered review analytics, known-word tracking with
-linguistic dedup, and progress tracking for Japanese, Chinese, math, random
-skills, and books — extensible to any future course through a schema designer.
+Long-term learning, one day at a time: Japanese and Chinese (with Anki), a math
+roadmap, books, speed reading, NATO alphabet, Codeforces, YouTube lecture
+series — and an AI tutor that runs on your own Claude, ChatGPT, or Gemini plan.
 
-## Stack
+The server (all logic and data) is Rust; the UI is SolidJS. The original
+Next.js app is kept on the `kaizen-non-rust` branch. See
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how it fits together.
 
-- Next.js (App Router) + TypeScript + Tailwind CSS
-- PostgreSQL + Prisma 7 (driver adapters, `@prisma/adapter-pg`)
-- Zod for schema-driven import validation
-- AnkiConnect (local HTTP API) for the Anki integration
-- kuromoji (Japanese lemmatization) + opencc-js (trad→simp Chinese)
-- Vitest (70 tests)
+## Run it locally
 
-## Running locally
-
-Requires Node 20+, local PostgreSQL, and (for the Anki features) Anki desktop
-with the AnkiConnect add-on (code `2055492159`).
+Requirements: Rust 1.94+, Node 20.19+, PostgreSQL 14+.
 
 ```bash
-# 1. PostgreSQL (once)
-brew services start postgresql@17
-createdb hyperlearning
-
-# 2. Configure
-#    .env → DATABASE_URL="postgresql://<you>@localhost:5432/hyperlearning"
-
-# 3. Install, migrate, seed
-npm install
-npx prisma migrate dev
-npm run db:seed
-
-# 4. Run
-npm run dev                     # http://localhost:3000
-npm test                        # vitest suite
+createdb kaizen_rs
 ```
 
-On this machine, the global `kaizen` command starts PostgreSQL when needed,
-applies pending migrations, and launches the app at `http://localhost:3000`.
+```bash
+cp .env.example .env    # set DATABASE_URL (and KAIZEN_OWNER_EMAIL)
+```
 
-Useful scripts: `db:migrate`, `db:seed`, `db:studio`, `test`.
+```bash
+bin/dev                 # builds the web app, then serves everything on http://127.0.0.1:8787
+```
 
-YouTube playlist imports work from public playlist pages. For complete, reliable metadata on large playlists, add an optional `YOUTUBE_API_KEY` to `.env`; the key only needs access to the YouTube Data API v3.
-One-off utilities live in `scripts/` (Anki .apkg import, cleanup).
+For frontend work, run `bin/dev api` and `bin/dev web` in two terminals and open
+http://127.0.0.1:5173 (Vite hot reload, API proxied to :8787).
 
-## What it does
+### Bring over your existing data
 
-- **Anki is the review engine** for deck-based study. The **Anki tab** maps
-  your decks to courses/subsections and snapshots cards + full review history
-  into Postgres via AnkiConnect. **Analytics** renders activity heatmaps,
-  reviews/day, workload forecasts, retention, collection health, goal
-  projections, and a per-deck leech panel that generates LLM lesson-plan
-  prompts (.md) from your worst cards.
-- **Known words** (Words tab): union of Migaku exports, mature Anki cards, and
-  manual adds. Japanese conjugations are lemmatized with kuromoji so 食べた and
-  食べる count once; ambiguous kana/kanji merges are reported as lower/upper
-  bounds. Chinese is normalized traditional→simplified. Vocab goals ("Reach
-  500 words") track the lower bound automatically.
-- **In-app SM-2 review** for non-Anki content: flashcards and practice items
-  generated from schema rules ({{field}} templates), reviewed with
-  Again/Hard/Good/Easy and keyboard shortcuts.
-- **Daily Study** builds a queue across Anki due counts, in-app reviews, new
-  cards, open mistakes, and book notes, weighted by 10 study modes.
-- **Math roadmap**: a 55-node layered prerequisite tree with hover-tracing of
-  prerequisite closures, cyan "ready to start" glow when everything above a
-  node is complete, and per-target filtered views (Iwasawa Theory, QFT,
-  Physics Phenomenology, Quantitative Finance, Analytic Number Theory).
-- **Schema designer + import**: every content type is a versioned schema;
-  imports are validated by Zod validators built from the schema at runtime.
-  Each schema generates a downloadable .md prompt so any LLM can produce
-  conforming JSON.
-- **Books** (reading tracker + "remember this" notes), **Mistakes** log, and a
-  dashboard tying it together (unified streak across Anki + in-app study).
+```bash
+cargo run --release -p kaizen-server -- import-legacy --from postgresql://localhost/hyperlearning --public-dir <old app checkout>/public
+```
 
-## Architecture in one paragraph
+Everything is copied into the new database (the old one is only read), assigned
+to the old app's user email. Set `KAIZEN_OWNER_EMAIL` to that email. Signing in
+with Google or ChatGPT under that email lands in the imported account; with a
+different email, sign in once and link it under Settings → AI.
 
-Everything importable is a **ContentSchema** (versioned, typed fields);
-content lives in **LearningItem.data** JSON validated by Zod validators built
-from those fields (`src/lib/schema-zod.ts`). **Flashcard/PracticeItem** are
-generated from schema rules (`src/lib/flashcard-gen.ts`) and reviewed via
-**ReviewRecord** + the SM-2 engine (`src/lib/srs.ts`). The Anki side mirrors
-decks into **AnkiDeckMapping / AnkiCardSnapshot / AnkiReviewLog** and runs
-pure-function analytics (`src/lib/anki-analytics.ts`). Known words live in
-**KnownWord** with dual canonical keys (strict/loose) so
-`src/lib/known-words.ts` can compute union-cardinality bounds; normalization
-is in `src/lib/lemmatize.ts`. The math curriculum is **Roadmap/RoadmapNode/
-RoadmapEdge** with graph utilities in `src/lib/roadmap.ts`.
+The 88-level Mandarin Blueprint catalog is shared by all accounts; load it once:
 
-## Key directories
+```bash
+cargo run --release -p kaizen-server -- import-mandarin --csv /path/to/MandarinBluePrint.csv
+```
 
-- `prisma/schema.prisma` — the full data model; `prisma/seed-data/` — courses,
-  exams (JLPT/BJT/Kanji Kentei/HSK), 21 content schemas, math roadmap
-- `src/lib/` — all domain logic (pure functions preferred; DB-facing modules
-  suffixed `-sync`); `src/lib/actions.ts` — every server action
-- `src/app/` — one route per tab
-- `tests/` — 70 vitest tests over the pure modules
-- `handoff/` — self-contained briefs for the remaining roadmap (see below)
+## Connect AI
 
-## Status & roadmap
+Settings → AI. "Ask AI" stays locked (the message box is disabled) until one of
+these is connected:
 
-Phases 1–2 are complete (schema system, all tabs, Anki integration, review,
-daily queue, mistakes, known words). The remaining work — training-plan
-generators, book→flashcard flow, more practice modes, CSV import/export, the
-course-addition contract, deeper analytics, Japanese content pipeline, and
-settings — is specced as independent, agent-runnable briefs in
-[`handoff/handoff.md`](handoff/handoff.md).
+* **ChatGPT plan** (recommended) — signing in with ChatGPT connects it; or click
+  *Connect my ChatGPT plan*. On the owner's machine the Codex CLI
+  (`codex login`) also works.
+* **API key** for Claude (Anthropic), OpenAI, or Gemini, stored encrypted per user.
+
+Claude Pro/Max and Google AI plans can't be connected for now (the options are
+shown but disabled); use an API key for those providers.
+
+Every "Ask AI" in the app — grammar lessons (ratings fill in automatically),
+tutor plans, kanji mnemonics, leech study plans, reading passages, content
+generation for imports — streams through that route.
+
+## Sign-in
+
+Everything requires signing in, and the only ways in are OAuth:
+
+* **ChatGPT** (recommended): also connects your ChatGPT plan, so the AI tutor
+  works with no API key. Works out of the box on localhost; hosted deployments
+  need a registered `AUTH_OPENAI_CLIENT_ID`.
+* **Google**: create an OAuth client (Web application) and add the redirect URI
+  `<KAIZEN_PUBLIC_URL>/auth/callback`; set `AUTH_GOOGLE_CLIENT_ID/SECRET`.
+
+## Deploy
+
+The image contains the server binary and the built web app:
+
+```bash
+docker build -t kaizen .
+```
+
+```bash
+docker compose up --build     # Postgres + Kaizen on http://localhost:8080
+```
+
+On a platform (Fly.io, Render, Cloud Run, Railway, …) run the image with:
+
+| variable | value |
+|---|---|
+| `DATABASE_URL` | managed Postgres URL |
+| `KAIZEN_PUBLIC_URL` | `https://your-domain` |
+| `KAIZEN_SECRET_KEY` | `openssl rand -base64 32` (keep it stable) |
+| `KAIZEN_OWNER_EMAIL` | your email |
+| `AUTH_GOOGLE_CLIENT_ID/SECRET` | for Google sign-in |
+
+`PORT` is honored, migrations run at startup, `/healthz` (liveness) and
+`/readyz` (database) are available, logs are JSON. Run a single instance (or
+sticky sessions) so the Anki browser relay reaches the right server. In the
+cloud, Anki is reached through your open browser tab — add the site to
+AnkiConnect's `webCorsOriginList`. Subscription CLIs only work on a machine
+where you've signed them in; on a hosted server use API keys or Sign in with
+ChatGPT.
+
+## Develop
+
+```bash
+cargo test -p kaizen-core
+```
+
+```bash
+cargo clippy --workspace
+```

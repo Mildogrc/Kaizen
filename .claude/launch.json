@@ -2,17 +2,8 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "hyperlearning",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "run",
-        "dev"
-      ],
-      "port": 3000
-    },
-    {
       "name": "kaizen",
-      "runtimeExecutable": "./kaizen-rs/bin/dev",
+      "runtimeExecutable": "./bin/dev",
       "runtimeArgs": [
         "all"
       ],
@@ -20,7 +11,7 @@
     },
     {
       "name": "kaizen-api",
-      "runtimeExecutable": "./kaizen-rs/bin/dev",
+      "runtimeExecutable": "./bin/dev",
       "runtimeArgs": [
         "api"
       ],
@@ -28,7 +19,7 @@
     },
     {
       "name": "kaizen-web",
-      "runtimeExecutable": "./kaizen-rs/bin/dev",
+      "runtimeExecutable": "./bin/dev",
       "runtimeArgs": [
         "web"
       ],
@@ -36,7 +27,7 @@
     },
     {
       "name": "kaizen-release",
-      "runtimeExecutable": "./kaizen-rs/bin/dev",
+      "runtimeExecutable": "./bin/dev",
       "runtimeArgs": [
         "release"
       ],

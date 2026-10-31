@@ -1,5 +1,10 @@
-<!-- BEGIN:nextjs-agent-rules -->
-# This is NOT the Next.js you know
+# Kaizen
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
-<!-- END:nextjs-agent-rules -->
+Rust server (`crates/`) plus a SolidJS frontend (`web/`). Read `handoff.md`
+first, then `docs/ARCHITECTURE.md`.
+
+- Schema changes go in a new numbered file in `crates/kaizen-server/migrations/`.
+- Checks: `cargo test --workspace`, `cargo clippy --workspace --all-targets`,
+  `cd web && npx vite build`.
+- The live Anki collection is connected locally; Anki features touch it.
+- The original Next.js app is on the `kaizen-non-rust` branch.
