@@ -5,7 +5,8 @@ import { api, post, useApi } from '../lib/api';
 import { num } from '../lib/format';
 import { toast } from '../lib/store';
 import { Icon } from '../components/icons';
-import { Card, Empty, Field, Load, Page, Pills, Section } from '../components/ui';
+import { LIBRARY_TABS } from '../lib/nav';
+import { Card, Empty, Field, Load, Page, Pills, Section , SubNav } from '../components/ui';
 
 function Preview(props) {
   return (
@@ -22,8 +23,8 @@ function Preview(props) {
         </div>
       </Show>
       <Show when={props.result.validSample.length}>
-        <div class="mt-3 text-[11.5px] font-medium uppercase tracking-wider text-muted">Sample</div>
-        <pre class="mt-1 max-h-56 overflow-auto rounded-lg bg-surface-2 p-3 text-[11.5px]">{JSON.stringify(props.result.validSample.slice(0, 3).map((v) => v.data), null, 2)}</pre>
+        <div class="mt-3 text-[12px] font-medium uppercase tracking-wider text-muted">Sample</div>
+        <pre class="mt-1 max-h-56 overflow-auto rounded-lg bg-surface-2 p-3 text-[12px]">{JSON.stringify(props.result.validSample.slice(0, 3).map((v) => v.data), null, 2)}</pre>
       </Show>
     </Card>
   );
@@ -70,12 +71,13 @@ export default function Import() {
           });
         };
         return (
-          <Page title="Import content" glyph="⇥" subtitle="Pick an area and content type, generate items with your AI (or paste JSON from anywhere), validate, save.">
+          <Page title="Library" subtitle="Bring in material: generate it with AI or paste JSON, check it, and save it to a track.">
+            <SubNav label="Library" items={LIBRARY_TABS} />
             <Section title="1 · Area">
               <Pills value={course()} onChange={(c) => setParams({ course: c, schema: undefined })} options={d.courses.map((c) => ({ value: c.slug, label: c.name }))} />
             </Section>
             <Section title="2 · Content type">
-              <Show when={schemas().length} fallback={<Empty>No content types for this area. <A href="/schemas/new" class="text-accent-text underline">Design one</A>.</Empty>}>
+              <Show when={schemas().length} fallback={<Empty>No content types for this track. <A href="/schemas/new" class="text-accent-text underline">Make one</A>.</Empty>}>
                 <Pills value={schema()} onChange={(s) => setParams({ schema: s })} options={schemas().map((s) => ({ value: s.slug, label: s.name }))} />
                 <p class="mt-2 text-[12px] text-muted">Schema details and the raw LLM prompt: <A href={`/schemas/${schema()}`} class="text-accent-text hover:underline">{schema()}</A></p>
               </Show>
@@ -88,12 +90,12 @@ export default function Import() {
                       <textarea class="input min-h-28" value={request()} onInput={(e) => setRequest(e.currentTarget.value)} placeholder="e.g. 20 JLPT N4 verbs about travel, with example sentences" />
                     </Field>
                     <button class="btn btn-primary" onClick={generate}><Icon name="sparkle" size={14} /> Generate</button>
-                    <p class="text-[11.5px] text-faint">The AI gets the full schema contract; its JSON comes back with Validate and Import buttons.</p>
+                    <p class="text-[12px] text-muted">The AI is told exactly what this content type needs; its answer comes back with buttons to check and save it.</p>
                   </Card>
                 </Section>
                 <Section title="3b · Paste JSON">
                   <Card class="space-y-3">
-                    <textarea class="input min-h-40 font-mono text-[11.5px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder='[{"term": "…", "reading": "…"}]' />
+                    <textarea class="input min-h-40 font-mono text-[12px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder='[{"term": "…", "reading": "…"}]' />
                     <div class="flex gap-2">
                       <button class="btn" disabled={busy() || !text().trim()} onClick={() => run({ jsonText: text() }, false)}>Validate</button>
                       <button class="btn btn-primary" disabled={busy() || !text().trim()} onClick={() => run({ jsonText: text() }, true)}>Save valid items</button>

@@ -5,7 +5,7 @@ import { date, num, titleCase } from '../lib/format';
 import { attempt } from '../lib/store';
 import { ConceptChip, LinkSourceModal, roleLabel, useConceptLinks } from '../components/concepts';
 import { Icon } from '../components/icons';
-import { Badge, Card, Empty, Field, Load, Page, Pills, Progress, Section, Stat, StatGrid } from '../components/ui';
+import { Badge, Card, Empty, Field, Load, Metric, MetricRow, Page, Pills, Progress, Section } from '../components/ui';
 import { BOOK_STATUSES } from './Books';
 
 const NOTE_KINDS = ['NOTE', 'QUOTE', 'SUMMARY', 'IDEA', 'CHARACTER', 'ARGUMENT', 'DEFINITION', 'FORMULA', 'PASSAGE', 'REFLECTION'];
@@ -49,7 +49,7 @@ function AddNote(props) {
       <textarea class="input min-h-24" required value={content()} onInput={(e) => setContent(e.currentTarget.value)} placeholder="What’s worth keeping?" />
       <div class="flex flex-wrap items-center gap-3">
         <input class="input max-w-[220px]" value={location()} onInput={(e) => setLocation(e.currentTarget.value)} placeholder="Chapter / page" />
-        <label class="flex items-center gap-2 text-[12.5px]"><input type="checkbox" checked={remember()} onChange={(e) => setRemember(e.currentTarget.checked)} /> Remember this (flashcard-worthy)</label>
+        <label class="flex items-center gap-2 text-[13px]"><input type="checkbox" checked={remember()} onChange={(e) => setRemember(e.currentTarget.checked)} /> Remember this (flashcard-worthy)</label>
         <button class="btn btn-primary ml-auto">Add note</button>
       </div>
     </form>
@@ -69,29 +69,28 @@ export default function BookDetail() {
         const remove = async () => {
           if (!confirm(`Delete “${d.book.title}” with its notes and sessions?`)) return;
           await attempt(() => del(`/books/${d.book.id}`));
-          navigate('/books');
+          navigate('/library/books');
         };
         return (
-          <Page title={d.book.title} back={{ href: '/books', label: 'Books' }} subtitle={[d.book.author, d.book.category].filter(Boolean).join(' · ')}
+          <Page title={d.book.title} back={{ href: '/library/books', label: 'Library' }} subtitle={[d.book.author, d.book.category].filter(Boolean).join(' · ')}
             actions={<button class="btn btn-danger" onClick={remove}><Icon name="trash" size={14} /> Delete</button>}>
             <Card class="mb-5">
               <div class="flex flex-wrap items-center gap-x-6 gap-y-3">
                 <Pills value={d.book.status} onChange={(status) => update({ status })} options={BOOK_STATUSES.map((s) => ({ value: s, label: titleCase(s) }))} />
                 <div class="flex items-center gap-1" role="group" aria-label="Rating">
-                  <For each={[1, 2, 3, 4, 5]}>{(n) => <button class={`text-[18px] ${d.book.rating >= n ? 'text-warn' : 'text-faint hover:text-warn'}`} onClick={() => update({ rating: n })} aria-label={`${n} stars`}>★</button>}</For>
+                  <For each={[1, 2, 3, 4, 5]}>{(n) => <button class={`text-[15px] ${d.book.rating >= n ? 'text-warn' : 'text-muted hover:text-warn'}`} onClick={() => update({ rating: n })} aria-label={`${n} stars`}>★</button>}</For>
                 </div>
-                <label class="flex items-center gap-2 text-[12.5px] text-muted">Pages
+                <label class="flex items-center gap-2 text-[13px] text-muted">Pages
                   <input class="input h-8 w-24" type="number" min="0" value={d.book.pageCount ?? ''} onChange={(e) => update({ pageCount: Number(e.currentTarget.value || 0) })} />
                 </label>
               </div>
-              <div class="mt-2 text-[11.5px] text-faint">{d.book.startDate ? `Started ${date(d.book.startDate)}` : 'Not started'}{d.book.finishDate ? ` · finished ${date(d.book.finishDate)}` : ''}</div>
+              <div class="mt-2 text-[12px] text-muted">{d.book.startDate ? `Started ${date(d.book.startDate)}` : 'Not started'}{d.book.finishDate ? ` · finished ${date(d.book.finishDate)}` : ''}</div>
             </Card>
-            <StatGrid>
-              <Stat label="Current page" value={d.stats.currentPage ? num(d.stats.currentPage) : '—'} hint={d.book.pageCount ? `of ${num(d.book.pageCount)}` : undefined} />
-              <Stat label="Pages logged" value={num(d.stats.pagesLogged)} />
-              <Stat label="Time read" value={`${Math.floor(d.stats.minutes / 60)}h ${d.stats.minutes % 60}m`} />
-              <Stat label="Pace" value={`${d.stats.pacePerHour} p/h`} />
-            </StatGrid>
+            <MetricRow>
+              <Metric noun="Where you are" value={d.stats.currentPage ? `Page ${num(d.stats.currentPage)}` : 'Not started'} meaning={d.book.pageCount ? `of ${num(d.book.pageCount)}` : undefined} />
+              <Metric noun="Time read" value={`${Math.floor(d.stats.minutes / 60)} h ${d.stats.minutes % 60} min`} meaning={`${num(d.stats.pagesLogged)} pages logged`} />
+              <Metric noun="Your pace" value={`${d.stats.pacePerHour} pages an hour`} meaning="from your reading log" />
+            </MetricRow>
             <Show when={d.stats.progressPct != null}><Progress class="mb-6" value={d.stats.progressPct} color="var(--good)" /></Show>
             <div class="grid gap-5 xl:grid-cols-2">
               <div>
@@ -102,10 +101,10 @@ export default function BookDetail() {
                       <div class="divide-y divide-line">
                         <For each={d.sessions}>
                           {(s) => (
-                            <div class="flex items-center gap-3 px-4 py-2 text-[12.5px]">
+                            <div class="flex items-center gap-3 px-4 py-2 text-[13px]">
                               <span class="w-24 text-muted">{date(s.date)}</span>
                               <span class="tnum flex-1">{s.pagesRead} pages · {s.durationMin} min{s.endPage ? ` · to p.${s.endPage}` : ''}</span>
-                              <span class="tnum text-faint">{s.pacePerHour} p/h</span>
+                              <span class="tnum text-muted">{s.pacePerHour} p/h</span>
                             </div>
                           )}
                         </For>
@@ -121,7 +120,7 @@ export default function BookDetail() {
                       <div class="divide-y divide-line">
                         <For each={links.data().links}>
                           {(l) => (
-                            <div class="flex flex-wrap items-center gap-2 px-4 py-2 text-[12.5px]">
+                            <div class="flex flex-wrap items-center gap-2 px-4 py-2 text-[13px]">
                               <ConceptChip id={l.conceptId} title={l.title} finished={l.finished} />
                               <span>{l.label}</span>
                               <Show when={l.range && l.range !== l.label}><span class="tnum text-muted">{l.range}</span></Show>
@@ -143,10 +142,10 @@ export default function BookDetail() {
                           <Card class="p-3.5">
                             <div class="mb-1.5 flex items-center gap-2">
                               <Badge tone="accent">{titleCase(n.kind)}</Badge>
-                              <Show when={n.location}><span class="text-[11.5px] text-faint">{n.location}</span></Show>
+                              <Show when={n.location}><span class="text-[12px] text-muted">{n.location}</span></Show>
                               <span class="ml-auto flex items-center gap-1">
-                                <button class={`btn btn-ghost btn-sm ${n.remember ? 'text-warn' : 'text-faint'}`} title="Remember" onClick={() => attempt(() => post(`/book-notes/${n.id}/remember`))}>★</button>
-                                <button class="btn btn-ghost btn-sm text-faint" title="Delete" onClick={() => attempt(() => del(`/book-notes/${n.id}`))}><Icon name="trash" size={13} /></button>
+                                <button class={`btn btn-ghost btn-sm ${n.remember ? 'text-warn' : 'text-muted'}`} title="Remember" onClick={() => attempt(() => post(`/book-notes/${n.id}/remember`))}>★</button>
+                                <button class="btn btn-ghost btn-sm text-muted" title="Delete" onClick={() => attempt(() => del(`/book-notes/${n.id}`))}><Icon name="trash" size={13} /></button>
                               </span>
                             </div>
                             <p class="whitespace-pre-wrap text-[13px]">{n.content}</p>

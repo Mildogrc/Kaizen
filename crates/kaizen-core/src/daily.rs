@@ -37,7 +37,7 @@ pub fn build_queue(input: &DailyQueueInput) -> Vec<DailyBlock> {
         key: "anki".into(),
         title: "Anki review".into(),
         detail: format!("{} cards due across all mapped decks", thousands(input.anki_due)),
-        href: "/anki".into(),
+        href: "/review".into(),
         count: input.anki_due,
         complete: input.anki_due == 0,
     }];
@@ -53,7 +53,7 @@ pub fn build_queue(input: &DailyQueueInput) -> Vec<DailyBlock> {
             key: "grammar".into(),
             title: "Japanese grammar".into(),
             detail,
-            href: "/japanese/grammar?returnTo=%2Fdaily".into(),
+            href: "/tracks/japanese/grammar?returnTo=%2F".into(),
             count: input.grammar_reviews + input.grammar_new,
             complete: false,
         });
@@ -75,8 +75,8 @@ pub fn build_queue(input: &DailyQueueInput) -> Vec<DailyBlock> {
         href: input
             .reading_book
             .as_ref()
-            .map(|b| format!("/books/{}?returnTo=%2Fdaily#reading-log", b.id))
-            .unwrap_or_else(|| "/books".into()),
+            .map(|b| format!("/library/books/{}?returnTo=%2F#reading-log", b.id))
+            .unwrap_or_else(|| "/library/books".into()),
         count: i64::from(input.reading_book.is_some()),
         complete: input.read_today,
     });
@@ -99,7 +99,7 @@ mod tests {
         });
         assert_eq!(queue[0].detail, "1,234 cards due across all mapped decks");
         assert_eq!(queue[1].detail, "1 review due + 5 new points");
-        assert_eq!(queue[2].href, "/books/b1?returnTo=%2Fdaily#reading-log");
+        assert_eq!(queue[2].href, "/library/books/b1?returnTo=%2F#reading-log");
         assert!(queue[2].complete);
     }
 }

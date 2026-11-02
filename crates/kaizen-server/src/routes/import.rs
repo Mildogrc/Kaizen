@@ -110,8 +110,8 @@ fn export(s: &LoadedSchema) -> schema::SchemaExport {
 
 /// Courses and schemas for the import picker.
 pub async fn options(State(app): State<App>, user: User) -> ApiResult<Json<Value>> {
-    let courses: Vec<(String, String, Option<String>, String)> =
-        sqlx::query_as("SELECT slug, name, color, tab FROM courses WHERE user_id = $1 ORDER BY tab, name")
+    let courses: Vec<(String, String, String, Option<String>, String)> =
+        sqlx::query_as("SELECT id, slug, name, color, tab FROM courses WHERE user_id = $1 ORDER BY tab, name")
             .bind(&user.id)
             .fetch_all(&app.db)
             .await?;
@@ -123,7 +123,7 @@ pub async fn options(State(app): State<App>, user: User) -> ApiResult<Json<Value
     .fetch_all(&app.db)
     .await?;
     Ok(Json(json!({
-        "courses": courses.into_iter().map(|(slug, name, color, _)| json!({ "slug": slug, "name": name, "color": color })).collect::<Vec<_>>(),
+        "courses": courses.into_iter().map(|(id, slug, name, color, _)| json!({ "id": id, "slug": slug, "name": name, "color": color })).collect::<Vec<_>>(),
         "schemas": schemas.into_iter().map(|(slug, name, item_type, course)| json!({ "slug": slug, "name": name, "itemType": item_type, "courseSlug": course })).collect::<Vec<_>>(),
     })))
 }

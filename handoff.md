@@ -16,6 +16,20 @@ Read this first when picking the work back up. Deeper references:
 - The user is happy with how the features work. **Next phase: UI polish, then
   new features** (see "Next up").
 
+## The redesign (`kaizen-design` branch)
+
+The design system's structure is applied on this branch: Today, Review, Tracks,
+Library, Insights, Settings. `main` keeps the previous layout.
+
+- Language and exam tracks are `courses` rows with `tab = 'TRACK'`; kind, language,
+  exam date and tag root live in `courses.metadata`. There is no migration, so
+  either branch runs against the same database.
+- Language profiles, level estimates, pacing and tag coverage:
+  `crates/kaizen-core/src/tracks.rs`. Endpoints: `routes/tracks.rs`.
+- Not built yet: lemmatisers for Spanish, Russian and Arabic (mature cards stand in
+  for known words), character repair for Chinese, cards from transcripts, and
+  reviewing Anki cards inside Kaizen (they open in Anki).
+
 ## Run it
 
 ```bash

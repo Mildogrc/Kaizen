@@ -3,7 +3,7 @@ import { For, Show, createMemo, createSignal, onCleanup, onMount } from 'solid-j
 import { Portal } from 'solid-js/web';
 import { ai } from '../lib/ai';
 import { post } from '../lib/api';
-import { EXTRA_PAGES, NAV } from '../lib/nav';
+import { EXTRA_PAGES, NAV, SETTINGS_NAV } from '../lib/nav';
 import { attempt, themeStore } from '../lib/store';
 import { Icon } from './icons';
 import { cx } from './ui';
@@ -15,7 +15,7 @@ export function CommandPalette(props) {
   let input;
 
   const commands = createMemo(() => [
-    ...NAV.flatMap((g) => g.items.map((i) => ({ ...i, kind: 'Go to', run: () => navigate(i.href) }))),
+    ...[...NAV, SETTINGS_NAV].map((i) => ({ ...i, kind: 'Go to', run: () => navigate(i.href) })),
     ...EXTRA_PAGES.map((i) => ({ ...i, kind: 'Go to', run: () => navigate(i.href) })),
     { label: 'Ask the AI…', glyph: '✦', kind: 'Action', run: () => ai.newChat() },
     { label: 'Sync Anki now', glyph: '★', kind: 'Action', run: () => attempt(() => post('/anki/sync'), (r) => (r.ok ? `Synced ${r.cardsSynced} cards, ${r.reviewsAdded} new reviews` : r.error)) },
@@ -62,7 +62,7 @@ export function CommandPalette(props) {
                     onMouseMove={() => setIndex(i())} onClick={() => run(c)}>
                     <span class="w-6 text-center text-[13px] opacity-80">{c.glyph}</span>
                     <span class="flex-1">{c.label}</span>
-                    <span class="text-[11px] text-faint">{c.kind}</span>
+                    <span class="text-[11px] text-muted">{c.kind}</span>
                   </button>
                 )}
               </For>

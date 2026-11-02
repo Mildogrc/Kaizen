@@ -3,7 +3,8 @@ import { For, Show, createSignal } from 'solid-js';
 import { post, useApi } from '../lib/api';
 import { num, titleCase } from '../lib/format';
 import { attempt } from '../lib/store';
-import { Badge, Card, Disclosure, Empty, Field, Load, Page, Pills, Stat, StatGrid, toneFor } from '../components/ui';
+import { LIBRARY_TABS } from '../lib/nav';
+import { Badge, Card, Disclosure, Empty, Field, Load, Page, Pills, SubNav, toneFor } from '../components/ui';
 
 export const BOOK_STATUSES = ['WANT_TO_READ', 'READING', 'FINISHED', 'PAUSED', 'ABANDONED'];
 
@@ -15,7 +16,7 @@ function NewBook() {
     e.preventDefault();
     const f = form();
     const r = await attempt(() => post('/books', { ...f, pageCount: f.pageCount ? Number(f.pageCount) : null }));
-    if (r?.id) navigate(`/books/${r.id}`);
+    if (r?.id) navigate(`/library/books/${r.id}`);
   };
   return (
     <form onSubmit={create} class="grid gap-3 md:grid-cols-2">
@@ -39,13 +40,8 @@ export default function Books() {
       {(d) => {
         const shown = () => d.books.filter((b) => filter() === 'all' || b.status === filter());
         return (
-          <Page title="Books" glyph="❦" subtitle="Reading log, notes worth remembering, and pace">
-            <StatGrid>
-              <Stat label="Books" value={d.stats.books} />
-              <Stat label="Reading" value={d.stats.reading} />
-              <Stat label="Finished" value={d.stats.finished} />
-              <Stat label="Marked to remember" value={d.stats.remember} />
-            </StatGrid>
+          <Page title="Library" subtitle="Reading log, notes worth remembering, and pace">
+            <SubNav label="Library" items={LIBRARY_TABS} />
             <div class="mb-5"><Disclosure title="Add a book"><NewBook /></Disclosure></div>
             <Pills class="mb-4" value={filter()} onChange={setFilter}
               options={[{ value: 'all', label: 'All', count: d.books.length }, ...BOOK_STATUSES.map((s) => ({ value: s, label: titleCase(s), count: d.books.filter((b) => b.status === s).length }))]} />
@@ -53,8 +49,8 @@ export default function Books() {
               <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                 <For each={shown()}>
                   {(b) => (
-                    <A href={`/books/${b.id}`} class="card flex gap-3 p-4 transition-colors hover:border-line-strong">
-                      <span class="flex h-16 w-12 shrink-0 items-center justify-center rounded-md bg-surface-3 text-[18px]">❦</span>
+                    <A href={`/library/books/${b.id}`} class="card flex gap-3 p-4 transition-colors hover:border-line-strong">
+                      <span class="flex h-16 w-12 shrink-0 items-center justify-center rounded-md bg-surface-3 text-[15px]">❦</span>
                       <div class="min-w-0 flex-1">
                         <div class="line-clamp-2 text-[14px] font-semibold">{b.title}</div>
                         <div class="truncate text-[12px] text-muted">{b.author ?? 'Unknown author'}</div>
@@ -63,7 +59,7 @@ export default function Books() {
                           <Show when={b.category}><Badge>{b.category}</Badge></Show>
                           <Show when={b.rating}><span class="text-[12px] text-warn">{'★'.repeat(b.rating)}</span></Show>
                         </div>
-                        <div class="tnum mt-1.5 text-[11.5px] text-faint">{b.pageCount ? `${num(b.pageCount)} pages · ` : ''}{b.notes} notes{b.remember ? ` · ${b.remember} to remember` : ''}</div>
+                        <div class="tnum mt-1.5 text-[12px] text-muted">{b.pageCount ? `${num(b.pageCount)} pages · ` : ''}{b.notes} notes{b.remember ? ` · ${b.remember} to remember` : ''}</div>
                       </div>
                     </A>
                   )}

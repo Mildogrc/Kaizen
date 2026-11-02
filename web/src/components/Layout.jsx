@@ -1,9 +1,10 @@
 import { A, useLocation } from '@solidjs/router';
 import { For, Show, Suspense, createEffect, createSignal, onCleanup, onMount } from 'solid-js';
 import { ai } from '../lib/ai';
-import { prefetch } from '../lib/api';
+import { prefetch, useApi } from '../lib/api';
+import { num } from '../lib/format';
 import { ankiRelay } from '../lib/anki-relay';
-import { NAV } from '../lib/nav';
+import { NAV, SETTINGS_NAV } from '../lib/nav';
 import { session, themeStore, toastStore } from '../lib/store';
 import { AiPanel } from './AiPanel';
 import { CommandPalette } from './CommandPalette';
@@ -37,8 +38,28 @@ function ThemeButton() {
   );
 }
 
+function NavLink(props) {
+  const location = useLocation();
+  const item = () => props.item;
+  const active = () => {
+    const path = location.pathname;
+    const under = (href) => path === href || path.startsWith(`${href}/`);
+    return item().end ? path === item().href : under(item().href) || (item().also ?? []).some(under);
+  };
+  return (
+    <A href={item().href} end onClick={props.onNavigate} onMouseEnter={() => item().api && prefetch(item().api)} aria-current={active() ? 'page' : undefined}
+      class={cx('flex items-center gap-2.5 rounded-lg px-2 py-[7px] text-[13px] transition-colors', active() ? 'bg-accent-soft font-medium text-accent-text' : 'text-muted hover:bg-surface-2 hover:text-text')}>
+      <span class="w-5 text-center text-[13px]">{item().glyph}</span>
+      {item().label}
+      <Show when={props.count}><span class="tnum ml-auto text-[11px]">{num(props.count)}</span></Show>
+    </A>
+  );
+}
+
 function Sidebar(props) {
   const me = () => session.me()?.user;
+  const today = useApi(() => '/today');
+  const due = () => today.data()?.cardsDue;
   const signOut = async () => {
     await fetch('/auth/logout', { method: 'POST', credentials: 'same-origin' });
     session.setMe(null);
@@ -50,31 +71,17 @@ function Sidebar(props) {
         <span class="text-[15px] font-semibold tracking-tight">Kaizen</span>
       </A>
       <div class="flex-1 overflow-y-auto px-2.5 pb-3">
-        <For each={NAV}>
-          {(group) => (
-            <div class="mb-3">
-              <div class="px-2 pb-1 pt-2 text-[10.5px] font-semibold uppercase tracking-wider text-faint">{group.group}</div>
-              <For each={group.items}>
-                {(item) => (
-                  <A href={item.href} end={item.end} onClick={props.onNavigate} onMouseEnter={() => item.api && prefetch(item.api)}
-                    class="flex items-center gap-2.5 rounded-lg px-2 py-[7px] text-[13px] text-muted transition-colors hover:bg-surface-2 hover:text-text"
-                    activeClass="!bg-accent-soft !text-accent-text font-medium">
-                    <span class="w-5 text-center text-[13px]">{item.glyph}</span>
-                    {item.label}
-                  </A>
-                )}
-              </For>
-            </div>
-          )}
-        </For>
+        <For each={NAV}>{(item) => <NavLink item={item} onNavigate={props.onNavigate} count={item.count ? due() : undefined} />}</For>
+        <div class="h-6" />
+        <NavLink item={SETTINGS_NAV} onNavigate={props.onNavigate} />
       </div>
       <div class="flex shrink-0 items-center gap-2 border-t border-line px-3 py-2.5">
         <Show when={me()?.avatarUrl} fallback={<span class="flex h-7 w-7 items-center justify-center rounded-full bg-surface-3 text-[12px] font-semibold">{(me()?.name ?? '?').slice(0, 1)}</span>}>
           <img src={me().avatarUrl} alt="" class="h-7 w-7 rounded-full" referrerpolicy="no-referrer" />
         </Show>
         <div class="min-w-0 flex-1">
-          <div class="truncate text-[12.5px] font-medium">{me()?.name}</div>
-          <div class="truncate text-[11px] text-faint">{me()?.timezone}</div>
+          <div class="truncate text-[13px] font-medium">{me()?.name}</div>
+          <div class="truncate text-[11px] text-muted">{me()?.timezone}</div>
         </div>
         <ThemeButton />
         <button class="btn btn-ghost btn-sm" title="Sign out" onClick={signOut}><Icon name="logout" size={15} /></button>
@@ -116,7 +123,7 @@ export function Layout(props) {
       <div class="flex min-w-0 flex-1 flex-col">
         <header class="sticky top-0 z-30 flex h-14 shrink-0 items-center gap-2 border-b border-line bg-bg/85 px-3 backdrop-blur sm:px-4">
           <button class="btn btn-ghost btn-sm lg:hidden" onClick={() => setMenu(true)} aria-label="Menu"><Icon name="menu" /></button>
-          <button class="flex h-8 w-full max-w-sm items-center gap-2 rounded-lg border border-line bg-surface px-2.5 text-left text-[12.5px] text-faint hover:border-line-strong" onClick={() => setPalette(true)}>
+          <button class="flex h-8 w-full max-w-sm items-center gap-2 rounded-lg border border-line bg-surface px-2.5 text-left text-[13px] text-muted hover:border-line-strong" onClick={() => setPalette(true)}>
             <Icon name="search" size={14} />
             <span class="flex-1">Search or jump to…</span>
             <span class="kbd hidden sm:inline-flex">⌘K</span>

@@ -29,5 +29,6 @@ pub mod settings;
 pub mod speed_reading;
 pub mod srs;
 pub mod time;
+pub mod tracks;
 pub mod util;
 pub mod youtube;

@@ -3,7 +3,7 @@ import { For, Show, createMemo, createSignal } from 'solid-js';
 import { api, invalidate, put, useApi } from '../lib/api';
 import { attempt } from '../lib/store';
 import { RoadmapLegend, RoadmapTree } from '../components/RoadmapTree';
-import { Card, Load, Page, Progress, Section, Stat, StatGrid, Toggle, cx } from '../components/ui';
+import { Card, cx, Load, Metric, MetricRow, Page, Progress, Section, Toggle } from '../components/ui';
 
 export default function MathPage() {
   const [params, setParams] = useSearchParams();
@@ -43,14 +43,13 @@ export default function MathPage() {
         const makeCurrent = (slug) => attempt(() => put('/math/goal', { targetSlug: slug }), 'Current goal updated');
 
         return (
-          <Page title="Mathematics" glyph="∑" subtitle={d.course.description}
-            actions={<><A href="/configurations?section=math" class="btn">Long-term goals</A><A href="/import?course=math" class="btn">Import content</A></>}>
-            <StatGrid>
-              <Stat label="Courses completed" value={`${live().full.done}/${live().full.total}`} />
-              <Stat label="In progress" value={Object.values(live().statuses).filter((s) => s === 'IN_PROGRESS').length} />
-              <Stat label="Learning items" value={d.stats.items} />
-              <Stat label="Open mistakes" value={d.stats.mistakes} href="/mistakes?course=math" />
-            </StatGrid>
+          <Page title="Mathematics" glyph="∑" back={{ href: '/tracks', label: 'Tracks' }} subtitle={d.course.description}
+            actions={<><A href="/configurations?section=math" class="btn">Long-term goals</A><A href="/library/imports?course=math" class="btn">Import content</A></>}>
+            <MetricRow>
+              <Metric noun="Courses finished" value={`${live().full.done} of ${live().full.total}`} meaning="across the whole roadmap" />
+              <Metric noun="In progress" value={Object.values(live().statuses).filter((s) => s === 'IN_PROGRESS').length} meaning="courses you’ve started" />
+              <Metric noun="Concept maps" href="/concepts" value="Open" meaning="ideas inside each course" />
+            </MetricRow>
 
             <Show when={d.current}>
               {(c) => {
@@ -79,7 +78,7 @@ export default function MathPage() {
                       title={`${t.title}: ${live().targets[t.slug]?.pct ?? 0}% complete`}>
                       <span class="absolute inset-y-0 left-0 bg-warn/20" style={{ width: `${live().targets[t.slug]?.pct ?? 0}%` }} />
                       <span class="relative">{t.title}</span>
-                      <span class="tnum relative text-faint">{live().targets[t.slug]?.pct ?? 0}%</span>
+                      <span class="tnum relative text-muted">{live().targets[t.slug]?.pct ?? 0}%</span>
                     </button>
                   )}
                 </For>
@@ -87,7 +86,7 @@ export default function MathPage() {
               </div>
               <div class="mb-2.5 flex flex-wrap items-center justify-between gap-2">
                 <RoadmapLegend />
-                <span class="tnum text-[11.5px] text-muted">
+                <span class="tnum text-[12px] text-muted">
                   {doneIn(view().layers.flat())}/{view().layers.flat().length} completed in view · click to cycle · hover to trace
                 </span>
               </div>
@@ -99,8 +98,8 @@ export default function MathPage() {
                     <ol class="grid gap-x-6 gap-y-1 sm:grid-cols-2 xl:grid-cols-3">
                       <For each={view().order}>
                         {(id, i) => (
-                          <li class="flex items-center gap-2 text-[12.5px]">
-                            <span class="tnum w-5 text-right text-[11px] text-faint">{i() + 1}.</span>
+                          <li class="flex items-center gap-2 text-[13px]">
+                            <span class="tnum w-5 text-right text-[11px] text-muted">{i() + 1}.</span>
                             <span class={cx('h-1.5 w-1.5 shrink-0 rounded-full', status(id) === 'COMPLETED' ? 'bg-good' : status(id) === 'IN_PROGRESS' ? 'bg-info' : 'bg-faint')} />
                             <span class={status(id) === 'COMPLETED' ? 'text-muted line-through' : ''}>{byId().get(id)?.title}</span>
                           </li>

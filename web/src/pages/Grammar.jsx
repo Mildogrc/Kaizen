@@ -7,7 +7,7 @@ import { date, num, pct } from '../lib/format';
 import { attempt, toast } from '../lib/store';
 import { Bars } from '../components/charts';
 import { Icon } from '../components/icons';
-import { Badge, Card, CopyButton, Disclosure, Empty, Field, Load, Page, Progress, Section, Stat, StatGrid } from '../components/ui';
+import { Badge, Card, CopyButton, Disclosure, Empty, Field, Load, Metric, MetricRow, Page, Progress, Section } from '../components/ui';
 
 const LEVEL_COLORS = { N5: '#4ade80', N4: '#38bdf8', N3: '#818cf8', N2: '#c084fc', N1: '#fb7185' };
 const RATINGS = [
@@ -50,7 +50,7 @@ function RatingForm(props) {
         <For each={props.lesson.items}>
           {(item, i) => (
             <div class="flex flex-wrap items-center gap-3 py-2.5">
-              <span class="tnum w-5 text-[12px] text-faint">{i() + 1}.</span>
+              <span class="tnum w-5 text-[12px] text-muted">{i() + 1}.</span>
               <div class="min-w-[180px] flex-1">
                 <div class="text-[14px] font-medium">{item.pattern}</div>
                 <div class="text-[12px] text-muted">{item.meaning}</div>
@@ -89,18 +89,18 @@ function TutorSettings(props) {
       <Field label="Points per tutor plan" class="max-w-[200px]">
         <input class="input" type="number" min="1" max="10" value={planSize()} onInput={(e) => setPlanSize(e.currentTarget.value)} />
       </Field>
-      <Show when={props.tutor.configurable.length} fallback={<p class="text-[12.5px] text-muted">No attempted grammar points yet.</p>}>
+      <Show when={props.tutor.configurable.length} fallback={<p class="text-[13px] text-muted">No attempted grammar points yet.</p>}>
         <div class="divide-y divide-line rounded-lg border border-line">
           <For each={props.tutor.configurable}>
             {(item, i) => (
               <div class="grid items-center gap-3 p-3 md:grid-cols-[minmax(0,1fr)_8rem_auto]">
                 <div>
                   <div class="text-[13px] font-medium">{item.pattern}</div>
-                  <div class="tnum text-[11.5px] text-muted">Recorded: {item.recordedMissRate}% missed · {item.misses}/{item.totalQuestions}</div>
+                  <div class="tnum text-[12px] text-muted">Recorded: {item.recordedMissRate}% missed · {item.misses}/{item.totalQuestions}</div>
                 </div>
                 <input class="input" type="number" min="0" max="100" placeholder={String(item.recordedMissRate)} value={items[i()].missRatePercent}
                   onInput={(e) => setItems(i(), 'missRatePercent', e.currentTarget.value)} aria-label="Tutor miss rate %" />
-                <label class="flex items-center gap-2 text-[12.5px]"><input type="checkbox" checked={items[i()].excluded} onChange={(e) => setItems(i(), 'excluded', e.currentTarget.checked)} /> Remove</label>
+                <label class="flex items-center gap-2 text-[13px]"><input type="checkbox" checked={items[i()].excluded} onChange={(e) => setItems(i(), 'excluded', e.currentTarget.checked)} /> Remove</label>
               </div>
             )}
           </For>
@@ -131,9 +131,9 @@ function LessonAi(props) {
     <Card class="flex flex-col gap-3 bg-accent-soft/40">
       <div class="flex items-center gap-2 text-[13px] font-semibold"><Icon name="sparkle" /> Run it with your AI</div>
       <Show when={messages()} fallback={
-        <p class="text-[12.5px] text-muted">Opens an interactive lesson in the AI panel using your subscription. It ends with a numbered Again/Good/Perfect list that fills the form automatically.</p>
+        <p class="text-[13px] text-muted">Opens an interactive lesson in the AI panel using your subscription. It ends with a numbered Again/Good/Perfect list that fills the form automatically.</p>
       }>
-        <p class="flex items-center gap-2 text-[12.5px] text-muted">
+        <p class="flex items-center gap-2 text-[13px] text-muted">
           <Show when={answering()} fallback={<>Lesson in progress · {messages()} messages saved. Close the panel any time — it picks up where you left off.</>}>
             <span class="ai-orb !h-3.5 !w-3.5" /> The AI is still answering — it keeps going even if you close the panel.
           </Show>
@@ -180,17 +180,14 @@ export default function Grammar() {
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Grammar coach" glyph="文" back={{ href: '/japanese', label: 'Japanese' }}
+        <Page title="Grammar coach" glyph="文" back={{ href: '/tracks/japanese', label: 'Japanese' }}
           subtitle={`${d.config.newPointsPerBatch} new points every ${d.config.newBatchIntervalDays} day${d.config.newBatchIntervalDays === 1 ? '' : 's'}, SRS reviews, and an interactive AI lesson`}
           actions={<A href="/configurations?section=japanese" class="btn">Schedule settings</A>}>
-          <StatGrid cols="md:grid-cols-3 xl:grid-cols-6">
-            <Stat label="Unseen" value={num(d.counts.NEW)} />
-            <Stat label="Learning" value={num(d.counts.LEARNING)} />
-            <Stat label="Review" value={num(d.counts.REVIEW)} />
-            <Stat label="Mastered" value={num(d.counts.MASTERED)} color="var(--good)" />
-            <Stat label="Due now" value={num(d.analytics.due)} href="/review?type=grammar" />
-            <Stat label="Accuracy" value={pct(d.analytics.accuracy)} hint={`${d.analytics.totalCorrect}/${d.analytics.totalQuestions} answers`} />
-          </StatGrid>
+          <MetricRow>
+            <Metric noun="Due now" href="/review?type=grammar" value={d.analytics.due ? num(d.analytics.due) : 'None'} meaning="grammar reviews" />
+            <Metric noun="Mastered" value={num(d.counts.MASTERED)} meaning={`${num(d.counts.NEW)} still to meet · ${num(d.counts.LEARNING + d.counts.REVIEW)} in progress`} />
+            <Metric noun="Answering correctly" value={pct(d.analytics.accuracy)} meaning={`${d.analytics.totalCorrect} of ${d.analytics.totalQuestions} answers`} />
+          </MetricRow>
 
           <Section title="Today’s lesson">
             <Show when={d.lessonState === 'ready' && d.lesson} fallback={
@@ -242,16 +239,16 @@ export default function Grammar() {
 
           <div class="grid gap-5 lg:grid-cols-2">
             <Section title="Lesson analytics">
-              <StatGrid cols="grid-cols-2" class="!mb-3">
-                <Stat label="Lessons" value={d.analytics.completedLessons} hint={`${d.analytics.lessonsToday} today`} />
-                <Stat label="Lesson streak" value={`${d.analytics.currentStreak}d`} />
-              </StatGrid>
+              <MetricRow class="!mb-3 sm:!grid-cols-2 lg:!grid-cols-2">
+                <Metric noun="Lessons" value={d.analytics.completedLessons} meaning={`${d.analytics.lessonsToday} today`} />
+                <Metric noun="Lesson streak" value={`${d.analytics.currentStreak} days`} meaning="in a row" />
+              </MetricRow>
               <Card class="mb-3"><div class="mb-1 text-[12px] font-medium text-muted">Ratings</div><Bars data={d.analytics.ratingDistribution} color="var(--info)" height={110} /></Card>
               <Card><div class="mb-1 text-[12px] font-medium text-muted">Results by week</div><Bars data={d.analytics.weeklyProgress} color="var(--good)" height={110} /></Card>
             </Section>
             <Section title="Curriculum">
               <Card>
-                <p class="mb-3 text-[12.5px] text-muted">Level estimate: <b class="text-text">{d.levelLabel}</b> from {num(d.knownWords)} known words.</p>
+                <p class="mb-3 text-[13px] text-muted">Level estimate: <b class="text-text">{d.levelLabel}</b> from {num(d.knownWords)} known words.</p>
                 <div class="space-y-3">
                   <For each={d.levels}>
                     {(l) => (
@@ -272,11 +269,11 @@ export default function Grammar() {
                   <div class="divide-y divide-line">
                     <For each={d.recent}>
                       {(r) => (
-                        <div class="flex items-center gap-3 px-4 py-2 text-[12.5px]">
+                        <div class="flex items-center gap-3 px-4 py-2 text-[13px]">
                           <span class="min-w-28 font-medium">{r.pattern}</span>
                           <span class="min-w-0 flex-1 truncate text-muted">{r.meaning}</span>
                           <Badge tone={r.isLeech ? 'bad' : r.status === 'MASTERED' ? 'good' : 'info'}>{r.status.toLowerCase()}</Badge>
-                          <span class="tnum w-10 text-right text-faint">{r.intervalDays}d</span>
+                          <span class="tnum w-10 text-right text-muted">{r.intervalDays}d</span>
                         </div>
                       )}
                     </For>

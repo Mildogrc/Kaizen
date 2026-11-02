@@ -6,7 +6,7 @@ import { api, post, useApi } from '../lib/api';
 import { pct } from '../lib/format';
 import { attempt, toast } from '../lib/store';
 import { Icon } from '../components/icons';
-import { Badge, Card, Disclosure, Empty, Field, Load, Page, Pills, Section, Stat, StatGrid } from '../components/ui';
+import { Badge, Card, Disclosure, Empty, Field, Load, Metric, MetricRow, Page, Pills, Section } from '../components/ui';
 
 // Same rule as the server: word-like segments, punctuation attached to the
 // previous token.
@@ -25,7 +25,7 @@ const MODES = [
   { value: 'RSVP', label: 'RSVP', title: 'One word at a time in place' },
   { value: 'CHUNKING', label: 'Chunking', title: 'Groups of words' },
   { value: 'PACED', label: 'Paced', title: 'Highlight moves through the text' },
-  { value: 'BENCHMARK', label: 'Benchmark', title: 'Read at your own pace; measures WPM' },
+  { value: 'BENCHMARK', label: 'Benchmark', title: 'Read at your own pace; measures your words a minute' },
 ];
 
 function Trainer(props) {
@@ -87,9 +87,9 @@ function Trainer(props) {
               <div class="max-h-48 space-y-1 overflow-y-auto rounded-lg border border-line p-1">
                 <For each={props.passages}>
                   {(p) => (
-                    <button class={`flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-[12.5px] ${p.id === passage()?.id ? 'bg-accent-soft text-accent-text' : 'hover:bg-surface-2'}`} onClick={() => setPassageId(p.id)}>
+                    <button class={`flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-[13px] ${p.id === passage()?.id ? 'bg-accent-soft text-accent-text' : 'hover:bg-surface-2'}`} onClick={() => setPassageId(p.id)}>
                       <span class="truncate">{p.title}</span>
-                      <span class="shrink-0 text-[11px] text-faint">{p.wordCount} words · {p.difficulty}</span>
+                      <span class="shrink-0 text-[11px] text-muted">{p.wordCount} words · {p.difficulty}</span>
                     </button>
                   )}
                 </For>
@@ -98,27 +98,27 @@ function Trainer(props) {
             <div class="space-y-3">
               <Field label="Mode"><Pills options={MODES} value={mode()} onChange={setMode} /></Field>
               <Show when={mode() !== 'BENCHMARK'}>
-                <Field label={`Speed · ${wpm()} WPM`}><input type="range" min="100" max="1000" step="10" value={wpm()} onInput={(e) => setWpm(Number(e.currentTarget.value))} class="w-full accent-[var(--accent)]" /></Field>
+                <Field label={`Speed · ${wpm()} words a minute`}><input type="range" min="100" max="1000" step="10" value={wpm()} onInput={(e) => setWpm(Number(e.currentTarget.value))} class="w-full accent-[var(--accent)]" /></Field>
                 <Field label="Words at once"><Pills options={[1, 2, 3, 4, 5].map((n) => ({ value: n, label: String(n) }))} value={chunk()} onChange={setChunk} /></Field>
               </Show>
             </div>
           </div>
           <div class="mt-4 flex flex-wrap items-center gap-3">
-            <button class="btn btn-primary" onClick={start} disabled={!passage()}><Icon name="play" size={14} /> {mode() === 'BENCHMARK' ? 'Start benchmark' : `Start at ${wpm()} WPM`}</button>
+            <button class="btn btn-primary" onClick={start} disabled={!passage()}><Icon name="play" size={14} /> {mode() === 'BENCHMARK' ? 'Start benchmark' : `Start at ${wpm()} words a minute`}</button>
             <span class="text-[12px] text-muted">{passage()?.topic} · {passage()?.questions.length} questions · {props.settings.sessionMinutes} min target</span>
           </div>
         </Card>
       </Match>
       <Match when={phase() === 'reading'}>
         <Card class="min-h-[420px]">
-          <div class="mb-4 flex items-center justify-between text-[11.5px] text-muted">
+          <div class="mb-4 flex items-center justify-between text-[12px] text-muted">
             <span>{passage().title} · {mode().toLowerCase()}</span>
             <span class="tnum">{Math.min(tokens().length, index() + step())} / {tokens().length}</span>
           </div>
           <Switch>
             <Match when={mode() === 'PACED'}>
               <div class="mx-auto max-w-3xl leading-[2.1]" style={{ 'font-size': `${Math.min(props.settings.fontSize, 26)}px` }}>
-                <For each={tokens()}>{(t, i) => <span class={i() >= index() && i() < index() + step() ? 'rounded bg-accent-soft text-accent-text' : i() < index() ? 'text-faint' : ''}>{t} </span>}</For>
+                <For each={tokens()}>{(t, i) => <span class={i() >= index() && i() < index() + step() ? 'rounded bg-accent-soft text-accent-text' : i() < index() ? 'text-muted' : ''}>{t} </span>}</For>
               </div>
             </Match>
             <Match when={mode() === 'BENCHMARK'}>
@@ -144,11 +144,11 @@ function Trainer(props) {
             <For each={passage().questions}>
               {(question, qi) => (
                 <fieldset>
-                  <legend class="mb-2 text-[13.5px] font-medium">{qi() + 1}. {question.prompt}</legend>
+                  <legend class="mb-2 text-[13px] font-medium">{qi() + 1}. {question.prompt}</legend>
                   <div class="grid gap-1.5 sm:grid-cols-2">
                     <For each={question.choices}>
                       {(choice, ci) => (
-                        <button class={`rounded-lg border px-3 py-2 text-left text-[12.5px] transition-colors ${answers[question.id] === ci() ? 'border-accent bg-accent-soft' : 'border-line hover:border-line-strong'}`}
+                        <button class={`rounded-lg border px-3 py-2 text-left text-[13px] transition-colors ${answers[question.id] === ci() ? 'border-accent bg-accent-soft' : 'border-line hover:border-line-strong'}`}
                           onClick={() => setAnswers(question.id, ci())}>{choice}</button>
                       )}
                     </For>
@@ -165,7 +165,7 @@ function Trainer(props) {
           <div class="flex flex-wrap items-end justify-between gap-3">
             <div>
               <div class="text-[20px] font-semibold text-good">{result().correct}/{result().total} correct · {Math.round(result().accuracy * 100)}%</div>
-              <div class="mt-0.5 text-[12.5px] text-muted">Next recommended speed: <b class="text-text">{result().recommendedNextWpm} WPM</b> · retention check tomorrow</div>
+              <div class="mt-0.5 text-[13px] text-muted">Next recommended speed: <b class="text-text">{result().recommendedNextWpm} words a minute</b> · retention check tomorrow</div>
             </div>
             <button class="btn btn-primary" onClick={() => {
               const i = props.passages.findIndex((p) => p.id === passage().id);
@@ -175,7 +175,7 @@ function Trainer(props) {
           </div>
           <div class="mt-4 divide-y divide-line">
             <For each={result().explanations}>
-              {(x, i) => <div class="py-2.5 text-[12.5px]"><span class={x.isCorrect ? 'text-good' : 'text-bad'}>{x.isCorrect ? '✓' : '✗'} Question {i() + 1}</span><p class="mt-0.5 text-muted">{x.explanation}</p></div>}
+              {(x, i) => <div class="py-2.5 text-[13px]"><span class={x.isCorrect ? 'text-good' : 'text-bad'}>{x.isCorrect ? '✓' : '✗'} Question {i() + 1}</span><p class="mt-0.5 text-muted">{x.explanation}</p></div>}
             </For>
           </div>
         </Card>
@@ -196,7 +196,7 @@ function Retention(props) {
             <fieldset>
               <legend class="mb-1.5 text-[13px] font-medium">{qi() + 1}. {question.prompt}</legend>
               <div class="grid gap-1.5 sm:grid-cols-2">
-                <For each={question.choices}>{(choice, ci) => <button class={`rounded-lg border px-3 py-1.5 text-left text-[12.5px] ${answers[question.id] === ci() ? 'border-accent bg-accent-soft' : 'border-line'}`} onClick={() => setAnswers(question.id, ci())}>{choice}</button>}</For>
+                <For each={question.choices}>{(choice, ci) => <button class={`rounded-lg border px-3 py-1.5 text-left text-[13px] ${answers[question.id] === ci() ? 'border-accent bg-accent-soft' : 'border-line'}`} onClick={() => setAnswers(question.id, ci())}>{choice}</button>}</For>
               </div>
             </fieldset>
           )}
@@ -235,7 +235,7 @@ function PassageImport(props) {
       </div>
       <div>
         <Field label="…or paste passage JSON from any LLM">
-          <textarea class="input min-h-44 font-mono text-[11.5px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder='{"title":"…","text":"…","questions":[…],"answerKey":[…]}' />
+          <textarea class="input min-h-44 font-mono text-[12px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder='{"title":"…","text":"…","questions":[…],"answerKey":[…]}' />
         </Field>
         <button class="btn mt-2" disabled={!text().trim()} onClick={() => importJson(text())}>Validate & import</button>
       </div>
@@ -248,14 +248,13 @@ export default function SpeedReading() {
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Speed reading" glyph="»" back={{ href: '/skills', label: 'Skills' }} subtitle="Focused reading sessions with comprehension and next-day retention checks"
-          actions={<><A href="/configurations?section=skills" class="btn">Configure</A><A href="/analytics?area=reading" class="btn">Analytics</A></>}>
-          <StatGrid>
-            <Stat label="Next speed" value={`${d.recommendedWpm} WPM`} />
-            <Stat label="Comprehension" value={pct(d.accuracy)} />
-            <Stat label="Streak" value={`${d.streak}d`} />
-            <Stat label="Retention due" value={d.retentionDue.length} />
-          </StatGrid>
+        <Page title="Speed reading" glyph="»" back={{ href: '/tracks', label: 'Tracks' }} subtitle="Focused reading sessions with comprehension and next-day retention checks"
+          actions={<><A href="/configurations?section=skills" class="btn">Configure</A><A href="/insights?area=reading" class="btn">Analytics</A></>}>
+          <MetricRow>
+            <Metric noun="Next pace" value={`${d.recommendedWpm} words a minute`} meaning={d.streak ? `${d.streak}-day streak` : 'set from your last session'} />
+            <Metric noun="Understanding" value={pct(d.accuracy)} meaning="of questions answered correctly" />
+            <Metric noun="Recall checks due" value={d.retentionDue.length ? d.retentionDue.length : 'None'} meaning="next-day memory checks" />
+          </MetricRow>
           <Show when={d.retentionDue.length}>
             <Section title="Retention checks"><div class="space-y-3"><For each={d.retentionDue}>{(c) => <Retention check={c} />}</For></div></Section>
           </Show>

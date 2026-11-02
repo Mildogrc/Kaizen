@@ -106,7 +106,7 @@ export default function Concepts() {
         });
         const available = () => d.starters.filter((s) => !s.installed);
         return (
-          <Page title="Concepts" glyph="◇" subtitle="Each idea you’re learning, what teaches it, and whether you still remember it."
+          <Page title="Concepts" glyph="◇" back={{ href: '/tracks', label: 'Tracks' }} subtitle="Each idea you’re learning, what teaches it, and whether you still remember it."
             actions={<Show when={d.subjects.length}><button class="btn btn-primary" onClick={() => setAdding(true)}><Icon name="plus" size={14} /> New concept</button></Show>}>
             <Show when={d.subjects.length} fallback={
               <>

@@ -20,14 +20,14 @@ export default function Pronunciation() {
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Pronunciation" glyph="声" back={{ href: '/chinese', label: 'Chinese' }}
+        <Page title="Tone practice" glyph="声" back={{ href: '/tracks/chinese', label: 'Chinese' }}
           subtitle="Mandarin tone pairs drawn from two-syllable words you’ve reviewed in Anki" actions={<AnkiSyncButton />}>
-          <Section title="Tone pairs" actions={<span class="text-[11.5px] text-muted">Next rotation {date(d.nextRotation)}</span>}>
+          <Section title="Tone pairs" actions={<span class="text-[12px] text-muted">Next rotation {date(d.nextRotation)}</span>}>
             <Show when={!d.unavailable} fallback={<Empty>Start Anki with AnkiConnect, then reload to load your reviewed vocabulary and audio.</Empty>}>
               <Show when={d.reviewed} fallback={<Empty>No reviewed Mandarin vocabulary synced yet. Review in Anki, then sync.</Empty>}>
-                <p class="mb-3 text-[12.5px] text-muted">{num(d.candidates)} reviewed two-syllable words cover {d.filled} of 20 tone pairs. Click a word to hear it; the selection rotates every three days.</p>
+                <p class="mb-3 text-[13px] text-muted">{num(d.candidates)} reviewed two-syllable words cover {d.filled} of 20 tone pairs. Click a word to hear it; the selection rotates every three days.</p>
                 <div class="overflow-x-auto">
-                  <table class="w-full min-w-[640px] border-separate border-spacing-1.5 text-[12.5px]">
+                  <table class="w-full min-w-[640px] border-separate border-spacing-1.5 text-[13px]">
                     <thead><tr><th />{[1, 2, 3, 4, 5].map((b) => <th class="text-[11px] font-medium text-muted">{TONE_NAMES[b]}</th>)}</tr></thead>
                     <tbody>
                       <For each={[1, 2, 3, 4]}>
@@ -39,12 +39,12 @@ export default function Pronunciation() {
                                 const entry = () => d.entries[`${a}-${b}`];
                                 return (
                                   <td class="align-top">
-                                    <Show when={entry()} fallback={<div class="flex h-[76px] items-center justify-center rounded-lg border border-dashed border-line text-faint">—</div>}>
+                                    <Show when={entry()} fallback={<div class="flex h-[76px] items-center justify-center rounded-lg border border-dashed border-line text-muted">—</div>}>
                                       <button class={`flex h-[76px] w-full flex-col items-center justify-center rounded-lg border px-1.5 transition-colors ${playing() === entry().ankiCardId ? 'border-accent bg-accent-soft' : 'border-line bg-surface hover:border-line-strong'}`}
                                         onClick={() => play(entry())} title={entry().definition}>
                                         <span class="text-[19px]">{entry().word}</span>
                                         <span class="text-[11px] text-muted">{entry().syllables.map((s) => s.pinyin).join(' ')}</span>
-                                        <span class="w-full truncate text-[10px] text-faint">{entry().definition}</span>
+                                        <span class="w-full truncate text-[11px] text-muted">{entry().definition}</span>
                                       </button>
                                     </Show>
                                   </td>

@@ -29,31 +29,31 @@ export default function Login() {
         style={{ background: 'radial-gradient(closest-side, var(--accent), transparent)' }} />
       <div class="card fade-up relative w-full max-w-[400px] p-7">
         <div class="mb-6 flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-[18px] font-bold text-white">K</span>
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-[15px] font-bold text-white">K</span>
           <div>
-            <h1 class="text-[18px] font-semibold leading-tight">Sign in to Kaizen</h1>
+            <h1 class="text-[15px] font-semibold leading-tight">Sign in to Kaizen</h1>
             <p class="text-[12px] text-muted">Long-term learning, one day at a time.</p>
           </div>
         </div>
         <Show when={error}>
-          <div class="mb-4 rounded-lg border border-bad/30 bg-bad-soft px-3 py-2 text-[12.5px] text-bad">{error}</div>
+          <div class="mb-4 rounded-lg border border-bad/30 bg-bad-soft px-3 py-2 text-[13px] text-bad">{error}</div>
         </Show>
         <div class="space-y-3">
           <For each={available()}>
             {(p) => (
               <Show when={p.id === 'openai'} fallback={
-                <a rel="external" href={`/auth/${p.id}/start?returnTo=${returnTo}`} class="btn h-11 w-full justify-start gap-3 text-[13.5px]">
+                <a rel="external" href={`/auth/${p.id}/start?returnTo=${returnTo}`} class="btn h-11 w-full justify-start gap-3 text-[13px]">
                   {LOGOS[p.id]}
                   <span class="flex-1 text-left">Continue with {p.name}</span>
                 </a>
               }>
                 <div class="rounded-xl border border-accent/40 bg-accent-soft/50 p-2.5">
-                  <a rel="external" href={`/auth/openai/start?returnTo=${returnTo}`} class="btn btn-primary h-11 w-full justify-start gap-3 text-[13.5px]">
+                  <a rel="external" href={`/auth/openai/start?returnTo=${returnTo}`} class="btn btn-primary h-11 w-full justify-start gap-3 text-[13px]">
                     {LOGOS.openai}
                     <span class="flex-1 text-left">Continue with ChatGPT</span>
-                    <span class="rounded-full bg-white/20 px-2 py-0.5 text-[10.5px] font-semibold uppercase tracking-wide">Recommended</span>
+                    <span class="rounded-full bg-white/20 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide">Recommended</span>
                   </a>
-                  <p class="mt-2 px-1 text-[11.5px] leading-relaxed text-muted">
+                  <p class="mt-2 px-1 text-[12px] leading-relaxed text-muted">
                     Also connects your ChatGPT plan, so the built-in AI tutor (grammar lessons, mnemonics, study plans) works right away with no API key.
                   </p>
                 </div>
@@ -61,18 +61,18 @@ export default function Login() {
             )}
           </For>
           <Show when={providers() && !available().length}>
-            <p class="text-[12.5px] text-bad">No sign-in method is configured on this server.</p>
+            <p class="text-[13px] text-bad">No sign-in method is configured on this server.</p>
           </Show>
           <For each={unavailable()}>
             {(p) => (
-              <div class="rounded-lg border border-dashed border-line px-3 py-2 text-[11.5px] text-faint">
+              <div class="rounded-lg border border-dashed border-line px-3 py-2 text-[12px] text-muted">
                 <span class="font-medium text-muted">{p.id === 'openai' ? 'ChatGPT' : p.name}</span> sign-in isn’t set up — {p.reason}
               </div>
             )}
           </For>
         </div>
         <Show when={providers()?.claude}>
-          <p class="mt-5 text-[11.5px] leading-relaxed text-faint">
+          <p class="mt-5 text-[12px] leading-relaxed text-muted">
             <span class="font-medium text-muted">Using Claude?</span> {providers().claude.reason}
           </p>
         </Show>

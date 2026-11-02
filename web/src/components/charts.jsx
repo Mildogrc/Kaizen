@@ -114,7 +114,7 @@ export function LineChart(props) {
   const id = `lg-${Math.random().toString(36).slice(2)}`;
   return (
     <div ref={ref} class="relative w-full">
-      <Show when={(props.data ?? []).length} fallback={<div class="py-10 text-center text-[12px] text-faint">No data yet</div>}>
+      <Show when={(props.data ?? []).length} fallback={<div class="py-10 text-center text-[12px] text-muted">No data yet</div>}>
         <svg width={width()} height={height()} role="img" aria-label={props.label ?? 'Line chart'} onMouseLeave={() => setHover(null)}>
           <defs>
             <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
@@ -180,7 +180,7 @@ export function BandChart(props) {
   });
   return (
     <div ref={ref} class="relative w-full">
-      <Show when={(props.points ?? []).length} fallback={<div class="py-10 text-center text-[12px] text-faint">No history yet</div>}>
+      <Show when={(props.points ?? []).length} fallback={<div class="py-10 text-center text-[12px] text-muted">No history yet</div>}>
         <svg width={width()} height={height()} onMouseLeave={() => setHover(null)}>
           <For each={[0, 0.5, 1]}>
             {(f) => {

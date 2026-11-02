@@ -5,7 +5,8 @@ import { date, num } from '../lib/format';
 import { attempt, toast } from '../lib/store';
 import { BandChart } from '../components/charts';
 import { Icon } from '../components/icons';
-import { Badge, Card, Disclosure, Field, Load, Page, Pills, Section, Toggle } from '../components/ui';
+import { INSIGHTS_TABS } from '../lib/nav';
+import { Badge, Card, Disclosure, Field, Load, Page, Pills, Section, Toggle , SubNav } from '../components/ui';
 
 const LANG = { ja: 'Japanese', zh: 'Chinese' };
 
@@ -28,7 +29,7 @@ function MigakuImport() {
         <Toggle checked={learning()} onChange={setLearning} label="Include “learning” words" />
       </div>
       <input type="file" accept=".json,.csv,.txt" class="input py-1.5" onChange={onFile} />
-      <textarea class="input min-h-32 font-mono text-[11.5px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder="…or paste the Migaku export (JSON or CSV)" />
+      <textarea class="input min-h-32 font-mono text-[12px]" value={text()} onInput={(e) => setText(e.currentTarget.value)} placeholder="…or paste the Migaku export (JSON or CSV)" />
       <button class="btn btn-primary" disabled={busy() || !text().trim()} onClick={run}>{busy() ? 'Importing…' : 'Import words'}</button>
     </div>
   );
@@ -56,15 +57,16 @@ export default function Words() {
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Known words" glyph="語" subtitle="Union of Migaku, mature Anki cards, and manual adds — conjugations merged, bounds when a merge is uncertain"
-          actions={<button class="btn" disabled={refreshing()} onClick={refreshAnki}><Icon name="sync" size={14} class={refreshing() ? 'animate-spin' : ''} /> Pull mature Anki cards</button>}>
+        <Page title="Insights" subtitle="Words from Migaku, older Anki cards, and ones you added. Forms of one word count once; a range means some merges are uncertain."
+          actions={<button class="btn" disabled={refreshing()} onClick={refreshAnki}><Icon name="sync" size={14} class={refreshing() ? 'animate-spin' : ''} /> Count Anki cards again</button>}>
+          <SubNav label="Insights" items={INSIGHTS_TABS} />
           <div class="mb-6 grid gap-3 md:grid-cols-2">
             <For each={d.languages}>
               {(l) => (
                 <Card>
                   <div class="text-[11px] font-medium uppercase tracking-wider text-muted">{LANG[l.language]}</div>
-                  <div class="tnum mt-1 text-[26px] font-semibold">{l.lower === l.upper ? num(l.lower) : `${num(l.lower)}–${num(l.upper)}`}</div>
-                  <div class="tnum mt-1 flex flex-wrap gap-x-4 text-[11.5px] text-muted">
+                  <div class="tnum mt-1 text-[22px] font-semibold"><span title={l.lower === l.upper ? undefined : `${num(l.lower)}–${num(l.upper)}`}>~{num(l.lower)}</span></div>
+                  <div class="tnum mt-1 flex flex-wrap gap-x-4 text-[12px] text-muted">
                     <span>Migaku {num(l.bySource.migaku ?? 0)}</span><span>Anki {num(l.bySource.anki ?? 0)}</span><span>manual {num(l.bySource.manual ?? 0)}</span>
                     <Show when={l.overlap}><span>overlap {num(l.overlap)}</span></Show>
                   </div>
@@ -91,7 +93,7 @@ export default function Words() {
               <Pills value={params.source ?? ''} onChange={(v) => setParams({ source: v || undefined })} options={[{ value: '', label: 'All sources' }, { value: 'migaku', label: 'Migaku' }, { value: 'anki', label: 'Anki' }, { value: 'manual', label: 'Manual' }]} />
             </div>
             <Card pad={false} class="overflow-x-auto">
-              <table class="w-full text-left text-[12.5px]">
+              <table class="w-full text-left text-[13px]">
                 <thead class="border-b border-line text-[11px] uppercase tracking-wider text-muted">
                   <tr><th class="px-3 py-2">Word</th><th class="px-3 py-2">Lemma</th><th class="px-3 py-2">Reading</th><th class="px-3 py-2">Source</th><th class="px-3 py-2">Added</th><th /></tr>
                 </thead>
@@ -102,9 +104,9 @@ export default function Words() {
                         <td class="px-3 py-1.5 text-[14px]">{w.surface}</td>
                         <td class="px-3 py-1.5">{w.lemma}</td>
                         <td class="px-3 py-1.5 text-muted">{w.reading ?? ''}</td>
-                        <td class="px-3 py-1.5"><Badge tone={w.source === 'anki' ? 'info' : w.source === 'migaku' ? 'accent' : 'neutral'}>{w.source}</Badge> <span class="text-[11px] text-faint">{w.sourceDetail ?? ''}</span></td>
-                        <td class="px-3 py-1.5 text-faint">{date(w.createdAt)}</td>
-                        <td class="px-2 py-1.5 text-right"><button class="btn btn-ghost btn-sm text-faint" title="Remove" onClick={() => attempt(() => del(`/words/${w.id}`))}><Icon name="trash" size={13} /></button></td>
+                        <td class="px-3 py-1.5"><Badge tone={w.source === 'anki' ? 'info' : w.source === 'migaku' ? 'accent' : 'neutral'}>{w.source}</Badge> <span class="text-[11px] text-muted">{w.sourceDetail ?? ''}</span></td>
+                        <td class="px-3 py-1.5 text-muted">{date(w.createdAt)}</td>
+                        <td class="px-2 py-1.5 text-right"><button class="btn btn-ghost btn-sm text-muted" title="Remove" onClick={() => attempt(() => del(`/words/${w.id}`))}><Icon name="trash" size={13} /></button></td>
                       </tr>
                     )}
                   </For>

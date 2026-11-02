@@ -20,6 +20,7 @@ mod nato;
 mod reading;
 mod review;
 pub mod shared;
+mod tracks;
 mod words;
 mod youtube;
 
@@ -44,6 +45,17 @@ pub fn api() -> Router<App> {
         .route("/ai/conversations/{id}", get(crate::ai::get_conversation).delete(crate::ai::delete_conversation))
         .route("/ai/conversations/{id}/stream", get(crate::ai::stream_turn))
         .route("/ai/conversations/{id}/stop", post(crate::ai::stop_turn))
+        // today and tracks
+        .route("/today", get(tracks::today))
+        .route("/tracks", get(tracks::list).post(tracks::create))
+        .route("/tracks/{slug}", get(tracks::detail).patch(tracks::update).delete(tracks::remove))
+        .route("/tracks/{slug}/decks", post(tracks::add_deck))
+        .route("/tracks/{slug}/tags", get(tracks::search))
+        .route("/tracks/{slug}/misses", post(tracks::log_miss))
+        .route("/review/summary", get(tracks::review_summary))
+        .route("/anki/unsuspend", post(tracks::unsuspend))
+        .route("/anki/open", post(tracks::open_in_anki))
+        .route("/library/lesson-cards", get(tracks::lesson_cards))
         // overview
         .route("/dashboard", get(dashboard::dashboard))
         .route("/daily", get(dashboard::daily))

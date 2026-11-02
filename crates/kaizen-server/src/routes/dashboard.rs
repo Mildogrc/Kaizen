@@ -17,7 +17,7 @@ use crate::error::ApiResult;
 use crate::state::App;
 
 /// A study day = any in-app rating, Anki review, or logged session.
-async fn study_streak(app: &App, user: &User) -> ApiResult<u32> {
+pub(super) async fn study_streak(app: &App, user: &User) -> ApiResult<u32> {
     let cutoff = Utc::now() - Duration::days(400);
     let days: Vec<NaiveDate> = sqlx::query_scalar(
         "SELECT DISTINCT (t AT TIME ZONE $3)::date FROM (
@@ -110,10 +110,14 @@ pub async fn dashboard(State(app): State<App>, user: User) -> ApiResult<Json<Val
 }
 
 pub async fn daily(State(app): State<App>, user: User) -> ApiResult<Json<Value>> {
+    Ok(Json(daily_view(&app, &user).await?))
+}
+
+pub(super) async fn daily_view(app: &App, user: &User) -> ApiResult<Value> {
     let now = Utc::now();
     let (start, end) = time::day_bounds(now, user.tz);
-    let anki_due = anki_due_today(&app, &user, None).await?;
-    let rows = grammar_queue_rows(&app, &user).await?;
+    let anki_due = anki_due_today(app, user, None).await?;
+    let rows = grammar_queue_rows(app, user).await?;
     let grammar_config = core_settings::japanese_grammar(&user.settings);
     let grammar_reviews = rows.iter().filter(|r| r.status != grammar::Status::New && r.due_at <= now).count() as i64;
     let grammar_new = grammar::new_due_today(&rows, now, &grammar_config, user.tz) as i64;
@@ -154,11 +158,11 @@ pub async fn daily(State(app): State<App>, user: User) -> ApiResult<Json<Value>>
         weekend_skills: nato::weekend_skills(now, user.tz, next_nato),
     });
     let meditation = core_settings::meditation(&user.settings);
-    Ok(Json(json!({
+    Ok(json!({
         "meditation": { "complete": meditated, "minutes": meditation.session_minutes },
         "queue": queue,
         "date": time::day_key(now, user.tz),
-    })))
+    }))
 }
 
 #[derive(Deserialize)]

@@ -52,7 +52,7 @@ export default function SchemaNew() {
   return (
     <Load q={schemas}>
       {(s) => (
-        <Page title="New schema" back={{ href: '/schemas', label: 'Schemas' }} subtitle="Describe what one item of this content looks like. Items are validated against it on import.">
+        <Page title="New content type" back={{ href: '/schemas', label: 'Content types' }} subtitle="Describe what one item of this content looks like. Items are validated against it on import.">
           <div class="mx-auto max-w-3xl">
             <Section title="Basics">
               <Card class="grid gap-3 md:grid-cols-2">
@@ -92,7 +92,7 @@ export default function SchemaNew() {
                       </Field>
                       <div class="flex items-end gap-2 pb-1">
                         <Toggle checked={f.required} onChange={(v) => setForm('fields', i(), 'required', v)} label="Required" />
-                        <button class="btn btn-ghost btn-sm text-faint" disabled={form.fields.length === 1} onClick={() => setForm('fields', produce((list) => list.splice(i(), 1)))}><Icon name="trash" size={13} /></button>
+                        <button class="btn btn-ghost btn-sm text-muted" disabled={form.fields.length === 1} onClick={() => setForm('fields', produce((list) => list.splice(i(), 1)))}><Icon name="trash" size={13} /></button>
                       </div>
                       <Field label="Description / AI guidance" class="md:col-span-2"><input class="input" value={f.description} onInput={(e) => setForm('fields', i(), 'description', e.currentTarget.value)} /></Field>
                       <Show when={f.fieldType === 'ENUM'} fallback={<Field label="Example value" class="md:col-span-2"><input class="input" value={f.example} onInput={(e) => setForm('fields', i(), 'example', e.currentTarget.value)} /></Field>}>
@@ -113,7 +113,7 @@ export default function SchemaNew() {
                       <input class="input" value={r.name} onInput={(e) => setForm('rules', i(), 'name', e.currentTarget.value)} placeholder="Recognition" />
                       <input class="input font-mono" value={r.front} onInput={(e) => setForm('rules', i(), 'front', e.currentTarget.value)} placeholder="{{term}}" />
                       <input class="input font-mono" value={r.back} onInput={(e) => setForm('rules', i(), 'back', e.currentTarget.value)} placeholder="{{meaning}}" />
-                      <button class="btn btn-ghost btn-sm text-faint" onClick={() => setForm('rules', produce((list) => list.splice(i(), 1)))}><Icon name="trash" size={13} /></button>
+                      <button class="btn btn-ghost btn-sm text-muted" onClick={() => setForm('rules', produce((list) => list.splice(i(), 1)))}><Icon name="trash" size={13} /></button>
                     </div>
                   )}
                 </For>
@@ -125,7 +125,7 @@ export default function SchemaNew() {
                 <Field label="Extra instructions for the AI"><textarea class="input min-h-20" value={form.llmPrompt} onInput={(e) => setForm('llmPrompt', e.currentTarget.value)} /></Field>
               </Card>
             </Section>
-            <button class="btn btn-primary h-10 px-6" disabled={saving() || !form.name || !form.itemType || !form.fields.some((f) => f.name)} onClick={save}>{saving() ? 'Creating…' : 'Create schema'}</button>
+            <button class="btn btn-primary h-10 px-6" disabled={saving() || !form.name || !form.itemType || !form.fields.some((f) => f.name)} onClick={save}>{saving() ? 'Creating…' : 'Create content type'}</button>
           </div>
         </Page>
       )}

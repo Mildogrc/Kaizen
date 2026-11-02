@@ -113,7 +113,7 @@ export function RoadmapTree(props) {
                   onMouseEnter={() => enter(id)}
                   onMouseLeave={leave}
                 >
-                  <span class="line-clamp-2 text-[11.5px] font-medium">{n().title}</span>
+                  <span class="line-clamp-2 text-[12px] font-medium">{n().title}</span>
                   <span class="mt-0.5 flex items-center gap-1 text-[9.5px] uppercase tracking-wide opacity-75">
                     <span class="h-1.5 w-1.5 rounded-full" style={{ background: s().dot }} />
                     {ready().has(id) ? 'ready' : n().isTarget ? 'target' : n().branch}
@@ -131,7 +131,7 @@ export function RoadmapTree(props) {
 export function RoadmapLegend() {
   const dot = (c) => <span class="h-2 w-2 rounded-full" style={{ background: c }} />;
   return (
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-muted">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-muted">
       <span class="flex items-center gap-1.5">{dot('var(--faint)')} not started</span>
       <span class="flex items-center gap-1.5">{dot('var(--accent)')} ready to start</span>
       <span class="flex items-center gap-1.5">{dot('var(--info)')} in progress</span>

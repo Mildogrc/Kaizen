@@ -11,8 +11,8 @@ export default function Schemas() {
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Schemas" glyph="⬡" subtitle="Every content type is a schema — define one to add a new kind of learning material"
-          actions={<A href="/schemas/new" class="btn btn-primary">+ New schema</A>}>
+        <Page title="Content types" back={{ href: '/settings/data', label: 'Settings' }} subtitle="Define the fields and card rules for a new kind of material"
+          actions={<A href="/schemas/new" class="btn btn-primary">+ New content type</A>}>
           <For each={ORDER}>
             {(cat) => (
               <Show when={d.schemas.some((s) => s.category === cat)}>
@@ -21,9 +21,9 @@ export default function Schemas() {
                     <For each={d.schemas.filter((s) => s.category === cat)}>
                       {(s) => (
                         <A href={`/schemas/${s.slug}`} class="card block p-3.5 transition-colors hover:border-line-strong">
-                          <div class="flex items-center justify-between gap-2"><span class="truncate text-[13.5px] font-semibold">{s.name}</span><Badge tone="info">v{s.version}</Badge></div>
-                          <div class="mt-0.5 truncate font-mono text-[11px] text-faint">{s.itemType}</div>
-                          <div class="tnum mt-2 flex gap-3 text-[11.5px] text-muted"><span>{s.fieldCount} fields</span><span>{num(s.itemCount)} items</span><Show when={s.courseName}><span class="ml-auto">{s.courseName}</span></Show></div>
+                          <div class="flex items-center justify-between gap-2"><span class="truncate text-[13px] font-semibold">{s.name}</span><Badge tone="info">v{s.version}</Badge></div>
+                          <div class="mt-0.5 truncate font-mono text-[11px] text-muted">{s.itemType}</div>
+                          <div class="tnum mt-2 flex gap-3 text-[12px] text-muted"><span>{s.fieldCount} fields</span><span>{num(s.itemCount)} items</span><Show when={s.courseName}><span class="ml-auto">{s.courseName}</span></Show></div>
                         </A>
                       )}
                     </For>

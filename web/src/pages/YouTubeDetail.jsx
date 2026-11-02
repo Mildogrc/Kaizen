@@ -5,7 +5,9 @@ import { clock, duration, relative } from '../lib/format';
 import { attempt, toast } from '../lib/store';
 import { ConceptChip, LinkSourceModal, useConceptLinks } from '../components/concepts';
 import { Icon } from '../components/icons';
-import { Card, CopyButton, Disclosure, Field, Load, Page, Progress, Section, Stat, StatGrid } from '../components/ui';
+import { LessonRow } from '../components/tracks';
+import { ai } from '../lib/ai';
+import { Card, CopyButton, Disclosure, Field, Load, Metric, MetricRow, Page, Progress, Section } from '../components/ui';
 
 let ytApi;
 function loadYouTubeApi() {
@@ -96,33 +98,40 @@ export default function YouTubeDetail() {
         const remove = async () => {
           if (!confirm(`Remove “${d.playlist.title}” and its progress?`)) return;
           await attempt(() => del(`/youtube/${d.playlist.id}`));
-          navigate('/youtube');
+          navigate('/library');
         };
+        const askLecture = () => ai.ask({
+          kind: 'lecture', ref: d.current.videoId, title: `Lecture ${d.current.position + 1}`, resume: true,
+          prompt: `I'm watching lecture ${d.current.position + 1}, "${d.current.title}", from the course "${d.playlist.title}". Give me a short overview of what it covers and the prerequisites it assumes, then let me ask questions.`,
+        });
+        const waiting = useApi(() => `/library/lesson-cards?playlistId=${d.playlist.id}`);
+        const waitingFor = (videoId) => waiting.data()?.videos?.[videoId] ?? [];
+        const lessonMeta = (i) => [i.durationSeconds ? duration(i.durationSeconds) : null, d.current?.id === i.id ? 'up next' : null].filter(Boolean).join(' · ') || undefined;
+        const wake = (card) => attempt(() => post('/anki/unsuspend', { tag: card.tag }), (r) => `Unsuspended ${r.unsuspended} cards`);
         const setPosition = (e) => {
           e.preventDefault();
           attempt(() => post(`/youtube/${d.playlist.id}/position`, { itemId: itemId(), minutes: Number(minutes()), seconds: Number(seconds()), recordProgress: true }), 'Position saved');
         };
         return (
-          <Page title={d.playlist.title} back={{ href: '/youtube', label: 'YouTube playlists' }}
+          <Page title={d.playlist.title} back={{ href: '/library', label: 'Library' }}
             subtitle={[d.playlist.channelTitle, `${d.total} lectures`].filter(Boolean).join(' · ')}
             actions={<>
+              <button class="btn" disabled={!d.current} onClick={askLecture}><Icon name="sparkle" size={14} /> Ask about this lecture</button>
               <a href={d.watchUrl} target="_blank" rel="noreferrer" class="btn"><Icon name="external" size={14} /> YouTube</a>
               <button class="btn" disabled={refreshing()} onClick={refresh}><Icon name="sync" size={14} class={refreshing() ? 'animate-spin' : ''} /> Refresh</button>
               <button class="btn btn-danger" onClick={remove}><Icon name="trash" size={14} /></button>
             </>}>
-            <StatGrid cols="md:grid-cols-5">
-              <Stat label="Completed" value={`${d.completed}/${d.total}`} />
-              <Stat label="Watched" value={d.progress.percentageLabel} hint={d.progress.timeLabel} />
-              <Stat label="Total time" value={d.runtime.label} hint={d.runtime.hint} />
-              <Stat label="Current lecture" value={d.current ? d.current.position + 1 : '—'} />
-              <Stat label="Resume at" value={clock(d.playlist.currentSeconds)} />
-            </StatGrid>
-            <Progress class="mb-6" value={d.progress.percentage ?? 0} color="#ef4444" />
+            <MetricRow>
+              <Metric noun="Next lesson" value={d.current ? `Lecture ${d.current.position + 1}` : '—'} meaning={d.current?.title} />
+              <Metric noun="Left to watch" value={`${Math.max(0, d.total - (d.current?.position ?? 0))} lectures`} meaning={d.runtime.label === 'Unavailable' ? d.runtime.hint : `${d.runtime.label} in all`} />
+              <Metric noun="Resume at" value={clock(d.playlist.currentSeconds)} meaning={d.playlist.currentSeconds ? 'where you stopped' : 'from the beginning'} />
+            </MetricRow>
+            <Progress class="mb-6" value={d.progress.percentage ?? 0} color="var(--video)" />
             <div class="grid gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
               <div>
-                <Section title="Watch">
+                <Section title="Next lesson">
                   <Card>
-                    <Show when={d.current} fallback={<p class="text-[13px] text-muted">This playlist has no lectures yet. Try Refresh.</p>}>
+                    <Show when={d.current} fallback={<p class="text-[13px] text-muted">This course has no lectures yet. Try Refresh.</p>}>
                       <Player playlistId={d.playlist.id} youtubePlaylistId={d.playlist.youtubePlaylistId} videoId={d.current.videoId} position={d.current.position} seconds={d.playlist.currentSeconds} />
                       <div class="mt-2 flex flex-wrap items-start justify-between gap-2">
                         <div class="min-w-0">
@@ -150,30 +159,28 @@ export default function YouTubeDetail() {
                       <Field label="Seconds"><input class="input" type="number" min="0" max="59" value={seconds()} onInput={(e) => setSeconds(e.currentTarget.value)} /></Field>
                       <button class="btn btn-primary">Set position</button>
                     </form>
-                    <p class="mt-2 text-[11.5px] text-faint">Earlier lectures are marked complete.</p>
+                    <p class="mt-2 text-[12px] text-muted">Earlier lectures are marked complete.</p>
                   </Card>
                 </Section>
               </div>
-              <Section title={`Lectures (${d.items.length})`}>
+              <Section title="Lessons">
                 <Card pad={false} class="max-h-[640px] overflow-y-auto">
-                  <div class="divide-y divide-line">
-                    <For each={d.items}>
-                      {(i) => (
-                        <div class={`flex items-center gap-2.5 px-3 py-2 text-[12.5px] ${d.current?.id === i.id ? 'bg-accent-soft' : ''}`}>
-                          <span class={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[10px] ${i.completed ? 'bg-good text-white' : 'bg-surface-3 text-muted'}`}>{i.completed ? '✓' : i.position + 1}</span>
-                          <span class="min-w-0 flex-1">
-                            <span class="block truncate" title={i.title}>{i.title}</span>
-                            <Show when={chips(i.videoId).length}>
-                              <span class="mt-1 flex flex-wrap gap-1">
-                                <For each={chips(i.videoId)}>{(c) => <ConceptChip id={c.conceptId} title={c.title} finished={c.finished} hint={[c.title, c.range].filter(Boolean).join(' · ')} />}</For>
-                              </span>
-                            </Show>
-                          </span>
-                          <span class="tnum shrink-0 text-[11px] text-faint">{i.durationSeconds ? duration(i.durationSeconds) : ''}</span>
-                        </div>
-                      )}
-                    </For>
-                  </div>
+                  <For each={d.items}>
+                    {(i) => (
+                      <LessonRow number={i.position + 1} title={i.title} done={i.completed} current={d.current?.id === i.id} meta={lessonMeta(i)}
+                        below={
+                          <Show when={chips(i.videoId).length}>
+                            <span class="mt-1 flex flex-wrap gap-1">
+                              <For each={chips(i.videoId)}>{(c) => <ConceptChip id={c.conceptId} title={c.title} finished={c.finished} hint={[c.title, c.range].filter(Boolean).join(' · ')} />}</For>
+                            </span>
+                          </Show>
+                        }>
+                        <Show when={i.completed || d.current?.id === i.id}>
+                          <For each={waitingFor(i.videoId)}>{(card) => <button class="btn btn-sm shrink-0" onClick={() => wake(card)}>Unsuspend {card.waiting} cards</button>}</For>
+                        </Show>
+                      </LessonRow>
+                    )}
+                  </For>
                 </Card>
               </Section>
             </div>
@@ -182,8 +189,8 @@ export default function YouTubeDetail() {
                 <Artwork id={d.playlist.id} />
               </Disclosure>
               <Disclosure title="AI artwork prompt">
-                <Show when={d.playlist.imagePrompt} fallback={<p class="mb-2 text-[12.5px] text-muted">Generate a prompt for an image model from the lecture titles.</p>}>
-                  <pre class="mb-2 max-h-48 overflow-auto whitespace-pre-wrap text-[11.5px] text-muted">{d.playlist.imagePrompt}</pre>
+                <Show when={d.playlist.imagePrompt} fallback={<p class="mb-2 text-[13px] text-muted">Generate a prompt for an image model from the lecture titles.</p>}>
+                  <pre class="mb-2 max-h-48 overflow-auto whitespace-pre-wrap text-[12px] text-muted">{d.playlist.imagePrompt}</pre>
                 </Show>
                 <div class="flex gap-2">
                   <button class="btn btn-sm" onClick={() => attempt(() => post(`/youtube/${d.playlist.id}/image-prompt`))}>{d.playlist.imagePrompt ? 'Regenerate' : 'Generate prompt'}</button>
@@ -197,7 +204,7 @@ export default function YouTubeDetail() {
                   preset={{ kind: 'video', playlistId: d.playlist.id, videoId: item().videoId, label: `${item().position + 1}. ${item().title}` }} />
               )}
             </Show>
-            <p class="mt-4 text-[11.5px] text-faint">Metadata from {d.playlist.metadataSource} · fetched {relative(d.playlist.lastFetchedAt)}</p>
+            <p class="mt-4 text-[12px] text-muted">Metadata from {d.playlist.metadataSource} · fetched {relative(d.playlist.lastFetchedAt)}</p>
           </Page>
         );
       }}

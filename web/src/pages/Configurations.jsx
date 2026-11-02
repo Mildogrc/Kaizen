@@ -9,7 +9,7 @@ const SECTIONS = [
   { value: 'japanese', label: '日 Japanese' },
   { value: 'chinese', label: '中 Chinese' },
   { value: 'math', label: '∑ Math' },
-  { value: 'skills', label: '⌨ Skills' },
+  { value: 'skills', label: '⌨ Practice' },
   { value: 'meditation', label: '☀ Meditation' },
 ];
 
@@ -37,18 +37,18 @@ function Japanese(props) {
           <SaveBar onSave={() => attempt(() => put('/settings/japanese-grammar', { ...grammar }), 'Grammar schedule saved')} />
         </Card>
       </Section>
-      <Section title="Kanji repair">
+      <Section title="Character repair">
         <Card>
           <div class="grid gap-3 sm:grid-cols-2">
             <Field label="Cooldown after a repair"><Pills value={kanji.cooldownDays} onChange={(v) => setKanji('cooldownDays', v)} options={[7, 14, 21, 30, 60].map((n) => ({ value: n, label: `${n} days` }))} /></Field>
             <Field label="Evidence"><Toggle checked={kanji.useVocabularyPerformance} onChange={(v) => setKanji('useVocabularyPerformance', v)} label="Also use vocabulary-card performance" /></Field>
           </div>
-          <SaveBar onSave={() => attempt(() => put('/settings/kanji-repair', { ...kanji }), 'Kanji repair saved')} />
+          <SaveBar onSave={() => attempt(() => put('/settings/kanji-repair', { ...kanji }), 'Character repair saved')} />
         </Card>
       </Section>
-      <Section title="Adaptive Anki new cards">
+      <Section title="New cards a day">
         <Card>
-          <p class="mb-3 text-[12.5px] text-muted">Each Anki day, Kaizen sets the new-card limit on the chosen vocabulary decks from your retention, review time, lapses, and backlog. Your other deck options are untouched.</p>
+          <p class="mb-3 text-[13px] text-muted">Each Anki day, Kaizen sets the new-card limit on the chosen vocabulary decks from your retention, review time, lapses, and backlog. Your other deck options are untouched.</p>
           <Toggle checked={adaptive.enabled} onChange={(v) => setAdaptive('enabled', v)} label="Manage new cards per day" />
           <Show when={adaptive.enabled}>
             <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -87,7 +87,7 @@ function Chinese(props) {
   return (
     <Section title="Mandarin Blueprint decks">
       <Card class="space-y-4">
-        <p class="text-[12.5px] text-muted">Completed levels push notes into these Anki decks (created if missing).</p>
+        <p class="text-[13px] text-muted">Completed levels push notes into these Anki decks (created if missing).</p>
         {deckField('characterDeckName', 'Characters')}
         {deckField('reversedCharacterDeckName', 'Characters (reversed)')}
         {deckField('wordDeckName', 'Words')}
@@ -103,7 +103,7 @@ function MathGoals(props) {
     <Show when={math()} fallback={<Card>The math course isn’t set up.</Card>}>
       <Section title="Long-term goals">
         <Card>
-          <p class="mb-3 text-[12.5px] text-muted">Long-term goals become target views on the roadmap. Pick one as the current goal.</p>
+          <p class="mb-3 text-[13px] text-muted">Long-term goals become target views on the roadmap. Pick one as the current goal.</p>
           <div class="space-y-2">
             <For each={math().longTerm}>
               {(t) => (
@@ -112,7 +112,7 @@ function MathGoals(props) {
                   <Show when={math().current === t.slug} fallback={<button class="btn btn-sm" onClick={() => attempt(() => put('/math/goal', { targetSlug: t.slug }), 'Current goal updated')}>Make current</button>}>
                     <Badge tone="accent">current</Badge>
                   </Show>
-                  <button class="btn btn-ghost btn-sm text-faint" disabled={math().longTerm.length <= 1} onClick={() => attempt(() => post('/math/long-term-goals', { targetSlug: t.slug, intent: 'remove' }))}>Remove</button>
+                  <button class="btn btn-ghost btn-sm text-muted" disabled={math().longTerm.length <= 1} onClick={() => attempt(() => post('/math/long-term-goals', { targetSlug: t.slug, intent: 'remove' }))}>Remove</button>
                 </div>
               )}
             </For>
@@ -170,7 +170,7 @@ export default function Configurations() {
   const section = () => (SECTIONS.some((s) => s.value === params.section) ? params.section : 'japanese');
   const q = useApi(() => '/configurations');
   return (
-    <Page title="Configurations" glyph="◫" subtitle="Defaults and connections for each area">
+    <Page title="Study settings" back={{ href: '/settings/data', label: 'Settings' }} subtitle="Defaults and connections for each area">
       <Pills class="mb-6" value={section()} onChange={(s) => setParams({ section: s })} options={SECTIONS} />
       <Load q={q}>
         {(d) => (

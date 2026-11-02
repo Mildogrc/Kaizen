@@ -6,7 +6,8 @@ import { date, num, pct } from '../lib/format';
 import { attempt } from '../lib/store';
 import { Bars, Heatmap, HBars, LineChart } from '../components/charts';
 import { Icon } from '../components/icons';
-import { Badge, Card, Empty, Load, Page, Pills, Section, Stat, StatGrid } from '../components/ui';
+import { INSIGHTS_TABS } from '../lib/nav';
+import { Badge, Card, Empty, Load, Page, Pills, Section, Stat, StatGrid , SubNav } from '../components/ui';
 
 const AREAS = [
   { value: 'japanese', label: '日 Japanese' },
@@ -30,15 +31,15 @@ function AnkiSection(props) {
   return (
     <div class="mb-10">
       <div class="mb-3 flex flex-wrap items-baseline justify-between gap-2">
-        <h2 class="text-[16px] font-semibold" style={{ color: s.course.color ?? undefined }}>{s.course.name}</h2>
-        <span class="text-[11.5px] text-muted">{s.decks.map((dk) => dk.deckName).join(' · ')}</span>
+        <h2 class="text-[15px] font-semibold" style={{ color: s.course.color ?? undefined }}>{s.course.name}</h2>
+        <span class="text-[12px] text-muted">{s.decks.map((dk) => dk.deckName).join(' · ')}</span>
       </div>
       <StatGrid cols="md:grid-cols-3 xl:grid-cols-6">
         <Stat label="Cards" value={num(s.cards)} />
         <Stat label="Reviews (30d)" value={num(s.reviews30)} hint={`${num(s.minutes30)} minutes`} />
         <Stat label="Streak" value={`${s.streak.current}d`} hint={`best ${s.streak.best}d`} />
-        <Stat label="Retention" value={pct(s.retention.overall)} hint={`${num(s.retention.reviewCount)} reviews`} />
-        <Stat label="Mature retention" value={pct(s.retention.mature)} hint={`young ${pct(s.retention.young)}`} />
+        <Stat label="Remembering" value={pct(s.retention.overall)} hint={`${num(s.retention.reviewCount)} reviews`} />
+        <Stat label="Remembering older cards" value={pct(s.retention.mature)} hint={`newer cards ${pct(s.retention.young)}`} />
         <Stat label="Overdue" value={num(s.forecast.overdue)} color={s.forecast.overdue ? 'var(--warn)' : undefined} />
       </StatGrid>
       <Section title="Reviews · last year"><Card><Heatmap days={s.activity365} thresholds={[1, 20, 60, 120]} /></Card></Section>
@@ -68,7 +69,7 @@ function AnkiSection(props) {
               {(p) => (
                 <Card>
                   <div class="flex items-center justify-between gap-2"><span class="text-[13px] font-semibold">{p.label}</span><Badge tone={p.confidence === 'high' ? 'good' : p.confidence === 'medium' ? 'info' : 'neutral'}>{p.confidence} confidence</Badge></div>
-                  <div class="mt-1 text-[18px] font-semibold">{p.date ? date(p.date) : '—'}</div>
+                  <div class="mt-1 text-[15px] font-semibold">{p.date ? date(p.date) : '—'}</div>
                   <p class="mt-0.5 text-[12px] text-muted">{p.detail}</p>
                 </Card>
               )}
@@ -90,11 +91,11 @@ function AnkiSection(props) {
                     </span>
                   </Show>
                 </div>
-                <Show when={l.cards.length} fallback={<p class="text-[12.5px] text-muted">No leeches. 🎉</p>}>
+                <Show when={l.cards.length} fallback={<p class="text-[13px] text-muted">No leeches. 🎉</p>}>
                   <div class="max-h-64 divide-y divide-line overflow-y-auto">
                     <For each={l.cards}>
                       {(c) => (
-                        <div class="flex items-center gap-3 py-1.5 text-[12.5px]">
+                        <div class="flex items-center gap-3 py-1.5 text-[13px]">
                           <span class="min-w-0 flex-1 truncate">{c.front}</span>
                           <span class="min-w-0 flex-1 truncate text-muted">{c.back}</span>
                           <Badge tone="bad">{c.lapses} lapses</Badge>
@@ -119,11 +120,11 @@ function LanguageArea(props) {
       <Show when={kw()}>
         <Card class="mb-6 flex flex-wrap items-center gap-x-8 gap-y-2">
           <div><div class="text-[11px] uppercase tracking-wider text-muted">Known words</div><div class="tnum text-[24px] font-semibold text-info">{kw().lowerBound === kw().upperBound ? num(kw().lowerBound) : `${num(kw().lowerBound)}–${num(kw().upperBound)}`}</div></div>
-          <div class="tnum text-[12.5px] text-muted">Migaku {num(kw().migakuCount)} · Anki {num(kw().ankiCount)} · manual {num(kw().manualCount)}</div>
-          <A href="/words" class="ml-auto text-[12.5px] text-accent-text hover:underline">Known words →</A>
+          <div class="tnum text-[13px] text-muted">Migaku {num(kw().migakuCount)} · Anki {num(kw().ankiCount)} · manual {num(kw().manualCount)}</div>
+          <A href="/insights/words" class="ml-auto text-[13px] text-accent-text hover:underline">Known words →</A>
         </Card>
       </Show>
-      <Show when={props.data.sections.length} fallback={<Empty>Map an Anki deck to this course and sync to see analytics. <A href="/anki" class="text-accent-text underline">Set up Anki</A></Empty>}>
+      <Show when={props.data.sections.length} fallback={<Empty>Map an Anki deck to this course and sync to see analytics. <A href="/settings/anki" class="text-accent-text underline">Set up Anki</A></Empty>}>
         <For each={props.data.sections}>{(s) => <AnkiSection section={s} />}</For>
       </Show>
     </>
@@ -135,14 +136,15 @@ export default function Analytics() {
   const area = () => params.area ?? 'japanese';
   const q = useApi(() => `/analytics?area=${area()}`);
   return (
-    <Page title="Analytics" glyph="∿" subtitle="Progress, retention, and consistency across everything you track">
+    <Page title="Insights" glyph="∿" subtitle="Progress, retention, and consistency across everything you track">
+          <SubNav label="Insights" items={INSIGHTS_TABS} />
       <Pills class="mb-6" value={area()} onChange={(a) => setParams({ area: a })} options={AREAS} />
       <Load q={q}>
         {(d) => (
           <Switch>
             <Match when={d.area === 'japanese' || d.area === 'chinese'}><LanguageArea data={d.data} /></Match>
             <Match when={d.area === 'codeforces'}>
-              <Show when={d.data} fallback={<Empty>Connect a profile on the <A class="text-accent-text underline" href="/codeforces">Codeforces page</A>.</Empty>}>
+              <Show when={d.data} fallback={<Empty>Connect a profile on the <A class="text-accent-text underline" href="/tracks/codeforces">Codeforces page</A>.</Empty>}>
                 <StatGrid>
                   <Stat label="Rating" value={d.data.rating ?? '—'} hint={`max ${d.data.maxRating ?? '—'}`} />
                   <Stat label="Solved" value={num(d.data.analytics.solved)} />
@@ -170,7 +172,7 @@ export default function Analytics() {
                 <Stat label="Sessions" value={d.data.stats.sessions} />
                 <Stat label="Top speed" value={d.data.stats.maxWpm ? `${d.data.stats.maxWpm} WPM` : '—'} />
                 <Stat label="Comprehension" value={pct(d.data.stats.accuracy)} />
-                <Stat label="Retention" value={pct(d.data.stats.retention)} />
+                <Stat label="Remembering" value={pct(d.data.stats.retention)} />
                 <Stat label="Streak" value={`${d.data.stats.streak}d`} />
               </StatGrid>
               <div class="grid gap-5 xl:grid-cols-2">
@@ -179,7 +181,7 @@ export default function Analytics() {
               </div>
               <Show when={d.data.groups.length}>
                 <Section title="By topic and difficulty">
-                  <Card pad={false}><div class="divide-y divide-line"><For each={d.data.groups}>{(g) => <div class="flex items-center gap-3 px-4 py-2 text-[12.5px]"><span class="flex-1">{g.category} · {g.difficulty}</span><span class="tnum">{g.wpm} WPM</span><span class="tnum w-14 text-right text-muted">{g.accuracy}%</span></div>}</For></div></Card>
+                  <Card pad={false}><div class="divide-y divide-line"><For each={d.data.groups}>{(g) => <div class="flex items-center gap-3 px-4 py-2 text-[13px]"><span class="flex-1">{g.category} · {g.difficulty}</span><span class="tnum">{g.wpm} WPM</span><span class="tnum w-14 text-right text-muted">{g.accuracy}%</span></div>}</For></div></Card>
                 </Section>
               </Show>
             </Match>

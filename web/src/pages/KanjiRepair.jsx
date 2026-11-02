@@ -5,19 +5,19 @@ import { post, useApi } from '../lib/api';
 import { date, num, pct } from '../lib/format';
 import { attempt } from '../lib/store';
 import { Icon } from '../components/icons';
-import { Badge, Card, Disclosure, Empty, Load, Page, Section, Stat, StatGrid, Table } from '../components/ui';
+import { Badge, Card, Disclosure, Empty, Load, Metric, Page, Section, Table } from '../components/ui';
 
 export default function KanjiRepair() {
   const q = useApi(() => '/japanese/kanji-repair');
   return (
     <Load q={q}>
       {(d) => (
-        <Page title="Kanji repair" glyph="漢" back={{ href: '/japanese', label: 'Japanese' }}
+        <Page title="Character repair" glyph="漢" back={{ href: '/tracks/japanese', label: 'Japanese' }}
           subtitle="One focused intervention a day, ranked from your recent Anki reviews. Anki scheduling is never changed."
           actions={<A href="/configurations?section=japanese" class="btn">Settings</A>}>
           <Show when={!d.source.error} fallback={<Empty>{d.source.error}</Empty>}>
-            <Show when={d.directDecks.length} fallback={<Empty>Map and sync an RTK or kanji deck on the <A class="text-accent-text underline" href="/anki">Anki page</A> first.</Empty>}>
-              <Show when={!d.dailyComplete} fallback={<Card class="mb-6 border-good/40 bg-good-soft text-good">Today’s kanji repair is done. The next target appears tomorrow.</Card>}>
+            <Show when={d.directDecks.length} fallback={<Empty>Map and sync an RTK or kanji deck on the <A class="text-accent-text underline" href="/settings/anki">Anki page</A> first.</Empty>}>
+              <Show when={!d.dailyComplete} fallback={<Card class="mb-6 border-good/40 bg-good-soft text-good">Today’s character repair is done. The next target appears tomorrow.</Card>}>
                 <Show when={d.target} fallback={<Empty class="mb-6">No kanji currently exceeds the evidence and score thresholds. Nice.</Empty>}>
                   {(t) => {
                     const c = () => t().candidate;
@@ -33,12 +33,11 @@ export default function KanjiRepair() {
                                 <Show when={c().entry.book}><Badge>Book {c().entry.book}</Badge></Show>
                               </div>
                               <div class="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
-                                <Stat label="Repair score" value={pct(c().score)} />
-                                <Stat label="Reviews" value={c().direct.reviews} hint={`${c().direct.again} Again · ${c().direct.hard} Hard`} />
-                                <Stat label="Recent fails" value={`${c().direct.recentFailures}/${c().direct.recentReviews}`} />
-                                <Stat label="Lifetime fail" value={pct(c().direct.lifetimeFailureRate)} hint="smoothed" />
+                                <Metric noun="Reviews" value={c().direct.reviews} meaning={`${c().direct.again} Again · ${c().direct.hard} Hard`} />
+                                <Metric noun="Recent misses" value={`${c().direct.recentFailures} of ${c().direct.recentReviews}`} meaning="your last reviews of this kanji" />
+                                <Metric noun="Missed overall" value={pct(c().direct.lifetimeFailureRate)} meaning="across all reviews, smoothed" />
                               </div>
-                              <ol class="mt-4 list-decimal space-y-1 rounded-lg border border-line bg-surface-2/60 py-3 pl-8 pr-3 text-[12.5px] text-muted">
+                              <ol class="mt-4 list-decimal space-y-1 rounded-lg border border-line bg-surface-2/60 py-3 pl-8 pr-3 text-[13px] text-muted">
                                 <li>Recall the keyword before revealing it.</li>
                                 <li>Write the kanji once from memory and check its components.</li>
                                 <li>Repair or replace the mnemonic that caused hesitation.</li>
@@ -49,7 +48,7 @@ export default function KanjiRepair() {
                                 <button class="btn" onClick={() => ai.ask({ kind: 'kanji-mnemonic', ref: c().entry.kanji, title: `Mnemonic for ${c().entry.kanji}`, prompt: t().mnemonicPrompt })}>
                                   <Icon name="sparkle" size={14} /> Rebuild mnemonic with AI
                                 </button>
-                                <span class="text-[11.5px] text-muted">Cooldown {d.config.cooldownDays} days</span>
+                                <span class="text-[12px] text-muted">Cooldown {d.config.cooldownDays} days</span>
                               </div>
                               <div class="mt-3">
                                 <Disclosure title="Why this kanji">
@@ -76,17 +75,12 @@ export default function KanjiRepair() {
             </Show>
           </Show>
 
-          <StatGrid>
-            <Stat label="RTK kanji" value={num(d.source.entries)} hint="bundled extract" />
-            <Stat label="Kanji decks" value={d.directDecks.length} hint={d.directDecks.join(' · ') || 'none'} />
-            <Stat label="Vocabulary signal" value={d.config.useVocabularyPerformance ? 'On' : 'Off'} hint={d.config.useVocabularyPerformance ? d.vocabularyDecks.join(' · ') : 'off by default'} />
-            <Stat label="Last Anki sync" value={d.lastSyncedAt ? date(d.lastSyncedAt) : '—'} />
-          </StatGrid>
+          <p class="mb-6 text-[13px] text-muted">Working from <span class="tnum">{num(d.source.entries)}</span> RTK kanji, {d.directDecks.length ? d.directDecks.join(', ') : 'no kanji deck yet'}. Last synced {d.lastSyncedAt ? date(d.lastSyncedAt) : 'never'}.</p>
 
           <Section title="Ranking">
             <Show when={d.ranked.length} fallback={<Empty>No reviewed RTK kanji matched the extract yet.</Empty>}>
               <Table rows={d.ranked} columns={[
-                { label: 'Kanji', render: (c) => <span class="text-[18px]">{c.entry.kanji}</span> },
+                { label: 'Kanji', render: (c) => <span class="text-[15px]">{c.entry.kanji}</span> },
                 { label: 'Keyword', render: (c) => c.entry.keyword ?? '—' },
                 { label: 'Reviews', align: 'right', render: (c) => c.direct.reviews },
                 { label: 'Again', align: 'right', render: (c) => c.direct.again },
@@ -99,7 +93,7 @@ export default function KanjiRepair() {
           </Section>
           <Show when={d.source.warnings.length}>
             <Disclosure title={`Extract warnings (${d.source.warnings.length})`}>
-              <ul class="list-disc space-y-1 pl-5 text-[11.5px] text-muted"><For each={d.source.warnings}>{(w) => <li>{w}</li>}</For></ul>
+              <ul class="list-disc space-y-1 pl-5 text-[12px] text-muted"><For each={d.source.warnings}>{(w) => <li>{w}</li>}</For></ul>
             </Disclosure>
           </Show>
         </Page>

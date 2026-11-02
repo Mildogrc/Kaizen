@@ -80,7 +80,7 @@ export function Stat(props) {
       <div class="tnum mt-1 truncate text-[22px] font-semibold leading-tight" style={props.color ? { color: props.color } : undefined}>
         {props.value}
       </div>
-      <Show when={props.hint}><div class="mt-0.5 truncate text-[11px] text-faint" title={typeof props.hint === 'string' ? props.hint : undefined}>{props.hint}</div></Show>
+      <Show when={props.hint}><div class="mt-0.5 truncate text-[11px] text-muted" title={typeof props.hint === 'string' ? props.hint : undefined}>{props.hint}</div></Show>
     </>
   );
   return (
@@ -115,7 +115,7 @@ export function Pills(props) {
             <button type="button" class={cx('pill', option.disabled && 'cursor-not-allowed opacity-45 line-through decoration-faint hover:!border-line hover:!text-muted')}
               aria-pressed={props.value === value} disabled={option.disabled} onClick={() => props.onChange(value)} title={option.title}>
               {label}
-              <Show when={option.count != null}><span class="tnum text-faint">{option.count}</span></Show>
+              <Show when={option.count != null}><span class="tnum text-muted">{option.count}</span></Show>
             </button>
           );
         }}
@@ -216,7 +216,7 @@ export function Field(props) {
     <label class={cx('block', props.class)}>
       <span class="label">{props.label}</span>
       {props.children}
-      <Show when={props.hint}><span class="mt-1 block text-[11px] text-faint">{props.hint}</span></Show>
+      <Show when={props.hint}><span class="mt-1 block text-[11px] text-muted">{props.hint}</span></Show>
     </label>
   );
 }
@@ -274,7 +274,7 @@ export function Disclosure(props) {
 export function Table(props) {
   return (
     <div class="card overflow-x-auto p-0">
-      <table class="w-full text-left text-[12.5px]">
+      <table class="w-full text-left text-[13px]">
         <thead class="border-b border-line text-[11px] uppercase tracking-wider text-muted">
           <tr><For each={props.columns}>{(c) => <th class={cx('px-3 py-2 font-medium', c.align === 'right' && 'text-right')}>{c.label}</th>}</For></tr>
         </thead>
@@ -295,4 +295,35 @@ export function Table(props) {
 export function Kbd(props) {
   const c = resolveChildren(() => props.children);
   return <span class="kbd">{c()}</span>;
+}
+
+/** One number, the noun it counts, and why it matters. At most three in a row. */
+export function Metric(props) {
+  const body = () => (
+    <>
+      <div class="kz-metric__noun">{props.noun}</div>
+      <div class="kz-metric__value truncate" title={props.title}>{props.value}</div>
+      <Show when={props.meaning}><div class="kz-metric__meaning">{props.meaning}</div></Show>
+    </>
+  );
+  return (
+    <Show when={props.href} fallback={<div class="card kz-metric min-w-0">{body()}</div>}>
+      <A href={props.href} class="card kz-metric min-w-0 transition-colors">{body()}</A>
+    </Show>
+  );
+}
+
+export function MetricRow(props) {
+  return <div class={cx('mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3', props.class)}>{props.children}</div>;
+}
+
+/** Sub-pages of one place (Library, Insights, Settings) as a row of pills. */
+export function SubNav(props) {
+  return (
+    <div class="mb-5 flex flex-wrap gap-1.5" role="navigation" aria-label={props.label}>
+      <For each={props.items}>
+        {(item) => <A href={item.href} end={item.end ?? true} class="pill" activeClass="pill-active">{item.label}</A>}
+      </For>
+    </div>
+  );
 }

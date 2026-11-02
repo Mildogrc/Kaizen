@@ -1,3 +1,4 @@
+import { ai } from '../lib/ai';
 import { A, useNavigate, useParams } from '@solidjs/router';
 import { For, Show, createMemo, createSignal } from 'solid-js';
 import { del, patch, post, useApi } from '../lib/api';
@@ -126,6 +127,7 @@ export default function Concept() {
           <Page title={c().title} back={{ href: `/concepts?subject=${c().subject}`, label: c().course?.title ?? 'Concepts' }} subtitle={c().summary}
             actions={<>
               <Badge tone={c().coverage === 'COVERED' ? 'good' : c().coverage === 'STARTED' ? 'info' : 'neutral'}>{c().coverage === 'COVERED' ? '✓ ' : ''}{coverageLabel(c().coverage)}</Badge>
+              <button class="btn" onClick={() => ai.ask({ kind: 'concept', ref: c().id, title: c().title, resume: true, prompt: `Help me understand "${c().title}"${c().summary ? ` (${c().summary})` : ''}. Sources I have linked: ${d.sources.linked.flatMap((g) => g.sources.map((x) => x.title ?? x.label)).filter(Boolean).join('; ') || 'none yet'}. Start with the core idea and what it depends on, then let me ask questions.` })}><Icon name="sparkle" size={14} /> Ask about this</button>
               <button class="btn" onClick={() => setEditing(true)}><Icon name="edit" size={14} /> Edit</button>
               <button class="btn btn-danger" onClick={remove} aria-label="Delete concept"><Icon name="trash" size={14} /></button>
             </>}>

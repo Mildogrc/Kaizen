@@ -3,7 +3,8 @@ import { ai } from '../lib/ai';
 import { del, put, useApi } from '../lib/api';
 import { attempt, session, themeStore } from '../lib/store';
 import { Icon } from '../components/icons';
-import { Badge, Card, CopyButton, Field, Load, Page, Pills, Section } from '../components/ui';
+import { SETTINGS_TABS } from '../lib/nav';
+import { Badge, Card, CopyButton, Field, Load, Page, Pills, Section, SubNav } from '../components/ui';
 
 const PROVIDERS = [
   { value: 'claude', label: 'Claude' },
@@ -76,7 +77,7 @@ function AiSettings(props) {
               { value: 'api', label: 'API key' },
             ]} />
             <Show when={!subscribable(s().config.provider)}>
-              <p class="mt-1.5 text-[11.5px] text-faint">{providerLabel()} Pro/Max-style plans can’t be connected to Kaizen. Use an API key, or switch to ChatGPT to use your plan.</p>
+              <p class="mt-1.5 text-[12px] text-muted">{providerLabel()} Pro/Max-style plans can’t be connected to Kaizen. Use an API key, or switch to ChatGPT to use your plan.</p>
             </Show>
           </Field>
           <Field label="Model">
@@ -91,37 +92,37 @@ function AiSettings(props) {
           <Show when={s().config.mode === 'subscription'} fallback={
             <>
               <div class="text-[13px] font-semibold">{PROVIDERS.find((p) => p.value === s().config.provider).label} API key</div>
-              <p class="text-[12.5px] text-muted">Stored encrypted (AES-256-GCM) and only used for your requests.</p>
+              <p class="text-[13px] text-muted">Stored encrypted (AES-256-GCM) and only used for your requests.</p>
               <ApiKey provider={s().config.provider} label={PROVIDERS.find((p) => p.value === s().config.provider).label} status={s().apiKeys[s().config.provider]} />
             </>
           }>
             <div class="text-[13px] font-semibold">Using your subscription</div>
-            <p class="text-[12.5px] text-muted">{SUBSCRIPTION_HELP[s().config.provider]}</p>
+            <p class="text-[13px] text-muted">{SUBSCRIPTION_HELP[s().config.provider]}</p>
             <Show when={s().config.provider === 'openai'}>
               <Show when={s().chatgpt} fallback={
                 <Show when={s().chatgptSignIn} fallback={<p class="text-[12px] text-warn">Sign in with ChatGPT isn’t available on this deployment (set AUTH_OPENAI_CLIENT_ID).</p>}>
                   <a class="btn btn-primary" rel="external" href="/auth/openai/start?purpose=connect&returnTo=%2Fsettings">Connect my ChatGPT plan</a>
                 </Show>
               }>
-                <div class="flex flex-wrap items-center gap-2 rounded-lg bg-good-soft px-3 py-2 text-[12.5px] text-good">
+                <div class="flex flex-wrap items-center gap-2 rounded-lg bg-good-soft px-3 py-2 text-[13px] text-good">
                   <Icon name="check" size={14} /> ChatGPT plan connected{s().chatgpt.email ? ` (${s().chatgpt.email})` : ''}{s().chatgpt.planType ? ` · ${s().chatgpt.planType}` : ''}
                   <button class="btn btn-sm ml-auto" onClick={() => attempt(() => del('/settings/ai/chatgpt'), 'ChatGPT disconnected')}>Disconnect</button>
                 </div>
               </Show>
             </Show>
             <Show when={s().isOwner && cli()}>
-              <div class="rounded-lg border border-line p-3 text-[12.5px]">
+              <div class="rounded-lg border border-line p-3 text-[13px]">
                 <div class="flex items-center gap-2 font-medium">
                   <span class={`h-2 w-2 rounded-full ${cli().installed ? 'bg-good' : 'bg-faint'}`} />
                   {CLI_FOR[s().config.provider]} CLI {cli().installed ? 'installed' : 'not found'}
                 </div>
-                <Show when={cli().path}><div class="mt-0.5 truncate font-mono text-[11px] text-faint">{cli().path}</div></Show>
+                <Show when={cli().path}><div class="mt-0.5 truncate font-mono text-[11px] text-muted">{cli().path}</div></Show>
                 <div class="mt-2 space-y-1.5">
                   <Show when={!cli().installed}>
-                    <div class="flex items-center gap-2"><code class="flex-1 truncate rounded bg-surface-2 px-2 py-1 font-mono text-[11.5px]">{cli().installCommand}</code><CopyButton small text={cli().installCommand} /></div>
+                    <div class="flex items-center gap-2"><code class="flex-1 truncate rounded bg-surface-2 px-2 py-1 font-mono text-[12px]">{cli().installCommand}</code><CopyButton small text={cli().installCommand} /></div>
                   </Show>
-                  <div class="flex items-center gap-2"><code class="flex-1 truncate rounded bg-surface-2 px-2 py-1 font-mono text-[11.5px]">{cli().loginCommand}</code><CopyButton small text={cli().loginCommand} /></div>
-                  <p class="text-[11.5px] text-faint">Run the sign-in command once in a terminal on this machine.</p>
+                  <div class="flex items-center gap-2"><code class="flex-1 truncate rounded bg-surface-2 px-2 py-1 font-mono text-[12px]">{cli().loginCommand}</code><CopyButton small text={cli().loginCommand} /></div>
+                  <p class="text-[12px] text-muted">Run the sign-in command once in a terminal on this machine.</p>
                 </div>
               </div>
             </Show>
@@ -165,11 +166,12 @@ export default function Settings() {
   const q = useApi(() => '/settings/ai');
   return (
     <Page title="Settings" glyph="⚙" subtitle="Your account and how Kaizen talks to AI">
+      <SubNav label="Settings" items={SETTINGS_TABS} />
       <Section title="Account"><Account /></Section>
       <Section title="AI">
         <Load q={q}>{(s) => <AiSettings s={s} />}</Load>
       </Section>
-      <p class="text-[11.5px] text-faint">Your data stays in your Kaizen database. AI requests go only to the provider you choose above.</p>
+      <p class="text-[12px] text-muted">Your data stays in your Kaizen database. AI requests go only to the provider you choose above.</p>
     </Page>
   );
 }

@@ -191,7 +191,7 @@ export function SourceItem(props) {
         </div>
         <Show when={s().status === 'LINKED' && !s().finished && s().progress.pct > 0}>
           <div class="mt-1.5 flex items-center gap-2">
-            <Progress class="max-w-[200px]" value={s().progress.pct} color={s().kind === 'video' ? 'var(--video, #ef4444)' : 'var(--accent)'} />
+            <Progress class="max-w-[200px]" value={s().progress.pct} color={s().kind === 'video' ? 'var(--video, var(--video))' : 'var(--accent)'} />
             <span class="tnum text-[11px] text-muted">{s().progress.total ? `${s().progress.done} of ${s().progress.total}` : `${s().progress.pct}%`}</span>
           </div>
         </Show>
@@ -324,7 +324,7 @@ export function LinkSourceModal(props) {
           </Show>
         </Show>
         <Show when={preset}>
-          <div class="rounded-lg bg-surface-2 px-3 py-2 text-[12.5px]"><span class="text-muted">{SOURCE_GLYPH[preset.kind]}</span> {preset.label}</div>
+          <div class="rounded-lg bg-surface-2 px-3 py-2 text-[13px]"><span class="text-muted">{SOURCE_GLYPH[preset.kind]}</span> {preset.label}</div>
         </Show>
 
         <Field label="Role">

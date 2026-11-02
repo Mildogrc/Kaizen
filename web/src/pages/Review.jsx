@@ -1,8 +1,11 @@
 import { A, useSearchParams } from '@solidjs/router';
 import { For, Show, createMemo, createSignal, onCleanup, onMount } from 'solid-js';
-import { api, invalidate, useApi } from '../lib/api';
+import { api, invalidate, post, useApi } from '../lib/api';
 import { toast } from '../lib/store';
-import { Badge, Card, Empty, Load, Page, Pills, Stat, StatGrid } from '../components/ui';
+import { AnkiSyncButton } from '../components/AnkiSync';
+import { num, relative } from '../lib/format';
+import { attempt } from '../lib/store';
+import { Badge, Card, Empty, Load, Metric, MetricRow, Page, Pills, Section } from '../components/ui';
 
 const RATINGS = [
   { value: 'AGAIN', label: 'Again', key: '1', tone: 'var(--bad)' },
@@ -46,8 +49,8 @@ function Session(props) {
   return (
     <Show when={card()} fallback={
       <Card class="py-10 text-center">
-        <div class="text-[18px] font-semibold">{done() ? 'Session complete ✓' : 'Nothing due right now'}</div>
-        <p class="mt-1 text-[12.5px] text-muted">{done() ? `${done()} reviews done.` : 'New cards appear as you import content and generate cards.'}</p>
+        <div class="text-[15px] font-semibold">{done() ? 'Session complete ✓' : 'Nothing due right now'}</div>
+        <p class="mt-1 text-[13px] text-muted">{done() ? `${done()} reviews done.` : 'New cards appear as you import content and generate cards.'}</p>
       </Card>
     }>
       <div class="mb-2 flex items-center justify-between text-[12px] text-muted">
@@ -72,55 +75,89 @@ function Session(props) {
   );
 }
 
+function AnkiDecks(props) {
+  const s = () => props.summary;
+  return (
+    <Section title="Your decks" actions={<AnkiSyncButton small />}>
+      <Show when={s().decks.length} fallback={<Empty>No decks yet. <A class="text-accent-text underline" href="/settings/anki">Connect Anki</A> to review from here.</Empty>}>
+        <Card pad={false}>
+          <For each={s().decks}>
+            {(x) => (
+              <div class="kz-task">
+                <span class="kz-task__title min-w-0 truncate" title={x.deck}>{x.deck}</span>
+                <A href={`/tracks/${x.slug}`} class="kz-task__track hover:underline">{x.track}</A>
+                <span class="kz-task__detail flex items-center gap-3">
+                  <Show when={x.due} fallback={<span>✓ done</span>}>
+                    <span class="tnum">{num(x.due)} cards · ~{x.time}</span>
+                    <button class="btn btn-sm" onClick={() => attempt(() => post('/anki/open', { deck: x.deck }))}>Review in Anki</button>
+                  </Show>
+                </span>
+              </div>
+            )}
+          </For>
+        </Card>
+        <p class="mt-2 text-[12px] text-muted">Anki does the scheduling, so these cards open in Anki. Synced {relative(s().lastSyncedAt)}.</p>
+      </Show>
+    </Section>
+  );
+}
+
 export default function Review() {
   const [params, setParams] = useSearchParams();
   const type = () => (params.type === 'grammar' ? 'grammar' : 'flashcards');
   const q = useApi(() => `/review${type() === 'grammar' ? '?type=grammar' : ''}`);
+  const summary = useApi(() => '/review/summary');
   return (
     <Load q={q}>
-      {(d) => (
-        <Page title="Review" glyph="↻" subtitle="In-app flashcards, practice items, and Japanese grammar. Anki decks are reviewed in Anki."
-          actions={<A href="/anki" class="btn">Anki</A>}>
-          <StatGrid>
-            <Stat label="Flashcards queued" value={d.stats.queued} />
-            <Stat label="Grammar due" value={d.stats.grammarDue} />
-            <Stat label="Total cards" value={d.stats.total} />
-            <Stat label="Leeches / suspended" value={`${d.stats.leeches} / ${d.stats.suspended}`} />
-          </StatGrid>
-          <Pills class="mb-5" value={type()} onChange={(t) => setParams({ type: t === 'grammar' ? 'grammar' : undefined })}
-            options={[{ value: 'flashcards', label: 'Flashcards', count: d.stats.queued }, { value: 'grammar', label: 'Japanese grammar', count: d.stats.grammarDue }]} />
-          <div class="mx-auto max-w-2xl">
-            <Show when={d.type === 'grammar'} fallback={
-              <Session cards={d.cards} ratePath={(c) => `/review/${c.recordId}/rate`} render={(c, revealed) => (
-                <div class="flex min-h-[260px] flex-col">
-                  <div class="mb-3 flex items-center gap-2">
-                    <Badge><span style={{ color: c.courseColor ?? undefined }}>{c.courseName}</span></Badge>
-                    <Show when={c.practiceType}><Badge tone="info">{c.practiceType.toLowerCase()}</Badge></Show>
-                    <Badge tone={c.maturity === 'NEW' ? 'good' : 'neutral'}>{c.maturity.toLowerCase()}</Badge>
-                  </div>
-                  <div class="flex-1 whitespace-pre-wrap text-center text-[22px] font-medium leading-relaxed">{c.front}</div>
-                  <Show when={revealed}><div class="mt-4 whitespace-pre-wrap border-t border-line pt-4 text-center text-[16px] text-muted">{c.back}</div></Show>
-                </div>
-              )} />
-            }>
-              <Show when={d.grammarCards.length} fallback={<Empty>No grammar reviews due. New points arrive through the <A class="text-accent-text underline" href="/japanese/grammar">grammar coach</A>.</Empty>}>
-                <Session cards={d.grammarCards} ratePath={(c) => `/review/grammar/${c.progressId}/rate`} render={(c, revealed) => (
-                  <div class="flex min-h-[260px] flex-col">
-                    <div class="mb-3 flex items-center gap-2"><Badge tone="accent">{c.level}</Badge><Badge>{c.status.toLowerCase()}</Badge></div>
-                    <div class="flex-1 text-center text-[26px] font-semibold">{c.pattern}</div>
-                    <Show when={revealed}>
-                      <div class="mt-4 border-t border-line pt-4 text-center">
-                        <div class="text-[15px]">{c.meaning}</div>
-                        <ul class="mt-2 space-y-1 text-[13.5px] text-muted"><For each={c.examples}>{(ex) => <li>{ex}</li>}</For></ul>
+      {(d) => {
+        const own = () => d.stats.queued + d.stats.grammarDue;
+        const total = () => (summary.data()?.ankiDue ?? 0) + d.stats.queued;
+        return (
+          <Page title="Review" subtitle="Every card due, across every deck">
+            <MetricRow>
+              <Metric noun="Cards due" value={total() ? num(total()) : 'None'} meaning={summary.data()?.ankiTime ? `about ${summary.data().ankiTime} in Anki` : 'Nothing due — add 10 new cards in Anki?'} />
+              <Show when={d.stats.leeches}><Metric noun="Keep failing" value={num(d.stats.leeches)} meaning="cards to rewrite or look at again" /></Show>
+            </MetricRow>
+            <Show when={summary.data()}><AnkiDecks summary={summary.data()} /></Show>
+            <Show when={own() || d.stats.total}>
+              <Section title="Kaizen’s own cards">
+                <Pills class="mb-5" value={type()} onChange={(t) => setParams({ type: t === 'grammar' ? 'grammar' : undefined })}
+                  options={[{ value: 'flashcards', label: 'Cards', count: d.stats.queued }, { value: 'grammar', label: 'Japanese grammar', count: d.stats.grammarDue }]} />
+                <div class="mx-auto max-w-2xl">
+                  <Show when={d.type === 'grammar'} fallback={
+                    <Session cards={d.cards} ratePath={(c) => `/review/${c.recordId}/rate`} render={(c, revealed) => (
+                      <div class="flex min-h-[260px] flex-col">
+                        <div class="mb-3 flex items-center gap-2">
+                          <Badge>{c.courseName}</Badge>
+                          <Show when={c.practiceType}><Badge tone="info">{c.practiceType.toLowerCase()}</Badge></Show>
+                          <Badge tone={c.maturity === 'NEW' ? 'good' : 'neutral'}>{c.maturity.toLowerCase()}</Badge>
+                        </div>
+                        <div class="flex-1 whitespace-pre-wrap text-center text-[28px] font-medium leading-[36px]">{c.front}</div>
+                        <Show when={revealed}><div class="mt-4 whitespace-pre-wrap border-t border-line pt-4 text-center text-[15px] text-muted">{c.back}</div></Show>
                       </div>
+                    )} />
+                  }>
+                    <Show when={d.grammarCards.length} fallback={<Empty>No grammar reviews due. New points arrive through the <A class="text-accent-text underline" href="/tracks/japanese/grammar">grammar coach</A>.</Empty>}>
+                      <Session cards={d.grammarCards} ratePath={(c) => `/review/grammar/${c.progressId}/rate`} render={(c, revealed) => (
+                        <div class="flex min-h-[260px] flex-col">
+                          <div class="mb-3 flex items-center gap-2"><Badge tone="accent">{c.level}</Badge><Badge>{c.status.toLowerCase()}</Badge></div>
+                          <div class="flex-1 text-center text-[28px] font-medium leading-[36px]" lang="ja">{c.pattern}</div>
+                          <Show when={revealed}>
+                            <div class="mt-4 border-t border-line pt-4 text-center">
+                              <div class="text-[15px]">{c.meaning}</div>
+                              <ul class="mt-2 space-y-1 text-[13px] text-muted" lang="ja"><For each={c.examples}>{(ex) => <li>{ex}</li>}</For></ul>
+                            </div>
+                          </Show>
+                        </div>
+                      )} />
                     </Show>
-                  </div>
-                )} />
-              </Show>
+                  </Show>
+                </div>
+              </Section>
             </Show>
-          </div>
-        </Page>
-      )}
+          </Page>
+        );
+      }}
     </Load>
   );
 }

@@ -71,7 +71,7 @@ function AssistantMessage(props) {
     <div class="group">
       <div class={cx('prose-ai', props.streaming && 'stream-caret')} innerHTML={html()} />
       <Show when={!props.streaming}>
-        <div class="mt-1.5 flex items-center gap-2 text-[11px] text-faint opacity-70 transition-opacity group-hover:opacity-100">
+        <div class="mt-1.5 flex items-center gap-2 text-[11px] text-muted opacity-70 transition-opacity group-hover:opacity-100">
           <Show when={props.message?.error}><span class="text-bad">{props.message.error}</span></Show>
           <Show when={props.message?.durationMs}><span>{(props.message.durationMs / 1000).toFixed(1)}s</span></Show>
           <Show when={props.message?.label}><span>· {props.message.label}</span></Show>
@@ -89,10 +89,10 @@ function History(props) {
       <Show when={q.data()?.conversations?.length} fallback={<div class="p-4 text-center text-[12px] text-muted">No conversations yet.</div>}>
         <For each={q.data().conversations}>
           {(c) => (
-            <button class="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-[12.5px] hover:bg-surface-2"
+            <button class="flex w-full items-center justify-between gap-3 rounded-lg px-3 py-2 text-left text-[13px] hover:bg-surface-2"
               onClick={() => { ai.openConversation(c.id); props.onClose(); }}>
               <span class="truncate">{c.title}</span>
-              <span class="shrink-0 text-[11px] text-faint">{relative(c.updatedAt)}</span>
+              <span class="shrink-0 text-[11px] text-muted">{relative(c.updatedAt)}</span>
             </button>
           )}
         </For>
@@ -184,7 +184,7 @@ export function AiPanel() {
             )}
           </Show>
           <Show when={s.error}>
-            <div class="rounded-xl border border-bad/30 bg-bad-soft px-3.5 py-3 text-[12.5px] text-bad">
+            <div class="rounded-xl border border-bad/30 bg-bad-soft px-3.5 py-3 text-[13px] text-bad">
               <div class="font-medium">{s.error.message}</div>
               <Show when={s.error.code === 'not_connected'}>
                 <A href="/settings" class="mt-1 inline-block font-medium underline" onClick={() => ai.close()}>Open Settings → AI</A>
@@ -216,7 +216,7 @@ export function AiPanel() {
               <button class="btn h-9 w-9 !p-0" onClick={() => ai.stop()} title="Stop"><Icon name="stop" size={14} /></button>
             </Show>
           </div>
-          <div class="mt-1.5 px-1 text-[10.5px] text-faint">Enter to send · Shift+Enter for a new line</div>
+          <div class="mt-1.5 px-1 text-[11px] text-muted">Enter to send · Shift+Enter for a new line</div>
         </footer>
       </aside>
     </Show>
