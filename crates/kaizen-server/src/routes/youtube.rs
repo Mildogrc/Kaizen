@@ -116,7 +116,7 @@ pub async fn list(State(app): State<App>, user: User) -> ApiResult<Json<Value>> 
             let items = by_playlist.get(&p.id).unwrap_or(&empty);
             json!({
                 "id": p.id, "title": p.title, "channelTitle": p.channel_title, "status": p.status,
-                "image": p.custom_image_url.clone().or_else(|| p.thumbnail_url.clone()),
+                "image": p.custom_image_url.clone().or_else(|| p.thumbnail_url.clone()), "customImage": p.custom_image_url.is_some(),
                 "total": (p.total_items as usize).max(items.len()), "completed": items.iter().filter(|i| i.completed).count(),
                 "currentPosition": p.current_position, "progress": summarize(p, items), "runtime": runtime(p, items),
             })
@@ -155,6 +155,7 @@ pub async fn detail(State(app): State<App>, user: User, Path(id): Path<String>) 
             "customImageUrl": p.custom_image_url, "imagePrompt": p.image_prompt, "status": p.status,
             "currentSeconds": p.current_seconds, "metadataSource": p.metadata_source, "lastFetchedAt": p.last_fetched_at, "updatedAt": p.updated_at,
         },
+        "art": art_json(&art_of(&user, &p.id, &p.title)),
         "total": total,
         "completed": items.iter().filter(|i| i.completed).count(),
         "progress": summarize(&p, &items),
@@ -386,8 +387,8 @@ pub async fn progress(State(app): State<App>, user: User, Path(id): Path<String>
 
 pub async fn image_prompt(State(app): State<App>, user: User, Path(id): Path<String>) -> ApiResult<Json<Value>> {
     let p = playlist(&app, &user, &id).await?;
-    let titles: Vec<String> = items(&app, std::slice::from_ref(&p.id)).await?.into_iter().map(|i| i.title).collect();
-    let prompt = yt::build_image_prompt(&p.title, p.description.as_deref(), &titles);
+    let art = art_of(&user, &p.id, &p.title);
+    let prompt = yt::build_image_prompt(&art.name, art.pairing, &p.title);
     sqlx::query("UPDATE youtube_playlists SET image_prompt = $2, updated_at = now() WHERE id = $1").bind(&id).bind(&prompt).execute(&app.db).await?;
     Ok(Json(json!({ "ok": true, "prompt": prompt })))
 }
@@ -445,20 +446,173 @@ pub async fn artwork(State(app): State<App>, user: User, Path(id): Path<String>,
         }
         (None, None) => return Err(ApiError::bad("Choose an image file or paste an image URL.")),
     };
+    set_custom_image(&app, &user, &id, &custom).await?;
+    let mut art = art_of(&user, &id, "");
+    art.style = Some("artistic".into());
+    save_art(&app, &user, &id, &art).await?;
+    Ok(Json(json!({ "ok": true, "imageUrl": custom, "message": "Cover updated." })))
+}
+
+/// Point a course at new artwork and drop the blob it replaces.
+async fn set_custom_image(app: &App, user: &User, id: &str, url: &str) -> ApiResult<()> {
     let previous: Option<String> = sqlx::query_scalar(
         "UPDATE youtube_playlists p SET custom_image_url = $3, updated_at = now() FROM youtube_playlists old
          WHERE p.id = old.id AND p.id = $1 AND p.user_id = $2 RETURNING old.custom_image_url",
     )
-    .bind(&id)
+    .bind(id)
     .bind(&user.id)
-    .bind(&custom)
+    .bind(url)
     .fetch_optional(&app.db)
     .await?
     .flatten();
     if let Some(old_blob) = previous.as_deref().and_then(|u| u.strip_prefix("/api/blobs/")) {
         sqlx::query("DELETE FROM blobs WHERE id = $1 AND user_id = $2").bind(old_blob).bind(&user.id).execute(&app.db).await?;
     }
-    Ok(Json(json!({ "ok": true, "imageUrl": custom, "message": "Playlist artwork updated." })))
+    Ok(())
+}
+
+// ------------------------------------------------------------------ covers
+//
+// A course's cover name, colour pair and style live in `users.settings.courseArt`
+// keyed by playlist id, so covers need no schema change.
+
+struct Art {
+    name: String,
+    pairing: usize,
+    style: Option<String>,
+}
+
+fn art_of(user: &User, id: &str, title: &str) -> Art {
+    let saved = user.settings.get("courseArt").and_then(|a| a.get(id));
+    let text = |k: &str| saved.and_then(|v| v.get(k)).and_then(Value::as_str).map(str::to_string);
+    Art {
+        name: text("name").unwrap_or_else(|| yt::simple_name(title)),
+        pairing: saved.and_then(|v| v.get("pairing")).and_then(Value::as_u64).map_or_else(|| yt::default_pairing(id), |p| p as usize % yt::PAIRINGS.len()),
+        style: text("style"),
+    }
+}
+
+async fn save_art(app: &App, user: &User, id: &str, art: &Art) -> ApiResult<()> {
+    let settings = crate::db::user_settings(&app.db, &user.id).await?;
+    let mut section = settings.get("courseArt").cloned().filter(Value::is_object).unwrap_or_else(|| json!({}));
+    section[id] = json!({ "name": art.name, "pairing": art.pairing, "style": art.style });
+    crate::db::set_settings_section(&app.db, &user.id, "courseArt", &section).await?;
+    Ok(())
+}
+
+fn art_json(art: &Art) -> Value {
+    json!({
+        "name": art.name, "pairing": art.pairing, "style": art.style,
+        "pairings": yt::PAIRINGS.iter().map(|(name, background, ink)| json!({ "name": name, "background": background, "ink": ink })).collect::<Vec<_>>(),
+    })
+}
+
+async fn store_simple_cover(app: &App, user: &User, id: &str, art: &Art) -> ApiResult<String> {
+    let blob_id = new_id();
+    sqlx::query("INSERT INTO blobs (id, user_id, content_type, data) VALUES ($1, $2, 'image/svg+xml', $3)")
+        .bind(&blob_id)
+        .bind(&user.id)
+        .bind(yt::simple_cover_svg(&art.name, art.pairing).into_bytes())
+        .execute(&app.db)
+        .await?;
+    let url = format!("/api/blobs/{blob_id}");
+    set_custom_image(app, user, id, &url).await?;
+    Ok(url)
+}
+
+#[derive(Deserialize)]
+pub struct ArtBody {
+    name: Option<String>,
+    pairing: Option<usize>,
+    /// "simple" draws the two-colour panel now; anything else only saves.
+    style: Option<String>,
+}
+
+pub async fn update_art(State(app): State<App>, user: User, Path(id): Path<String>, Json(body): Json<ArtBody>) -> ApiResult<Json<Value>> {
+    let p = playlist(&app, &user, &id).await?;
+    let mut art = art_of(&user, &id, &p.title);
+    if let Some(name) = body.name.map(|n| n.trim().chars().take(40).collect::<String>()).filter(|n| !n.is_empty()) {
+        art.name = name;
+    }
+    if let Some(pairing) = body.pairing {
+        art.pairing = pairing % yt::PAIRINGS.len();
+    }
+    let image = if body.style.as_deref() == Some("simple") {
+        art.style = Some("simple".into());
+        Some(store_simple_cover(&app, &user, &id, &art).await?)
+    } else {
+        None
+    };
+    save_art(&app, &user, &id, &art).await?;
+    let prompt = yt::build_image_prompt(&art.name, art.pairing, &p.title);
+    sqlx::query("UPDATE youtube_playlists SET image_prompt = $2, updated_at = now() WHERE id = $1").bind(&id).bind(&prompt).execute(&app.db).await?;
+    Ok(Json(json!({ "ok": true, "imageUrl": image, "prompt": prompt })))
+}
+
+const NAMING_SYSTEM: &str = "You give study courses the plainest name a person would use, for a cover. 1 to 4 words, Title Case, no course codes, years, lecturer names, or punctuation.";
+
+fn naming_examples() -> &'static str {
+    "Examples: \"Lectures on Random Matrices\" → Random Matrix Theory. \"Quantum Mechanics & Quantum Computation - Umesh Vazirani\" → Quantum Computing. \"Quant Trading Learning Path\" → Quant Trading."
+}
+
+pub async fn suggest_name(State(app): State<App>, user: User, Path(id): Path<String>) -> ApiResult<Json<Value>> {
+    let p = playlist(&app, &user, &id).await?;
+    let description: String = p.description.as_deref().unwrap_or("").chars().take(400).collect();
+    let prompt = format!("{}\n\nCourse: {}\nDescription: {description}\n\nReply with the name only.", naming_examples(), p.title);
+    let answer = crate::ai::ask_once(&app, &user, NAMING_SYSTEM, &prompt).await.map_err(|e| ApiError::bad(e.to_string()))?;
+    let name = yt::tidy_name(&answer).ok_or_else(|| ApiError::bad("The AI didn't suggest a name. Try again or type one."))?;
+    Ok(Json(json!({ "name": name })))
+}
+
+/// Give every course still on its YouTube thumbnail a simple cover. Names come
+/// from the AI in one request when one is connected, otherwise from the title.
+pub async fn simple_covers(State(app): State<App>, user: User) -> ApiResult<Json<Value>> {
+    let missing: Vec<(String, String)> =
+        sqlx::query_as("SELECT id, title FROM youtube_playlists WHERE user_id = $1 AND custom_image_url IS NULL ORDER BY created_at").bind(&user.id).fetch_all(&app.db).await?;
+    if missing.is_empty() {
+        return Ok(Json(json!({ "made": 0, "named": "none" })));
+    }
+    let list = missing.iter().enumerate().map(|(i, (_, title))| format!("{}. {title}", i + 1)).collect::<Vec<_>>().join("\n");
+    let prompt = format!("{}\n\nName each course below. Reply with exactly one name per line, in the same order, nothing else.\n\n{list}", naming_examples());
+    let suggested: Vec<String> = match crate::ai::ask_once(&app, &user, NAMING_SYSTEM, &prompt).await {
+        Ok(answer) => answer.lines().filter_map(yt::tidy_name).collect(),
+        Err(_) => vec![],
+    };
+    let from_ai = suggested.len() == missing.len();
+    for (i, (id, title)) in missing.iter().enumerate() {
+        let mut art = art_of(&user, id, title);
+        if from_ai {
+            art.name = suggested[i].clone();
+        }
+        art.style = Some("simple".into());
+        store_simple_cover(&app, &user, id, &art).await?;
+        save_art(&app, &user, id, &art).await?;
+        let prompt = yt::build_image_prompt(&art.name, art.pairing, title);
+        sqlx::query("UPDATE youtube_playlists SET image_prompt = $2 WHERE id = $1").bind(id).bind(&prompt).execute(&app.db).await?;
+    }
+    Ok(Json(json!({ "made": missing.len(), "named": if from_ai { "ai" } else { "title" } })))
+}
+
+#[derive(Deserialize)]
+pub struct StatusBody {
+    status: String,
+}
+
+/// Active courses show on Today and Tracks; back-burner ones wait in the Library.
+pub async fn set_status(State(app): State<App>, user: User, Path(id): Path<String>, Json(body): Json<StatusBody>) -> ApiResult<Json<Value>> {
+    if !matches!(body.status.as_str(), "ACTIVE" | "PAUSED") {
+        return Err(ApiError::bad("A course is either active or on the back burner."));
+    }
+    let updated = sqlx::query("UPDATE youtube_playlists SET status = $3, updated_at = now() WHERE id = $1 AND user_id = $2")
+        .bind(&id)
+        .bind(&user.id)
+        .bind(&body.status)
+        .execute(&app.db)
+        .await?;
+    if updated.rows_affected() == 0 {
+        return Err(ApiError::not_found("Playlist"));
+    }
+    Ok(ok())
 }
 
 pub async fn blob(State(app): State<App>, user: User, Path(id): Path<String>) -> ApiResult<Response> {
@@ -473,6 +627,8 @@ pub async fn blob(State(app): State<App>, user: User, Path(id): Path<String>) ->
             (header::CONTENT_TYPE, content_type),
             (header::CACHE_CONTROL, "private, max-age=31536000, immutable".to_string()),
             (header::X_CONTENT_TYPE_OPTIONS, "nosniff".to_string()),
+            // Generated covers are SVG: never let one run script if opened directly.
+            (header::CONTENT_SECURITY_POLICY, "default-src 'none'; style-src 'unsafe-inline'; sandbox".to_string()),
         ],
         data,
     )

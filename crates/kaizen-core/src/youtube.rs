@@ -345,24 +345,147 @@ pub fn embed_url(playlist_id: &str, video_id: Option<&str>, position: Option<i64
     }
 }
 
-pub fn build_image_prompt(title: &str, description: Option<&str>, lecture_titles: &[String]) -> String {
-    let lectures = if lecture_titles.is_empty() {
-        "No lecture titles were available.".to_string()
-    } else {
-        lecture_titles.iter().enumerate().map(|(i, t)| format!("{}. {t}", i + 1)).collect::<Vec<_>>().join("\n")
-    };
+/// Two-colour pairings for course covers: (name, background, ink). Each pair
+/// keeps the ink readable on the background.
+pub const PAIRINGS: [(&str, &str, &str); 12] = [
+    ("Midnight and saffron", "#14213D", "#FCA311"),
+    ("Forest and mint", "#1B4332", "#D8F3DC"),
+    ("Oxblood and cream", "#5B1A1A", "#F6E7CB"),
+    ("Ink and coral", "#1D1E2C", "#FF7F6A"),
+    ("Teal and sand", "#0F4C5C", "#F2E2C4"),
+    ("Plum and peach", "#3C1642", "#FFC09F"),
+    ("Cobalt and ivory", "#1F3FBF", "#FAF3E0"),
+    ("Charcoal and lime", "#222222", "#C6F432"),
+    ("Mustard and ink", "#E9B44C", "#1B1B3A"),
+    ("Blush and wine", "#F7CAD0", "#6A040F"),
+    ("Sky and navy", "#BDE0FE", "#0B2545"),
+    ("Paper and black", "#F4F1EA", "#111111"),
+];
+
+/// A stable pairing for a course until the learner picks another.
+pub fn default_pairing(seed: &str) -> usize {
+    seed.bytes().fold(7usize, |h, b| h.wrapping_mul(31).wrapping_add(b as usize)) % PAIRINGS.len()
+}
+
+pub fn pairing(index: usize) -> (&'static str, &'static str, &'static str) {
+    PAIRINGS[index % PAIRINGS.len()]
+}
+
+static BRACKETS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\([^)]*\)|\[[^\]]*\]").unwrap());
+static COURSE_CODE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^(?:[A-Z]{2,5}\s+)?\d+(?:\.\d+)+[A-Z]?\s+").unwrap());
+static TERM: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?i)\b(?:spring|summer|fall|autumn|winter)?\s*\d{4}\b").unwrap());
+const LEADING: [&str; 6] = ["lectures on ", "lecture series on ", "a course on ", "course on ", "lectures in ", "the "];
+const TRAILING: [&str; 9] = [" learning path", " full course", " lecture series", " lectures", " course", " playlist", " series", " tutorial", " class"];
+const SMALL_WORDS: [&str; 8] = ["and", "of", "in", "on", "the", "for", "to", "a"];
+
+/// The plainest name a person would give a course ("Lectures on Random
+/// Matrices" → "Random Matrices"), used when no AI is connected.
+pub fn simple_name(title: &str) -> String {
+    let mut name = BRACKETS.replace_all(title, " ").to_string();
+    for sep in [" - ", " – ", " — ", " | ", ", "] {
+        if let Some((head, _)) = name.split_once(sep) {
+            name = head.to_string();
+        }
+    }
+    name = COURSE_CODE.replace(name.trim(), "").to_string();
+    name = TERM.replace_all(&name, " ").to_string();
+    name = name.trim_matches(|c: char| c.is_whitespace() || ".:;,-".contains(c)).to_string();
+    let lower = name.to_lowercase();
+    if let Some(prefix) = LEADING.iter().find(|p| lower.starts_with(**p)) {
+        name = name[prefix.len()..].to_string();
+    }
+    loop {
+        let lower = name.to_lowercase();
+        match TRAILING.iter().find(|t| lower.ends_with(**t) && lower.len() > t.len()) {
+            Some(t) => name.truncate(name.len() - t.len()),
+            None => break,
+        }
+    }
+    let words: Vec<String> = name
+        .split_whitespace()
+        .enumerate()
+        .map(|(i, w)| {
+            let lower = w.to_lowercase();
+            if i > 0 && SMALL_WORDS.contains(&lower.as_str()) {
+                lower
+            } else if w.chars().all(|c| !c.is_uppercase()) {
+                let mut chars = w.chars();
+                chars.next().map_or_else(String::new, |f| f.to_uppercase().collect::<String>() + chars.as_str())
+            } else {
+                w.to_string()
+            }
+        })
+        .collect();
+    let out = words.join(" ");
+    if out.is_empty() { title.trim().to_string() } else { out }
+}
+
+/// Clean an AI-suggested name: one line, no quotes or numbering, short.
+pub fn tidy_name(raw: &str) -> Option<String> {
+    let line = raw.lines().map(str::trim).find(|l| !l.is_empty())?;
+    let line = line.trim_start_matches(|c: char| c.is_ascii_digit() || ".)-• ".contains(c));
+    let cleaned: String = line.trim_matches(|c: char| "\"'“”‘’*`. ".contains(c)).chars().take(40).collect();
+    (!cleaned.is_empty()).then(|| cleaned.trim().to_string())
+}
+
+/// The prompt for an image model: the course's simple name, set large, in
+/// exactly two colours.
+pub fn build_image_prompt(name: &str, pairing_index: usize, title: &str) -> String {
+    let (pair, background, ink) = pairing(pairing_index);
     [
-        "Create a polished 16:9 cover illustration for a learning playlist.".to_string(),
-        "Use the subject matter and progression of the lectures to choose the visual concept.".into(),
-        "Make it readable as a small dashboard card: one clear focal point, strong contrast, no logos, no UI chrome, and no written text in the image.".into(),
-        String::new(),
-        format!("Playlist: {title}"),
-        format!("Description: {}", description.map(str::trim).filter(|d| !d.is_empty()).unwrap_or("No description provided.")),
-        String::new(),
-        "Lecture sequence:".into(),
-        lectures,
+        "Design a 16:9 cover image for a course.".to_string(),
+        format!("Write the words “{name}” large, in a clean bold sans-serif, and spell them exactly. No other text."),
+        format!("Use exactly two flat colours, {pair}: background {background}, everything else {ink}. No gradients, shadows, or third colour."),
+        format!("Add at most one simple shape or motif that hints at the subject ({title}). Keep it minimal, like a book cover."),
     ]
     .join("\n")
+}
+
+fn xml_escape(text: &str) -> String {
+    text.replace('&', "&amp;").replace('<', "&lt;").replace('>', "&gt;").replace('"', "&quot;").replace('\'', "&apos;")
+}
+
+/// Break a name into at most three lines of roughly `width` characters.
+fn wrap(name: &str, width: usize) -> Vec<String> {
+    let mut lines: Vec<String> = Vec::new();
+    for word in name.split_whitespace() {
+        match lines.last_mut() {
+            Some(line) if line.chars().count() + 1 + word.chars().count() <= width => {
+                line.push(' ');
+                line.push_str(word);
+            }
+            _ => lines.push(word.to_string()),
+        }
+    }
+    if lines.len() > 3 {
+        let rest = lines.split_off(2).join(" ");
+        lines.push(rest);
+    }
+    lines
+}
+
+/// A simple cover: the name in one colour on a panel of the other.
+pub fn simple_cover_svg(name: &str, pairing_index: usize) -> String {
+    let (_, background, ink) = pairing(pairing_index);
+    let longest = name.split_whitespace().map(|w| w.chars().count()).max().unwrap_or(1);
+    let width = if name.chars().count() <= 14 { 14 } else { 16.max(longest) };
+    let lines = wrap(name, width);
+    let widest = lines.iter().map(|l| l.chars().count()).max().unwrap_or(1) as f64;
+    let size = (1100.0 / (widest * 0.6)).clamp(64.0, 140.0).floor();
+    let line_height = size * 1.08;
+    let bottom = 720.0 - 96.0;
+    let text: String = lines
+        .iter()
+        .enumerate()
+        .map(|(i, line)| {
+            let y = bottom - (lines.len() - 1 - i) as f64 * line_height;
+            format!(r#"<text x="88" y="{y:.0}">{}</text>"#, xml_escape(line))
+        })
+        .collect();
+    let rule_y = bottom - (lines.len() as f64 - 1.0) * line_height - size - 36.0;
+    format!(
+        r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" width="1280" height="720"><rect width="1280" height="720" fill="{background}"/><rect x="88" y="{rule_y:.0}" width="96" height="12" fill="{ink}"/><g fill="{ink}" font-family="Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-weight="700" font-size="{size}" letter-spacing="-1">{text}</g></svg>"#
+    )
 }
 
 // ---------------------------------------------------------------- Progress
@@ -465,6 +588,33 @@ pub fn playback_update(item: &WatchItem, seconds: f64, ended: bool) -> PlaybackU
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn simple_names() {
+        assert_eq!(simple_name("Lectures on Random Matrices"), "Random Matrices");
+        assert_eq!(simple_name("Quant Trading Learning Path"), "Quant Trading");
+        assert_eq!(simple_name("Distributed Systems (www.distributedsystemscourse.com)"), "Distributed Systems");
+        assert_eq!(simple_name("Quantum Mechanics & Quantum Computation - Umesh Vazirani"), "Quantum Mechanics & Quantum Computation");
+        assert_eq!(
+            simple_name("MIT 18.065 Matrix Methods in Data Analysis, Signal Processing, and Machine Learning, Spring 2018"),
+            "Matrix Methods in Data Analysis"
+        );
+        assert_eq!(simple_name("Differential equations"), "Differential Equations");
+        assert_eq!(simple_name("Division algebras and the standard model."), "Division Algebras and the Standard Model");
+        assert_eq!(tidy_name("1. \"Random Matrix Theory\"\n"), Some("Random Matrix Theory".into()));
+        assert_eq!(tidy_name("  "), None);
+    }
+
+    #[test]
+    fn covers_use_two_colours_and_escape_text() {
+        let svg = simple_cover_svg("Rock & <Roll>", 0);
+        assert!(svg.contains("Rock &amp; &lt;Roll&gt;"));
+        assert!(svg.contains("#14213D") && svg.contains("#FCA311"));
+        assert_eq!(wrap("Quantum Computing Jobs", 16), vec!["Quantum", "Computing Jobs"]);
+        let prompt = build_image_prompt("Random Matrix Theory", 1, "Lectures on Random Matrices");
+        assert!(prompt.contains("“Random Matrix Theory”") && prompt.contains("#1B4332") && prompt.contains("#D8F3DC"));
+        assert!(default_pairing("abc") < PAIRINGS.len());
+    }
 
     #[test]
     fn durations() {

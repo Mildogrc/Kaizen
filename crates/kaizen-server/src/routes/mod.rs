@@ -133,6 +133,10 @@ pub fn api() -> Router<App> {
         .route("/youtube/{id}/progress", post(youtube::progress))
         .route("/youtube/{id}/image-prompt", post(youtube::image_prompt))
         .route("/youtube/{id}/artwork", post(youtube::artwork))
+        .route("/youtube/{id}/art", post(youtube::update_art))
+        .route("/youtube/{id}/art/name", post(youtube::suggest_name))
+        .route("/youtube/{id}/status", post(youtube::set_status))
+        .route("/youtube/covers/simple", post(youtube::simple_covers))
         .route("/blobs/{id}", get(youtube::blob))
         // content
         .route("/import", get(import::options).post(import::run))

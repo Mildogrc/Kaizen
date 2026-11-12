@@ -236,6 +236,20 @@ pub async fn complete(
     }
 }
 
+/// One short answer with no conversation, for small helpers such as naming
+/// a course. Fails fast when no AI is connected.
+pub async fn ask_once(app: &App, user: &User, system: &str, prompt: &str) -> Result<String, AiError> {
+    let config = core_settings::ai(&user.settings);
+    let route = resolve_route(app, user, &config).await?;
+    let (tx, mut rx) = mpsc::channel(64);
+    let drain = tokio::spawn(async move { while rx.recv().await.is_some() {} });
+    let messages = [ChatMessage { role: "user".into(), content: prompt.into() }];
+    let answer = tokio::time::timeout(Duration::from_secs(90), complete(app, user, &route, &config.model, system, &messages, &tx)).await;
+    drop(tx);
+    let _ = drain.await;
+    answer.unwrap_or_else(|_| Err(AiError::Provider("The AI took too long to answer.".into())))
+}
+
 async fn default_chatgpt_model(app: &App, user_id: &str) -> String {
     chatgpt::list_models(app, user_id)
         .await

@@ -7,7 +7,8 @@ import { ConceptChip, LinkSourceModal, useConceptLinks } from '../components/con
 import { Icon } from '../components/icons';
 import { LessonRow } from '../components/tracks';
 import { ai } from '../lib/ai';
-import { Card, CopyButton, Disclosure, Field, Load, Metric, MetricRow, Page, Progress, Section } from '../components/ui';
+import { setCourseStatus } from './YouTube';
+import { Card, CopyButton, Disclosure, Field, Load, Metric, MetricRow, Page, Pills, Progress, Section } from '../components/ui';
 
 let ytApi;
 function loadYouTubeApi() {
@@ -76,6 +77,71 @@ function Artwork(props) {
   );
 }
 
+/** The two cover styles: a plain two-colour panel, or a prompt for an image model. */
+function Cover(props) {
+  const d = () => props.d;
+  const art = () => d().art;
+  const [name, setName] = createSignal(art().name);
+  const [pairing, setPairing] = createSignal(art().pairing);
+  const [style, setStyle] = createSignal(art().style === 'artistic' ? 'artistic' : 'simple');
+  const [naming, setNaming] = createSignal(false);
+  const pair = () => art().pairings[pairing()];
+  const shuffle = () => {
+    const others = art().pairings.map((_, i) => i).filter((i) => i !== pairing());
+    setPairing(others[Math.floor(Math.random() * others.length)]);
+  };
+  const suggest = async () => {
+    setNaming(true);
+    const r = await attempt(() => post(`/youtube/${d().playlist.id}/art/name`, undefined, { refresh: false }));
+    if (r?.name) setName(r.name);
+    setNaming(false);
+  };
+  const save = (asSimple) =>
+    attempt(() => post(`/youtube/${d().playlist.id}/art`, { name: name(), pairing: pairing(), style: asSimple ? 'simple' : null }),
+      asSimple ? 'Cover updated' : 'Prompt updated');
+  return (
+    <div class="space-y-4">
+      <Field label="Name on the cover">
+        <div class="flex flex-wrap gap-2">
+          <input class="input min-w-[200px] flex-1" maxLength={40} value={name()} onInput={(e) => setName(e.currentTarget.value)} />
+          <button class="btn" disabled={naming()} onClick={suggest}><Icon name="sparkle" size={14} /> {naming() ? 'Thinking…' : 'Suggest'}</button>
+        </div>
+      </Field>
+      <Field label={`Colours · ${pair().name}`}>
+        <div class="flex flex-wrap items-center gap-1.5">
+          <For each={art().pairings}>
+            {(p, i) => (
+              <button type="button" class="pill !px-1.5" aria-pressed={pairing() === i()} title={p.name} aria-label={p.name} onClick={() => setPairing(i())}>
+                <span class="flex h-5 w-8 overflow-hidden rounded-full border border-line"><span class="flex-1" style={{ background: p.background }} /><span class="flex-1" style={{ background: p.ink }} /></span>
+              </button>
+            )}
+          </For>
+          <button type="button" class="btn btn-ghost btn-sm" onClick={shuffle}>Shuffle</button>
+        </div>
+      </Field>
+      <div class="flex aspect-video w-full max-w-md flex-col justify-end overflow-hidden rounded-lg p-[6%]" style={{ background: pair().background, color: pair().ink }} aria-label="Cover preview">
+        <span class="mb-[4%] block h-[1.6%] w-[7.5%] min-h-[3px]" style={{ background: pair().ink }} />
+        <span class="text-[clamp(22px,5.5vw,40px)] font-bold leading-[1.05] tracking-tight">{name() || 'Course name'}</span>
+      </div>
+      <Field label="Style">
+        <Pills value={style()} onChange={setStyle} options={[{ value: 'simple', label: 'Simple' }, { value: 'artistic', label: 'Artistic (AI image)' }]} />
+      </Field>
+      <Show when={style() === 'simple'} fallback={
+        <div class="space-y-2">
+          <p class="text-[13px] text-muted">Paste this into an image model, then upload the result below. It uses the same name and colours.</p>
+          <div class="flex gap-2">
+            <button class="btn btn-sm" onClick={() => save(false)}>Update the prompt</button>
+            <Show when={d().playlist.imagePrompt}><CopyButton small text={() => d().playlist.imagePrompt} /></Show>
+          </div>
+          <Show when={d().playlist.imagePrompt}><pre class="max-h-48 overflow-auto whitespace-pre-wrap rounded-lg bg-surface-2 p-3 text-[12px] text-muted">{d().playlist.imagePrompt}</pre></Show>
+        </div>
+      }>
+        <button class="btn btn-primary" disabled={!name().trim()} onClick={() => save(true)}>Use this cover</button>
+      </Show>
+    </div>
+  );
+}
+
 export default function YouTubeDetail() {
   const params = useParams();
   const navigate = useNavigate();
@@ -116,6 +182,10 @@ export default function YouTubeDetail() {
           <Page title={d.playlist.title} back={{ href: '/library', label: 'Library' }}
             subtitle={[d.playlist.channelTitle, `${d.total} lectures`].filter(Boolean).join(' · ')}
             actions={<>
+              <Show when={d.playlist.status !== 'COMPLETED'}>
+                <Pills label="Course status" value={d.playlist.status} onChange={(status) => setCourseStatus(d.playlist.id, status)}
+                  options={[{ value: 'ACTIVE', label: 'Active' }, { value: 'PAUSED', label: 'Back burner' }]} />
+              </Show>
               <button class="btn" disabled={!d.current} onClick={askLecture}><Icon name="sparkle" size={14} /> Ask about this lecture</button>
               <a href={d.watchUrl} target="_blank" rel="noreferrer" class="btn"><Icon name="external" size={14} /> YouTube</a>
               <button class="btn" disabled={refreshing()} onClick={refresh}><Icon name="sync" size={14} class={refreshing() ? 'animate-spin' : ''} /> Refresh</button>
@@ -184,19 +254,9 @@ export default function YouTubeDetail() {
                 </Card>
               </Section>
             </div>
-            <div class="grid gap-3 md:grid-cols-2">
-              <Disclosure title="Artwork">
-                <Artwork id={d.playlist.id} />
-              </Disclosure>
-              <Disclosure title="AI artwork prompt">
-                <Show when={d.playlist.imagePrompt} fallback={<p class="mb-2 text-[13px] text-muted">Generate a prompt for an image model from the lecture titles.</p>}>
-                  <pre class="mb-2 max-h-48 overflow-auto whitespace-pre-wrap text-[12px] text-muted">{d.playlist.imagePrompt}</pre>
-                </Show>
-                <div class="flex gap-2">
-                  <button class="btn btn-sm" onClick={() => attempt(() => post(`/youtube/${d.playlist.id}/image-prompt`))}>{d.playlist.imagePrompt ? 'Regenerate' : 'Generate prompt'}</button>
-                  <Show when={d.playlist.imagePrompt}><CopyButton small text={() => d.playlist.imagePrompt} /></Show>
-                </div>
-              </Disclosure>
+            <div class="grid items-start gap-3 md:grid-cols-2">
+              <Disclosure title="Cover"><Cover d={d} /></Disclosure>
+              <Disclosure title="Upload your own cover"><Artwork id={d.playlist.id} /></Disclosure>
             </div>
             <Show when={explaining()}>
               {(item) => (
