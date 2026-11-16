@@ -76,6 +76,11 @@ export default function Login() {
             <span class="font-medium text-muted">Using Claude?</span> {providers().claude.reason}
           </p>
         </Show>
+        <p class="mt-5 text-[12px] text-muted">
+          <a rel="external" class="hover:underline" href="/privacy.html">Privacy</a>
+          <span class="mx-1.5">·</span>
+          <a rel="external" class="hover:underline" href="/terms.html">Terms</a>
+        </p>
       </div>
     </div>
   );
