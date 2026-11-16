@@ -19,3 +19,4 @@ next-env.d.ts
 deploy/cloudflare/node_modules
 deploy/cloudflare/.wrangler
 deploy/cloudflare/.dev.vars
+.neon

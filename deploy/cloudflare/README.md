@@ -29,9 +29,13 @@ Do these in order. Steps 1–6 happen in web dashboards or need your password.
    (Rosetta builds the linux/amd64 image Cloudflare needs). `docker info`
    should succeed.
 2. **Cloudflare Workers Paid plan:** dashboard → Workers & Pages → Plans.
-3. **Neon database:** create a project (Postgres 17, region US East). Copy the
-   **direct** connection string (not the "pooled" one), ending in
-   `?sslmode=require`.
+3. **Neon database:** the repo is linked to Neon project `bitter-bar-37521321`
+   (`neon.ts`, `.neon`). `neon init` / `neon env pull` write the Neon variables
+   into `.env`, which would point local Kaizen at Neon: move them to
+   `.env.neon` (gitignored) and keep `.env` on your local Postgres.
+   `set-secrets.sh` reads `DATABASE_URL_UNPOOLED` (the **direct** URL) from
+   `.env.neon`: Kaizen runs migrations at startup under a session advisory
+   lock, which the pooler doesn't keep.
 4. **Google sign-in:** in Google Cloud Console → APIs & Services →
    Credentials, open the existing OAuth client and add:
    - Authorized JavaScript origin: `https://studykaizen.com`

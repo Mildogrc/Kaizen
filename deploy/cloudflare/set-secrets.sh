@@ -26,9 +26,16 @@ put KAIZEN_OWNER_EMAIL "$(from_env KAIZEN_OWNER_EMAIL)"
 put AUTH_GOOGLE_CLIENT_ID "$(from_env AUTH_GOOGLE_CLIENT_ID)"
 put AUTH_GOOGLE_CLIENT_SECRET "$(from_env AUTH_GOOGLE_CLIENT_SECRET)"
 
+# Neon: `neon init` / `neon env pull` values, kept in .env.neon. The server
+# runs migrations (session advisory lock), so it uses the DIRECT URL.
+neon_direct=$(grep -E '^DATABASE_URL_UNPOOLED=' "$ROOT/.env.neon" 2>/dev/null | head -1 | cut -d= -f2- | tr -d "\"'" || true)
+if [ -n "$neon_direct" ]; then
+  put DATABASE_URL "$neon_direct"
+fi
+
 echo
 echo "Paste each value (input is hidden; press Enter to skip optional ones):"
-ask DATABASE_URL "Neon connection string"
+[ -n "$neon_direct" ] || ask DATABASE_URL "Neon direct connection string"
 ask ANTHROPIC_API_KEY "Anthropic API key (pays for verified students' free AI)"
 ask YOUTUBE_API_KEY "YouTube Data API key (optional)"
 echo
