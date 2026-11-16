@@ -31,6 +31,8 @@ pub struct User {
     pub avatar_url: Option<String>,
     pub timezone: String,
     pub is_owner: bool,
+    /// Verified school email: may use the free student AI.
+    pub student_verified: bool,
     #[serde(skip)]
     pub tz: Tz,
     #[serde(skip)]
@@ -47,6 +49,7 @@ struct SessionUserRow {
     settings: Value,
     session_id: String,
     last_seen_at: DateTime<Utc>,
+    student_verified: bool,
 }
 
 pub fn read_cookie(headers: &HeaderMap, name: &str) -> Option<String> {
@@ -65,7 +68,8 @@ pub fn session_cookie(app: &App, token: &str, max_age_secs: i64) -> HeaderValue 
 pub async fn load_user(app: &App, headers: &HeaderMap) -> Result<Option<User>, ApiError> {
     let Some(token) = read_cookie(headers, SESSION_COOKIE) else { return Ok(None) };
     let row: Option<SessionUserRow> = sqlx::query_as(
-        "SELECT u.id, u.email, u.name, u.avatar_url, u.timezone, u.settings, s.id AS session_id, s.last_seen_at
+        "SELECT u.id, u.email, u.name, u.avatar_url, u.timezone, u.settings, s.id AS session_id, s.last_seen_at,
+                EXISTS (SELECT 1 FROM student_verifications v WHERE v.user_id = u.id AND v.verified_at IS NOT NULL) AS student_verified
          FROM sessions s JOIN users u ON u.id = s.user_id
          WHERE s.id = $1 AND s.expires_at > now()",
     )
@@ -87,6 +91,7 @@ pub async fn load_user(app: &App, headers: &HeaderMap) -> Result<Option<User>, A
     }
     Ok(Some(User {
         is_owner: app.config.is_owner(&row.email),
+        student_verified: row.student_verified,
         tz: kaizen_core::time::parse_tz(&row.timezone),
         id: row.id,
         email: row.email,

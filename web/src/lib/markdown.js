@@ -12,7 +12,8 @@ marked.use({
     },
     link({ href, title, tokens }) {
       const label = this.parser.parseInline(tokens);
-      const safe = /^(https?:|mailto:|\/(?!\/)|#)/i.test(href ?? '') ? href : '#';
+      // `//host` and `/\host` both leave the site in browsers.
+      const safe = /^(https?:|mailto:|\/(?![\/\\])|#)/i.test(href ?? '') ? href : '#';
       const t = title ? ` title="${escape(title)}"` : '';
       return `<a href="${escape(safe)}"${t} target="_blank" rel="noreferrer noopener">${label}</a>`;
     },

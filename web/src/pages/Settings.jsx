@@ -1,6 +1,6 @@
 import { For, Show, createSignal } from 'solid-js';
 import { ai } from '../lib/ai';
-import { del, put, useApi } from '../lib/api';
+import { del, post, put, useApi } from '../lib/api';
 import { attempt, session, themeStore } from '../lib/store';
 import { Icon } from '../components/icons';
 import { SETTINGS_TABS } from '../lib/nav';
@@ -37,6 +37,72 @@ function ApiKey(props) {
   );
 }
 
+const dollars = (micros) => `$${(micros / 1_000_000).toFixed(2)}`;
+
+function StudentAi(props) {
+  const st = () => props.st;
+  const [email, setEmail] = createSignal('');
+  const [code, setCode] = createSignal('');
+  const [busy, setBusy] = createSignal(false);
+  const run = async (fn, message) => {
+    setBusy(true);
+    try { return await attempt(fn, message); } finally { setBusy(false); }
+  };
+  const send = async (address) => {
+    if (await run(() => post('/settings/student/start', { email: address }), `Code sent to ${address}`)) setCode('');
+  };
+  const confirm = async () => {
+    if (await run(() => post('/settings/student/confirm', { code: code() }), 'Verified: free AI is on')) setCode('');
+  };
+  const used = () => Math.min(100, Math.round((st().spentMicros / Math.max(1, st().capMicros)) * 100));
+  return (
+    <Card class="mb-4 space-y-3 border-accent/40">
+      <div class="flex flex-wrap items-center gap-2">
+        <Icon name="sparkle" size={16} />
+        <div class="text-[14px] font-semibold">Free AI for medical students</div>
+        <Show when={st().verified}><Badge tone="good">verified</Badge></Show>
+      </div>
+      <Show when={st().verified} fallback={
+        <>
+          <p class="text-[13px]">
+            If you go to <strong>{st().school}</strong>, please verify your email: enter your <strong>@{st().domain}</strong> address
+            and Kaizen covers your AI costs. No API key or subscription needed.
+          </p>
+          <Show when={st().pendingEmail} fallback={
+            <form class="flex flex-wrap items-center gap-2" onSubmit={(e) => { e.preventDefault(); send(email().trim()); }}>
+              <input class="input max-w-sm flex-1" type="email" autocomplete="email" inputmode="email" required
+                placeholder={`you@${st().domain}`} value={email()} onInput={(e) => setEmail(e.currentTarget.value)} />
+              <button class="btn btn-primary" disabled={busy() || !email().trim()}>Email me a code</button>
+            </form>
+          }>
+            <p class="text-[13px] text-muted">We sent a 6-digit code to <strong>{st().pendingEmail}</strong>. It expires in 15 minutes.</p>
+            <form class="flex flex-wrap items-center gap-2" onSubmit={(e) => { e.preventDefault(); confirm(); }}>
+              <input class="input w-36 text-center font-mono tracking-[0.3em]" inputmode="numeric" autocomplete="one-time-code" maxLength={6}
+                placeholder="000000" value={code()} onInput={(e) => setCode(e.currentTarget.value.replace(/[^0-9]/g, ''))} />
+              <button class="btn btn-primary" disabled={busy() || code().length !== 6}>Verify</button>
+              <button type="button" class="btn btn-ghost" disabled={busy()} onClick={() => send(st().pendingEmail)}>Resend</button>
+              <button type="button" class="btn btn-ghost" disabled={busy()} onClick={() => run(() => del('/settings/student'))}>Use a different email</button>
+            </form>
+          </Show>
+        </>
+      }>
+        <p class="text-[13px]">
+          Verified as <strong>{st().email}</strong>. Whenever you haven’t connected your own AI, every “Ask AI” runs on Kaizen’s key at no cost to you.
+        </p>
+        <div>
+          <div class="mb-1 flex justify-between text-[12px] text-muted">
+            <span>This month: {dollars(st().spentMicros)} of {dollars(st().capMicros)}</span>
+            <span>Resets {new Date(`${st().resetsOn}T00:00:00`).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+          </div>
+          <div class="h-1.5 overflow-hidden rounded-full bg-surface-2">
+            <div class={`h-full rounded-full ${used() >= 90 ? 'bg-warn' : 'bg-accent'}`} style={{ width: `${used()}%` }} />
+          </div>
+        </div>
+      </Show>
+    </Card>
+  );
+}
+
 function AiSettings(props) {
   const s = () => props.s;
   const [model, setModel] = createSignal(s().config.model);
@@ -51,6 +117,7 @@ function AiSettings(props) {
   ];
   return (
     <>
+      <Show when={s().student?.available}><StudentAi st={s().student} /></Show>
       <Card class="mb-4 flex flex-wrap items-center gap-3">
         <div class={`ai-orb !h-7 !w-7 ${s().route ? 'idle' : ''}`} />
         <div class="min-w-0 flex-1">

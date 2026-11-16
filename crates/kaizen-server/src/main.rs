@@ -20,9 +20,11 @@ mod error;
 mod integrations;
 mod known_words;
 mod legacy;
+mod ratelimit;
 mod routes;
 mod secrets;
 mod state;
+mod students;
 mod web;
 mod workspace;
 
@@ -122,7 +124,23 @@ async fn serve(config: Config) -> Result<()> {
     Ok(())
 }
 
+/// Content-Security-Policy for the SPA. Scripts only from this origin (and
+/// YouTube's player API); no inline scripts, plugins, framing, or <base>.
+/// `connect-src` allows the local AnkiConnect for the browser relay.
+fn content_security_policy(app: &App) -> HeaderValue {
+    let origin = app.config.public_origin();
+    let websocket = origin.replacen("https://", "wss://", 1).replacen("http://", "ws://", 1);
+    let policy = format!(
+        "default-src 'self'; script-src 'self' https://www.youtube.com https://s.ytimg.com; style-src 'self' 'unsafe-inline'; \
+         img-src 'self' https: data: blob:; font-src 'self' data:; connect-src 'self' {websocket} http://127.0.0.1:8765 http://localhost:8765; \
+         frame-src https://www.youtube.com https://www.youtube-nocookie.com; media-src 'self' blob:; object-src 'none'; base-uri 'none'; \
+         form-action 'self'; frame-ancestors 'none'"
+    );
+    HeaderValue::from_str(&policy).expect("CSP is ASCII")
+}
+
 fn build_router(app: App, web_dir: &std::path::Path) -> Router {
+    let hsts = app.config.secure_cookies.then(|| HeaderValue::from_static("max-age=31536000; includeSubDomains"));
     Router::new()
         .nest("/api", routes::api())
         .nest("/auth", auth::oauth::routes())
@@ -135,6 +153,12 @@ fn build_router(app: App, web_dir: &std::path::Path) -> Router {
         .layer(SetResponseHeaderLayer::if_not_present(header::X_CONTENT_TYPE_OPTIONS, HeaderValue::from_static("nosniff")))
         .layer(SetResponseHeaderLayer::if_not_present(header::REFERRER_POLICY, HeaderValue::from_static("strict-origin-when-cross-origin")))
         .layer(SetResponseHeaderLayer::if_not_present(header::X_FRAME_OPTIONS, HeaderValue::from_static("DENY")))
+        .layer(SetResponseHeaderLayer::if_not_present(header::CONTENT_SECURITY_POLICY, content_security_policy(&app)))
+        .layer(SetResponseHeaderLayer::if_not_present(
+            header::HeaderName::from_static("permissions-policy"),
+            HeaderValue::from_static("camera=(), microphone=(), geolocation=(), payment=(), usb=()"),
+        ))
+        .layer(SetResponseHeaderLayer::if_not_present(header::STRICT_TRANSPORT_SECURITY, move |_: &axum::http::Response<_>| hsts.clone()))
         .layer(TraceLayer::new_for_http())
         .with_state(app)
 }

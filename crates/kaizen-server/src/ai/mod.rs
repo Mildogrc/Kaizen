@@ -50,6 +50,8 @@ pub enum AiEvent {
     /// Coarse progress for the loading animation: connecting | thinking | writing.
     Status(String),
     Delta(String),
+    /// Token usage so far (cumulative); used to meter free student AI.
+    Usage { input_tokens: u64, output_tokens: u64 },
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -91,6 +93,8 @@ pub enum Route {
     OpenAiApi,
     AgyCli,
     GeminiApi,
+    /// Verified students: the instance Anthropic key, metered and capped.
+    StudentFree,
 }
 
 impl Route {
@@ -103,11 +107,12 @@ impl Route {
             Route::OpenAiApi => "OpenAI API",
             Route::AgyCli => "Gemini (your plan, via Antigravity)",
             Route::GeminiApi => "Gemini API",
+            Route::StudentFree => "Kaizen free AI (Augusta students)",
         }
     }
     pub fn provider(&self) -> &'static str {
         match self {
-            Route::ClaudeCli | Route::ClaudeApi => "claude",
+            Route::ClaudeCli | Route::ClaudeApi | Route::StudentFree => "claude",
             Route::ChatGptPlan | Route::CodexCli | Route::OpenAiApi => "openai",
             Route::AgyCli | Route::GeminiApi => "gemini",
         }
@@ -139,6 +144,17 @@ async fn api_key(app: &App, user: &User, provider: &str) -> Result<Option<String
 const CLI_PLAN_SUBSCRIPTIONS: bool = false;
 
 pub async fn resolve_route(app: &App, user: &User, config: &AiConfiguration) -> Result<Route, AiError> {
+    match resolve_configured(app, user, config).await {
+        // A verified student whose own AI isn't connected gets the free route.
+        Err(AiError::NotConnected(_)) if user.student_verified && crate::students::available(app) => {
+            crate::students::check_cap(app, &user.id).await?;
+            Ok(Route::StudentFree)
+        }
+        other => other,
+    }
+}
+
+async fn resolve_configured(app: &App, user: &User, config: &AiConfiguration) -> Result<Route, AiError> {
     let unavailable = |name: &str| {
         AiError::NotConnected(format!(
             "{name} subscriptions can't be connected to Kaizen. Use your ChatGPT plan, or add a {name} API key under Settings → AI."
@@ -227,8 +243,9 @@ pub async fn complete(
         }
         Route::ClaudeApi => {
             let key = api_key(app, user, "claude").await?.unwrap_or_default();
-            apis::stream_anthropic(app, &key, model, system, messages, tx).await
+            apis::stream_anthropic(app, &key, model, system, messages, apis::AnthropicOptions::default(), tx).await
         }
+        Route::StudentFree => crate::students::complete(app, user, system, messages, tx).await,
         Route::GeminiApi => {
             let key = api_key(app, user, "gemini").await?.unwrap_or_default();
             apis::stream_gemini(app, &key, model, system, messages, tx).await
@@ -343,6 +360,9 @@ pub async fn chat(State(app): State<App>, user: User, Json(req): Json<ChatReques
     if message.len() > 400_000 {
         return Err(ApiError::bad("That message is too long (400 KB max)."));
     }
+    if !app.limits.allow(&format!("ai:{}", user.id), 30, Duration::from_secs(60)) {
+        return Err(ApiError::TooManyRequests("You're sending AI requests very quickly. Wait a minute and try again.".into()));
+    }
     let config = core_settings::ai(&user.settings);
     // Nothing is stored or started unless an AI is actually connected.
     if let Err(error) = resolve_route(&app, &user, &config).await {
@@ -435,7 +455,8 @@ async fn run_turn(
             return;
         }
     };
-    turn.publish("start", json!({ "provider": route.provider(), "label": route.label(), "model": config.model }));
+    let shown_model = if route == Route::StudentFree { app.config.student_ai_model.clone() } else { config.model.clone() };
+    turn.publish("start", json!({ "provider": route.provider(), "label": route.label(), "model": shown_model }));
 
     // Provider events flow through a channel; Stop cancels the provider
     // (killing CLI subprocesses) promptly.
@@ -460,6 +481,7 @@ async fn run_turn(
                 Some(AiEvent::Status(status)) => {
                     turn.publish("status", json!({ "status": status }));
                 }
+                Some(AiEvent::Usage { .. }) => {}
                 None => break match (&mut provider).await {
                     Ok(result) => result,
                     Err(_) => Err(AiError::Cancelled),
@@ -659,6 +681,12 @@ pub async fn status(app: &App, user: &User) -> ApiResult<Value> {
         "chatgpt": chatgpt,
         "chatgptSignIn": crate::auth::oauth::chatgpt_available(app),
         "apiKeys": keys,
-        "clis": { "claude": cli_status(cli::Tool::Claude), "codex": cli_status(cli::Tool::Codex), "agy": cli_status(cli::Tool::Agy) },
+        // Server paths are the owner's business only.
+        "clis": if user.is_owner {
+            json!({ "claude": cli_status(cli::Tool::Claude), "codex": cli_status(cli::Tool::Codex), "agy": cli_status(cli::Tool::Agy) })
+        } else {
+            json!({})
+        },
+        "student": crate::students::status_json(app, &user.id).await?,
     }))
 }

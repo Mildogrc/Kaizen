@@ -9,7 +9,8 @@
 //!   the official `claude` CLI instead (see `ai`).
 
 use axum::extract::{Query, State};
-use axum::http::{HeaderMap, StatusCode};
+use axum::http::header::SET_COOKIE;
+use axum::http::{HeaderMap, HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Redirect, Response};
 use axum::routing::{get, post};
 use axum::{Json, Router};
@@ -19,7 +20,8 @@ use serde_json::{Value, json};
 
 use super::{MaybeUser, User, create_session, destroy_session, email_allowed, set_cookie_headers};
 use crate::ai::chatgpt::{ChatGptTokens, store_tokens};
-use crate::crypto::{new_id, pkce_challenge, random_token};
+use crate::crypto::{new_id, pkce_challenge, random_token, sha256_hex};
+use crate::ratelimit::client_ip;
 use crate::db::{kv_get, kv_set, safe_return_to};
 use crate::error::{ApiError, ApiResult};
 use crate::state::App;
@@ -151,12 +153,31 @@ async fn openai_client_id(app: &App) -> ApiResult<String> {
     Ok(kv_get(&app.db, "openai_client_id").await?.unwrap_or_else(|| OPENAI_DYNAMIC_CLIENT.to_string()))
 }
 
+/// Cookie that ties an OAuth attempt to the browser that started it.
+const BINDING_COOKIE: &str = "kaizen_oauth";
+const BINDING_MINUTES: i64 = 15;
+
+fn binding_cookie(app: &App, value: &str, max_age_secs: i64) -> HeaderValue {
+    let secure = if app.config.secure_cookies { "; Secure" } else { "" };
+    HeaderValue::from_str(&format!("{BINDING_COOKIE}={value}; Path=/auth; HttpOnly; SameSite=Lax; Max-Age={max_age_secs}{secure}"))
+        .expect("cookie header is ASCII")
+}
+
 async fn start(
     State(app): State<App>,
+    headers: HeaderMap,
     axum::extract::Path(provider): axum::extract::Path<String>,
     Query(query): Query<StartQuery>,
     MaybeUser(current): MaybeUser,
 ) -> ApiResult<Response> {
+    if !app.limits.allow(&format!("auth:{}", client_ip(&headers)), 20, std::time::Duration::from_secs(60)) {
+        return Err(ApiError::TooManyRequests("Too many sign-in attempts. Wait a minute and try again.".into()));
+    }
+    // Abandoned attempts are cleared here, not only after a successful login.
+    sqlx::query("DELETE FROM oauth_states WHERE created_at < now() - make_interval(mins => $1)")
+        .bind(BINDING_MINUTES as i32)
+        .execute(&app.db)
+        .await?;
     let spec = spec(&provider).ok_or_else(|| ApiError::not_found("Sign-in provider"))?;
     let (available, reason) = availability(&app, spec.id);
     if !available {
@@ -170,6 +191,7 @@ async fn start(
     let state = random_token();
     let verifier = random_token();
     let nonce = random_token();
+    let binding = random_token();
     let (client_id, redirect_uri, mut params) = match spec.id {
         "google" => {
             let client = app.config.google.as_ref().expect("checked availability");
@@ -200,8 +222,8 @@ async fn start(
         ("code_challenge_method", "S256".into()),
     ]);
     sqlx::query(
-        "INSERT INTO oauth_states (state, provider, purpose, user_id, pkce_verifier, nonce, redirect_uri, return_to, client_id)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+        "INSERT INTO oauth_states (state, provider, purpose, user_id, pkce_verifier, nonce, redirect_uri, return_to, client_id, browser_hash)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
     )
     .bind(&state)
     .bind(spec.id)
@@ -212,11 +234,14 @@ async fn start(
     .bind(&redirect_uri)
     .bind(safe_return_to(query.return_to.as_deref()))
     .bind(&client_id)
+    .bind(sha256_hex(&binding))
     .execute(&app.db)
     .await?;
     let mut url = url::Url::parse(spec.authorize_url).expect("valid authorize url");
     url.query_pairs_mut().extend_pairs(params.iter().map(|(k, v)| (*k, v.as_str())));
-    Ok(Redirect::to(url.as_str()).into_response())
+    let mut response = Redirect::to(url.as_str()).into_response();
+    response.headers_mut().append(SET_COOKIE, binding_cookie(&app, &binding, BINDING_MINUTES * 60));
+    Ok(response)
 }
 
 #[derive(Deserialize)]
@@ -224,7 +249,6 @@ struct CallbackQuery {
     code: Option<String>,
     state: Option<String>,
     error: Option<String>,
-    error_description: Option<String>,
     client_id: Option<String>,
 }
 
@@ -238,6 +262,7 @@ struct StateRow {
     redirect_uri: String,
     return_to: Option<String>,
     client_id: Option<String>,
+    browser_hash: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -260,33 +285,44 @@ fn login_error(message: &str) -> Response {
 }
 
 async fn callback(State(app): State<App>, headers: HeaderMap, Query(query): Query<CallbackQuery>) -> Response {
-    match finish_callback(&app, &headers, query).await {
+    let mut response = match finish_callback(&app, &headers, query).await {
         Ok(response) => response,
-        Err(ApiError::BadRequest(message)) | Err(ApiError::Forbidden(message)) => login_error(&message),
+        Err(ApiError::BadRequest(message)) | Err(ApiError::Forbidden(message)) | Err(ApiError::Conflict(message)) => login_error(&message),
         Err(other) => {
             tracing::warn!(error = %other, "oauth callback failed");
             login_error("Sign-in failed. Please try again.")
         }
-    }
+    };
+    // The binding is single-use either way.
+    response.headers_mut().append(SET_COOKIE, binding_cookie(&app, "", 0));
+    response
 }
 
 async fn finish_callback(app: &App, headers: &HeaderMap, query: CallbackQuery) -> ApiResult<Response> {
     let state_value = query.state.ok_or_else(|| ApiError::bad("The sign-in response is missing its state."))?;
     let row: Option<StateRow> = sqlx::query_as(
-        "DELETE FROM oauth_states WHERE state = $1 AND created_at > now() - interval '15 minutes'
-         RETURNING provider, purpose, user_id, pkce_verifier, nonce, redirect_uri, return_to, client_id",
+        "DELETE FROM oauth_states WHERE state = $1 AND created_at > now() - make_interval(mins => $2)
+         RETURNING provider, purpose, user_id, pkce_verifier, nonce, redirect_uri, return_to, client_id, browser_hash",
     )
     .bind(&state_value)
+    .bind(BINDING_MINUTES as i32)
     .fetch_optional(&app.db)
     .await?;
     let row = row.ok_or_else(|| ApiError::bad("This sign-in link expired. Please start again."))?;
+    // The attempt must finish in the browser that started it (no login CSRF,
+    // no completing someone else's "connect" link).
+    let presented = super::read_cookie(headers, BINDING_COOKIE).map(|v| sha256_hex(&v));
+    if row.browser_hash.is_none() || presented != row.browser_hash {
+        return Err(ApiError::bad("This sign-in was started in a different browser. Please start again here."));
+    }
+    if row.purpose == "connect" {
+        let current = super::load_user(app, headers).await?;
+        if current.map(|u| u.id) != row.user_id {
+            return Err(ApiError::bad("Sign in to Kaizen again, then connect the account."));
+        }
+    }
     if let Some(error) = query.error {
-        let detail = query.error_description.unwrap_or_default();
-        return Err(ApiError::bad(if error == "access_denied" {
-            "Sign-in was cancelled.".to_string()
-        } else {
-            format!("Sign-in failed: {error} {detail}").trim().to_string()
-        }));
+        return Err(ApiError::bad(if error == "access_denied" { "Sign-in was cancelled." } else { "Sign-in failed at the provider. Please try again." }));
     }
     let code = query.code.ok_or_else(|| ApiError::bad("The sign-in response is missing its code."))?;
     let spec = spec(&row.provider).ok_or_else(|| ApiError::bad("Unknown sign-in provider."))?;
@@ -334,9 +370,7 @@ async fn finish_callback(app: &App, headers: &HeaderMap, query: CallbackQuery) -
     let id_token = tokens.id_token.clone().ok_or_else(|| ApiError::bad("The provider did not return an identity token."))?;
     let claims = app.jwks.validate(&id_token, spec.jwks_url, spec.issuers, &client_id, &row.nonce).await?;
     let email = claims.email.clone().map(|e| e.trim().to_lowercase()).filter(|e| e.contains('@'));
-    if spec.id == "google" && !claims.email_is_verified() {
-        return Err(ApiError::bad("Your Google email address is not verified."));
-    }
+    let email_verified = claims.email_is_verified();
 
     let user_id = match (row.purpose.as_str(), row.user_id.clone()) {
         ("connect", Some(user_id)) => {
@@ -345,7 +379,7 @@ async fn finish_callback(app: &App, headers: &HeaderMap, query: CallbackQuery) -
         }
         _ => {
             let email = email.clone().ok_or_else(|| ApiError::bad("The provider did not share an email address."))?;
-            resolve_user(app, spec.id, &claims.sub, &email, claims.name.as_deref(), claims.picture.as_deref()).await?
+            resolve_user(app, spec, &claims.sub, &email, email_verified, claims.name.as_deref(), claims.picture.as_deref()).await?
         }
     };
 
@@ -409,7 +443,16 @@ async fn link_identity(app: &App, user_id: &str, provider: &str, subject: &str, 
 }
 
 /// Identity → user; else link by email; else create (and seed) a new account.
-async fn resolve_user(app: &App, provider: &str, subject: &str, email: &str, name: Option<&str>, picture: Option<&str>) -> ApiResult<String> {
+async fn resolve_user(
+    app: &App,
+    spec: &ProviderSpec,
+    subject: &str,
+    email: &str,
+    email_verified: bool,
+    name: Option<&str>,
+    picture: Option<&str>,
+) -> ApiResult<String> {
+    let provider = spec.id;
     if let Some(user_id) = sqlx::query_scalar::<_, String>("SELECT user_id FROM identities WHERE provider = $1 AND subject = $2")
         .bind(provider)
         .bind(subject)
@@ -422,6 +465,10 @@ async fn resolve_user(app: &App, provider: &str, subject: &str, email: &str, nam
             .execute(&app.db)
             .await?;
         return Ok(user_id);
+    }
+    // An unverified address must never open, or link into, an account.
+    if !email_verified {
+        return Err(ApiError::bad(format!("Your {} email address isn't verified. Verify it with {} and try again.", spec.name, spec.name)));
     }
     if !email_allowed(app, email) {
         return Err(ApiError::Forbidden("This Kaizen instance is private. Ask the owner to add your email.".into()));

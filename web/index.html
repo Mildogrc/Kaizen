@@ -8,13 +8,7 @@
     <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)" />
     <title>Kaizen</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script>
-      // Apply the saved theme before first paint (no flash).
-      try {
-        const t = localStorage.getItem('kaizen.theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
-      } catch {}
-    </script>
+    <script src="/theme.js"></script>
   </head>
   <body>
     <div id="app"></div>

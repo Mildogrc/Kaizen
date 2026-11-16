@@ -13,6 +13,21 @@ pub struct OAuthClient {
     pub client_secret: Option<String>,
 }
 
+/// Cloudflare Email Service (REST) for transactional email.
+#[derive(Clone)]
+pub struct EmailConfig {
+    pub account_id: String,
+    pub api_token: String,
+    /// Sender, e.g. `Kaizen <noreply@studykaizen.com>`.
+    pub from: String,
+}
+
+impl std::fmt::Debug for EmailConfig {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("EmailConfig").field("account_id", &self.account_id).field("from", &self.from).finish_non_exhaustive()
+    }
+}
+
 #[derive(Clone, Debug)]
 pub struct Config {
     pub database_url: String,
@@ -39,6 +54,11 @@ pub struct Config {
     pub codex_bin: Option<PathBuf>,
     pub agy_bin: Option<PathBuf>,
     pub log_json: bool,
+    pub email: Option<EmailConfig>,
+    /// Model for verified students' free AI (runs on `anthropic_api_key`).
+    pub student_ai_model: String,
+    /// Monthly free-AI budget per student, in millionths of a dollar.
+    pub student_ai_monthly_micros: i64,
 }
 
 fn var(name: &str) -> Option<String> {
@@ -74,7 +94,29 @@ impl Config {
             .unwrap_or(public_url.scheme() == "https");
         let google = var("AUTH_GOOGLE_CLIENT_ID")
             .map(|client_id| OAuthClient { client_id, client_secret: var("AUTH_GOOGLE_CLIENT_SECRET") });
+        let email = match (var("CLOUDFLARE_ACCOUNT_ID"), var("CLOUDFLARE_EMAIL_API_TOKEN"), var("KAIZEN_EMAIL_FROM")) {
+            (Some(account_id), Some(api_token), Some(from)) => Some(EmailConfig { account_id, api_token, from }),
+            _ => None,
+        };
+        let student_ai_monthly_micros = match var("KAIZEN_STUDENT_AI_MONTHLY_USD") {
+            Some(v) => {
+                let dollars: f64 = v.parse().context("KAIZEN_STUDENT_AI_MONTHLY_USD must be a number of dollars")?;
+                anyhow::ensure!((0.0..=1000.0).contains(&dollars), "KAIZEN_STUDENT_AI_MONTHLY_USD must be between 0 and 1000");
+                (dollars * 1_000_000.0).round() as i64
+            }
+            None => 2_000_000,
+        };
+        let anki_transport = var("ANKI_TRANSPORT").unwrap_or_else(|| "auto".into());
+        // Direct mode sends every user's Anki calls to this machine's own
+        // AnkiConnect, so it is only allowed for a personal localhost install.
+        anyhow::ensure!(
+            !(anki_transport == "direct" && !loopback),
+            "ANKI_TRANSPORT=direct is only allowed when KAIZEN_PUBLIC_URL is localhost"
+        );
         Ok(Config {
+            email,
+            student_ai_model: var("KAIZEN_STUDENT_AI_MODEL").unwrap_or_else(|| "claude-haiku-5-5".into()),
+            student_ai_monthly_micros,
             database_url,
             bind,
             web_dir: var("KAIZEN_WEB_DIR").map(PathBuf::from).unwrap_or_else(|| PathBuf::from("web/dist")),
@@ -85,7 +127,7 @@ impl Config {
             google,
             openai_client_id: var("AUTH_OPENAI_CLIENT_ID"),
             anki_connect_url: var("ANKI_CONNECT_URL").unwrap_or_else(|| "http://127.0.0.1:8765".into()),
-            anki_transport: var("ANKI_TRANSPORT").unwrap_or_else(|| "auto".into()),
+            anki_transport,
             youtube_api_key: var("YOUTUBE_API_KEY"),
             anthropic_api_key: var("ANTHROPIC_API_KEY"),
             openai_api_key: var("OPENAI_API_KEY"),

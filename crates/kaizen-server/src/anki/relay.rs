@@ -67,7 +67,7 @@ impl RelayHub {
 }
 
 pub async fn websocket(State(app): State<App>, user: User, upgrade: WebSocketUpgrade) -> Response {
-    upgrade.max_message_size(64 * 1024 * 1024).on_upgrade(move |socket| serve(app, user.id, socket))
+    upgrade.max_message_size(8 * 1024 * 1024).on_upgrade(move |socket| serve(app, user.id, socket))
 }
 
 async fn serve(app: App, user_id: String, socket: WebSocket) {

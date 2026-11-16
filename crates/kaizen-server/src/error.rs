@@ -19,6 +19,8 @@ pub enum ApiError {
     Conflict(String),
     #[error("{0}")]
     Unavailable(String),
+    #[error("{0}")]
+    TooManyRequests(String),
     #[error(transparent)]
     Database(#[from] sqlx::Error),
     #[error(transparent)]
@@ -45,6 +47,7 @@ impl IntoResponse for ApiError {
             ApiError::NotFound(_) => StatusCode::NOT_FOUND,
             ApiError::Conflict(_) => StatusCode::CONFLICT,
             ApiError::Unavailable(_) => StatusCode::SERVICE_UNAVAILABLE,
+            ApiError::TooManyRequests(_) => StatusCode::TOO_MANY_REQUESTS,
             ApiError::Database(sqlx::Error::RowNotFound) => StatusCode::NOT_FOUND,
             ApiError::Database(_) | ApiError::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR,
         };

@@ -24,31 +24,46 @@ fn supports_effort(model: &str) -> bool {
         .any(|prefix| model.starts_with(prefix))
 }
 
+/// Per-route knobs for the Messages API request.
+pub struct AnthropicOptions {
+    pub max_tokens: u32,
+    pub effort: &'static str,
+    /// Send `fallbacks: "default"` where the model supports it.
+    pub fallback: bool,
+}
+
+impl Default for AnthropicOptions {
+    fn default() -> Self {
+        AnthropicOptions { max_tokens: 64_000, effort: "medium", fallback: true }
+    }
+}
+
 pub async fn stream_anthropic(
     app: &App,
     key: &str,
     model: &str,
     system: &str,
     messages: &[ChatMessage],
+    options: AnthropicOptions,
     tx: &mpsc::Sender<AiEvent>,
 ) -> Result<String, AiError> {
     let model = if model.is_empty() { DEFAULT_CLAUDE_MODEL } else { model };
     let mut body = json!({
         "model": model,
-        "max_tokens": 64000,
+        "max_tokens": options.max_tokens,
         "stream": true,
         "system": system,
         "messages": messages.iter().map(|m| json!({ "role": m.role, "content": m.content })).collect::<Vec<_>>(),
     });
     if supports_effort(model) {
-        body["output_config"] = json!({ "effort": "medium" });
+        body["output_config"] = json!({ "effort": options.effort });
     }
     let mut request = app
         .http
         .post("https://api.anthropic.com/v1/messages")
         .header("x-api-key", key)
         .header("anthropic-version", ANTHROPIC_VERSION);
-    if supports_default_fallback(model) {
+    if options.fallback && supports_default_fallback(model) {
         body["fallbacks"] = json!("default");
         request = request.header("anthropic-beta", "server-side-fallback-2026-07-01");
     }
@@ -70,6 +85,7 @@ pub async fn stream_anthropic(
     }
     let mut full = String::new();
     let mut stop_reason: Option<String> = None;
+    let mut input_tokens = 0u64;
     let mut events = sse_lines(response.bytes_stream().boxed());
     while let Some(event) = events.next().await {
         let (_, data) = event.map_err(|e| AiError::Provider(e.to_string()))?;
@@ -87,7 +103,15 @@ pub async fn stream_anthropic(
                     let _ = tx.send(AiEvent::Delta(text.to_string())).await;
                 }
             }
+            Some("message_start") => {
+                let usage = |name: &str| value.pointer(&format!("/message/usage/{name}")).and_then(Value::as_u64).unwrap_or(0);
+                input_tokens = usage("input_tokens") + usage("cache_creation_input_tokens") + usage("cache_read_input_tokens");
+                let _ = tx.send(AiEvent::Usage { input_tokens, output_tokens: usage("output_tokens") }).await;
+            }
             Some("message_delta") => {
+                if let Some(output_tokens) = value.pointer("/usage/output_tokens").and_then(Value::as_u64) {
+                    let _ = tx.send(AiEvent::Usage { input_tokens, output_tokens }).await;
+                }
                 if let Some(reason) = value.pointer("/delta/stop_reason").and_then(Value::as_str) {
                     stop_reason = Some(reason.to_string());
                 }

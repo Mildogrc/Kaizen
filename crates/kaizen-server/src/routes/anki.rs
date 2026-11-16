@@ -118,6 +118,16 @@ pub async fn save_mapping(State(app): State<App>, user: User, Json(body): Json<S
     if body.deck_name.trim().is_empty() || !owns_course(&app, &user, &body.course_id).await? {
         return Err(ApiError::bad("Choose a course and a deck."));
     }
+    if let Some(schema_id) = body.schema_id.as_deref().filter(|s| !s.is_empty()) {
+        let owned: bool = sqlx::query_scalar("SELECT EXISTS (SELECT 1 FROM content_schemas WHERE id = $1 AND user_id = $2)")
+            .bind(schema_id)
+            .bind(&user.id)
+            .fetch_one(&app.db)
+            .await?;
+        if !owned {
+            return Err(ApiError::bad("Choose one of your schemas."));
+        }
+    }
     sqlx::query(
         "INSERT INTO anki_deck_mappings (id, user_id, deck_name, course_id, schema_id) VALUES ($1, $2, $3, $4, $5)
          ON CONFLICT (user_id, deck_name) DO UPDATE SET course_id = EXCLUDED.course_id, schema_id = EXCLUDED.schema_id",

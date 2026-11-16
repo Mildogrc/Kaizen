@@ -1,0 +1,42 @@
+// Kaizen on Cloudflare Workers + Containers. Deploy from this folder:
+//   npm install && npx wrangler deploy        (Docker must be running)
+// Secrets are set once with `npx wrangler secret put NAME` (see README.md).
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kaizen",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-28",
+  "observability": { "enabled": true },
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "studykaizen.com", "custom_domain": true },
+    { "pattern": "www.studykaizen.com", "custom_domain": true }
+  ],
+  "containers": [
+    {
+      "class_name": "KaizenContainer",
+      "scheduling_policy": "durable_object",
+      "images": {
+        "base": {
+          // The repository's own Dockerfile (Rust server + built web app).
+          "dockerfile": "../../Dockerfile",
+          "build_context": "../.."
+        }
+      },
+      "observability": { "enabled": true }
+    }
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "KAIZEN", "class_name": "KaizenContainer" }]
+  },
+  "exports": {
+    "KaizenContainer": { "type": "durable-object", "storage": "sqlite" }
+  },
+  "vars": {
+    "KAIZEN_PUBLIC_URL": "https://studykaizen.com",
+    "KAIZEN_OPEN_SIGNUP": "1",
+    "KAIZEN_EMAIL_FROM": "Kaizen <noreply@studykaizen.com>",
+    "KAIZEN_STUDENT_AI_MODEL": "claude-haiku-5-5",
+    "KAIZEN_STUDENT_AI_MONTHLY_USD": "2"
+  }
+}

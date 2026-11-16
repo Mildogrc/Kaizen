@@ -82,6 +82,13 @@ provider and purpose).
   apps and does not allow them to collect claude.ai credentials. Claude is
   available for AI with an Anthropic API key.
 
+Each OAuth attempt is bound to the browser that started it (a short-lived
+`HttpOnly` `kaizen_oauth` cookie whose hash is stored with the state), and a
+`connect` must finish in the same signed-in session, so neither sign-in nor
+account-connect links can be completed in someone else's browser. An identity
+links to an existing account by email, or creates one, only when the provider
+says the email is verified. `/auth/{provider}/start` is rate-limited per IP.
+
 Sessions are opaque 256-bit tokens in an `HttpOnly; SameSite=Lax` cookie; only
 their SHA-256 is stored. Hosted instances accept the owner
 (`KAIZEN_OWNER_EMAIL`), `KAIZEN_ALLOWED_EMAILS`, or anyone with
@@ -130,6 +137,36 @@ Machine-level CLI logins and instance API keys belong to the instance owner;
 other users bring their own key or ChatGPT plan. Per-user keys and tokens are
 encrypted with AES-256-GCM (`KAIZEN_SECRET_KEY`). Conversations persist in
 `ai_conversations` / `ai_messages` so a lesson survives reloads.
+
+### Free AI for verified students (`students.rs`)
+
+Augusta University (Medical College of Georgia) students verify an
+`@augusta.edu` address with a six-digit emailed code (keyed hash stored,
+15-minute expiry, 5 attempts, 1 send/minute and 5/day; one address per
+account). Codes are sent through Cloudflare Email Service's REST API; a
+localhost install without email config logs the code instead. When a verified
+student's own AI route doesn't resolve, `resolve_route` returns
+`Route::StudentFree`: the instance `ANTHROPIC_API_KEY` with
+`KAIZEN_STUDENT_AI_MODEL` (Claude Haiku 5.5), low effort, 8k output tokens per
+reply, a 250k-character transcript limit, 40 requests per 10 minutes, and a
+monthly cap (`KAIZEN_STUDENT_AI_MONTHLY_USD`, default $2). Every request is a
+row in `student_ai_usage` written before it starts (so parallel requests
+count) and updated with the real token cost from the stream's usage events
+(or an estimate if the reply is stopped).
+
+All users: `/api/ai/chat` is limited to 30 requests per minute.
+
+## Security headers
+
+Every response carries a strict CSP (scripts from this origin and YouTube's
+player API only; no inline scripts; `connect-src` allows the local
+AnkiConnect for the relay), `X-Frame-Options: DENY`, `nosniff`,
+`Referrer-Policy`, a `Permissions-Policy`, and HSTS when cookies are secure.
+
+## Hosting
+
+`deploy/cloudflare/` runs the Docker image as a single Cloudflare Container
+behind a Worker on `studykaizen.com`, with Postgres on Neon. See its README.
 
 ## Anki
 

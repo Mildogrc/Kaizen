@@ -22,6 +22,7 @@ pub struct AppState {
     /// AI replies currently being generated.
     pub turns: TurnRegistry,
     pub jwks: JwksCache,
+    pub limits: crate::ratelimit::RateLimiter,
     /// Serializes OAuth refreshes per user (refresh tokens rotate).
     refresh_locks: Mutex<HashMap<String, Arc<Mutex<()>>>>,
 }
@@ -43,6 +44,7 @@ impl AppState {
             relay: RelayHub::default(),
             turns: TurnRegistry::default(),
             jwks: JwksCache::new(http),
+            limits: crate::ratelimit::RateLimiter::default(),
             refresh_locks: Mutex::new(HashMap::new()),
             config,
         }))

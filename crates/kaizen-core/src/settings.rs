@@ -248,7 +248,8 @@ pub fn ai(settings: &Value) -> AiConfiguration {
         model: get(saved, "model")
             .and_then(Value::as_str)
             .map(|m| m.trim().chars().take(120).collect::<String>())
-            .filter(|m| m.chars().all(|c| c.is_ascii_alphanumeric() || "-._:/[]".contains(c)))
+            // Model ids end up in request URLs (Gemini): no path traversal.
+            .filter(|m| m.chars().all(|c| c.is_ascii_alphanumeric() || "-._:/[]".contains(c)) && !m.contains(".."))
             .unwrap_or_default(),
     }
 }
@@ -303,5 +304,7 @@ mod tests {
         assert_eq!((c.provider.as_str(), c.mode.as_str()), ("gemini", "api"));
         let c = ai(&json!({"ai": {"provider": "openai", "mode": "api", "model": "gpt-5; rm -rf"}}));
         assert_eq!((c.provider.as_str(), c.mode.as_str(), c.model.as_str()), ("openai", "api", ""));
+        let c = ai(&json!({"ai": {"provider": "gemini", "mode": "api", "model": "../../v1beta/files"}}));
+        assert_eq!(c.model.as_str(), "");
     }
 }
