@@ -6,16 +6,34 @@
 // One instance on purpose: the Anki browser relay keeps per-user WebSocket
 // state in the server process, so every request must reach the same server.
 
-import { DurableObject } from "cloudflare:workers";
+import { DurableObject, WorkerEntrypoint } from "cloudflare:workers";
 
 const PORT = 8080;
+// The container reaches the email gateway at this unroutable address; the
+// Durable Object intercepts it and hands the request to EmailGateway, so the
+// container holds no email credentials.
+const EMAIL_GATEWAY_IP = "198.18.0.10";
+const EMAIL_FROM = { email: "noreply@studykaizen.com", name: "Kaizen" };
+// Only school verification codes are sent: nothing else can be emailed,
+// even by a compromised server.
+const ALLOWED_RECIPIENT = /^[a-z0-9._+-]{1,64}@augusta\.edu$/;
 // Sleep after 20 idle minutes (no requests, no open WebSocket) to save cost.
 // The next visitor waits a few seconds while it starts again.
 const INACTIVITY_TIMEOUT_MS = 20 * 60 * 1000;
 const CANONICAL_HOST = "studykaizen.com";
 
+declare global {
+  namespace Cloudflare {
+    interface GlobalProps {
+      mainModule: typeof import("./index");
+      durableNamespaces: "KaizenContainer";
+    }
+  }
+}
+
 interface Env {
   KAIZEN: DurableObjectNamespace<KaizenContainer>;
+  EMAIL: SendEmail;
   // Plain vars (wrangler.jsonc)
   KAIZEN_PUBLIC_URL: string;
   KAIZEN_OPEN_SIGNUP: string;
@@ -29,9 +47,35 @@ interface Env {
   AUTH_GOOGLE_CLIENT_ID: string;
   AUTH_GOOGLE_CLIENT_SECRET: string;
   ANTHROPIC_API_KEY?: string;
-  CLOUDFLARE_ACCOUNT_ID?: string;
-  CLOUDFLARE_EMAIL_API_TOKEN?: string;
   YOUTUBE_API_KEY?: string;
+}
+
+/** Sends one plain-text verification email on behalf of the container. */
+export class EmailGateway extends WorkerEntrypoint<Env> {
+  async fetch(request: Request): Promise<Response> {
+    if (request.method !== "POST" || new URL(request.url).pathname !== "/send") {
+      return new Response("not found", { status: 404 });
+    }
+    let body: { to?: unknown; subject?: unknown; text?: unknown };
+    try {
+      body = await request.json();
+    } catch {
+      return new Response("invalid json", { status: 400 });
+    }
+    const to = typeof body.to === "string" ? body.to.trim().toLowerCase() : "";
+    const subject = typeof body.subject === "string" ? body.subject : "";
+    const text = typeof body.text === "string" ? body.text : "";
+    if (!ALLOWED_RECIPIENT.test(to) || !subject || subject.length > 200 || !text || text.length > 5000) {
+      return new Response("rejected", { status: 400 });
+    }
+    try {
+      await this.env.EMAIL.send({ to, from: EMAIL_FROM, subject, text });
+      return Response.json({ ok: true });
+    } catch (error) {
+      console.error("email send failed", error);
+      return new Response("send failed", { status: 502 });
+    }
+  }
 }
 
 /** Only these reach the container; nothing else from the Worker env leaks in. */
@@ -51,8 +95,7 @@ function containerEnv(env: Env): Record<string, string> {
     AUTH_GOOGLE_CLIENT_ID: env.AUTH_GOOGLE_CLIENT_ID,
     AUTH_GOOGLE_CLIENT_SECRET: env.AUTH_GOOGLE_CLIENT_SECRET,
     ANTHROPIC_API_KEY: env.ANTHROPIC_API_KEY,
-    CLOUDFLARE_ACCOUNT_ID: env.CLOUDFLARE_ACCOUNT_ID,
-    CLOUDFLARE_EMAIL_API_TOKEN: env.CLOUDFLARE_EMAIL_API_TOKEN,
+    KAIZEN_EMAIL_GATEWAY: `http://${EMAIL_GATEWAY_IP}/send`,
     YOUTUBE_API_KEY: env.YOUTUBE_API_KEY,
   };
   return Object.fromEntries(Object.entries(pass).filter((e): e is [string, string] => typeof e[1] === "string" && e[1] !== ""));
@@ -97,6 +140,8 @@ export class KaizenContainer extends DurableObject<Env> {
   private async startAndWaitForPort(): Promise<void> {
     const container = this.ctx.container!;
     if (!container.running) {
+      // Intercepts last until the container stops, so register them per start.
+      await container.interceptOutboundHttp(EMAIL_GATEWAY_IP, this.ctx.exports.EmailGateway({}));
       container.start({
         image: container.images.base,
         // 1/4 vCPU, 1 GiB (the Japanese dictionary needs more than "lite").

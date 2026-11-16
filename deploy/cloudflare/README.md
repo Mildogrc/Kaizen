@@ -8,7 +8,7 @@ Postgres on [Neon](https://neon.tech); the container's disk is throwaway.
 ```
 browser ──► Worker (studykaizen.com) ──► KaizenContainer (one instance) ──► Neon Postgres
                                                      ├──► Google sign-in, Anthropic API
-                                                     └──► Cloudflare Email (verification codes)
+                                                     └──► EmailGateway (Worker send_email binding)
 ```
 
 There is exactly one container on purpose: the Anki browser relay keeps
@@ -23,8 +23,11 @@ verified students (capped at $2 per student per month).
 
 Do these in order. Steps 1–6 happen in web dashboards or need your password.
 
-1. **Docker Desktop** (builds the image): `brew install --cask docker`, then
-   open Docker.app once. `docker info` should succeed.
+1. **Docker** (builds the image). Either Docker Desktop, or headless:
+   `brew install colima docker docker-buildx`, link the buildx plugin into
+   `~/.docker/cli-plugins/`, then `colima start --vm-type vz --vz-rosetta`
+   (Rosetta builds the linux/amd64 image Cloudflare needs). `docker info`
+   should succeed.
 2. **Cloudflare Workers Paid plan:** dashboard → Workers & Pages → Plans.
 3. **Neon database:** create a project (Postgres 17, region US East). Copy the
    **direct** connection string (not the "pooled" one), ending in
@@ -37,10 +40,11 @@ Do these in order. Steps 1–6 happen in web dashboards or need your password.
    Then OAuth consent screen → **Publish app** ("In production"). Otherwise
    only listed test users can sign in. Kaizen only asks for `openid email
    profile`, so Google doesn't require a review.
-5. **Email for verification codes:** dashboard → Email → Email Sending →
-   onboard `studykaizen.com` (Cloudflare adds the SPF/DKIM records). Then
-   create an API token (My Profile → API Tokens) with the *Email Sending*
-   send permission for this account. Note your account ID (dashboard sidebar).
+5. **Email for verification codes:** `npx wrangler email sending enable studykaizen.com`
+   (adds the SPF/DKIM/DMARC records; already done for studykaizen.com). The
+   Worker sends through its `send_email` binding, and the container reaches it
+   through an outbound intercept (`EmailGateway`), so no email API token is
+   needed. The gateway only sends to `@augusta.edu` addresses.
 6. **Anthropic API key** for students' free AI: console.anthropic.com → API
    Keys. Also set a monthly **spend limit** there as a second safety net.
 7. **Log Wrangler in:** `cd deploy/cloudflare && npm install && npx wrangler login`.

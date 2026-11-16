@@ -30,8 +30,6 @@ echo
 echo "Paste each value (input is hidden; press Enter to skip optional ones):"
 ask DATABASE_URL "Neon connection string"
 ask ANTHROPIC_API_KEY "Anthropic API key (pays for verified students' free AI)"
-ask CLOUDFLARE_ACCOUNT_ID "Cloudflare account ID (for sending verification emails)"
-ask CLOUDFLARE_EMAIL_API_TOKEN "Cloudflare API token with Email Sending permission"
 ask YOUTUBE_API_KEY "YouTube Data API key (optional)"
 echo
 echo "Secrets saved. Cloudflare redeploys the Worker automatically."

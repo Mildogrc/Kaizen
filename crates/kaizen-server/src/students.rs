@@ -203,6 +203,22 @@ pub async fn complete(app: &App, user: &User, system: &str, messages: &[ChatMess
 
 /// Send a plain transactional email through Cloudflare Email Service.
 async fn send_email(app: &App, to: &str, subject: &str, text: &str) -> Result<(), ApiError> {
+    if let Some(gateway) = &app.config.email_gateway {
+        let response = app
+            .http
+            .post(gateway)
+            .json(&json!({ "to": to, "subject": subject, "text": text }))
+            .send()
+            .await
+            .map_err(|e| anyhow::anyhow!("email gateway request failed: {e}"))?;
+        if !response.status().is_success() {
+            let status = response.status();
+            let body = response.text().await.unwrap_or_default();
+            tracing::error!(%status, body = %body.chars().take(300).collect::<String>(), "email gateway send failed");
+            return Err(ApiError::Unavailable("We couldn't send the email. Try again in a few minutes.".into()));
+        }
+        return Ok(());
+    }
     let Some(email) = &app.config.email else {
         if app.config.is_loopback() {
             // Local development without email: show the message in the log.

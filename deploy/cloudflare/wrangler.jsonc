@@ -26,6 +26,8 @@
       "observability": { "enabled": true }
     }
   ],
+  // Verification codes; the EmailGateway only sends to @augusta.edu.
+  "send_email": [{ "name": "EMAIL", "allowed_sender_addresses": ["noreply@studykaizen.com"] }],
   "durable_objects": {
     "bindings": [{ "name": "KAIZEN", "class_name": "KaizenContainer" }]
   },

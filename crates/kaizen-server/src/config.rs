@@ -55,6 +55,10 @@ pub struct Config {
     pub agy_bin: Option<PathBuf>,
     pub log_json: bool,
     pub email: Option<EmailConfig>,
+    /// Hosted on Cloudflare: the Worker's email gateway (a `send_email`
+    /// binding reached through a container outbound intercept), so no API
+    /// token lives in the container. Takes precedence over `email`.
+    pub email_gateway: Option<String>,
     /// Model for verified students' free AI (runs on `anthropic_api_key`).
     pub student_ai_model: String,
     /// Monthly free-AI budget per student, in millionths of a dollar.
@@ -114,6 +118,7 @@ impl Config {
             "ANKI_TRANSPORT=direct is only allowed when KAIZEN_PUBLIC_URL is localhost"
         );
         Ok(Config {
+            email_gateway: var("KAIZEN_EMAIL_GATEWAY"),
             email,
             student_ai_model: var("KAIZEN_STUDENT_AI_MODEL").unwrap_or_else(|| "claude-haiku-5-5".into()),
             student_ai_monthly_micros,
