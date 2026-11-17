@@ -29,7 +29,7 @@ export default function Login() {
         style={{ background: 'radial-gradient(closest-side, var(--accent), transparent)' }} />
       <div class="card fade-up relative w-full max-w-[400px] p-7">
         <div class="mb-6 flex items-center gap-3">
-          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-accent text-[15px] font-bold text-white">K</span>
+          <img src="/favicon.svg" alt="" class="h-10 w-10" />
           <div>
             <h1 class="text-[15px] font-semibold leading-tight">Sign in to Kaizen</h1>
             <p class="text-[12px] text-muted">Long-term learning, one day at a time.</p>

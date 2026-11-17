@@ -67,7 +67,7 @@ function Sidebar(props) {
   return (
     <nav class="flex h-full flex-col">
       <A href="/" class="flex h-14 shrink-0 items-center gap-2.5 px-4" onClick={props.onNavigate}>
-        <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-[14px] font-bold text-white">K</span>
+        <img src="/favicon.svg" alt="" class="h-7 w-7" />
         <span class="text-[15px] font-semibold tracking-tight">Kaizen</span>
       </A>
       <div class="flex-1 overflow-y-auto px-2.5 pb-3">
